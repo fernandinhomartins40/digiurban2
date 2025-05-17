@@ -300,10 +300,12 @@ export const Sidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="#">Licitações</SidebarMenuItem>
-              <SidebarMenuItem href="#">Compras Diretas</SidebarMenuItem>
-              <SidebarMenuItem href="#">Contratos</SidebarMenuItem>
-              <SidebarMenuItem href="#">Fornecedores</SidebarMenuItem>
+              <SidebarMenuItem href="#">Solicitação de Materiais</SidebarMenuItem>
+              <SidebarMenuItem href="#">Aprovações Pendentes</SidebarMenuItem>
+              <SidebarMenuItem href="#">Fluxo de Compra</SidebarMenuItem>
+              <SidebarMenuItem href="#">Cadastro de Fornecedores</SidebarMenuItem>
+              <SidebarMenuItem href="#">Gestão de Orçamentos</SidebarMenuItem>
+              <SidebarMenuItem href="#">Relatórios por Setor</SidebarMenuItem>
             </SidebarSubmenu>
           </div>
         </div>
