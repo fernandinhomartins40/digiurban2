@@ -46,7 +46,10 @@ import {
   LucideLeafyGreen,
   BarChart,
   FileWarning,
-  Search
+  Search,
+  Clock,
+  Car,
+  Signpost
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
@@ -430,7 +433,7 @@ export const Sidebar: FC = () => {
             </SidebarSubmenu>
 
             <SidebarSubmenu 
-              title="Habitação" 
+              title="Habitaç��o" 
               icon={<Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               <SidebarMenuItem href="#">
@@ -629,6 +632,41 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">Gestão de Orçamentos</SidebarMenuItem>
               <SidebarMenuItem href="#">Relatórios por Setor</SidebarMenuItem>
             </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Transporte e Mobilidade" 
+              icon={<Bus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <MapPin className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Solicitação de Pontos de Ônibus
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Car className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Cadastro de Transporte Especial
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Signpost className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Sinalização Viária
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Clock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Horários de Transporte Público
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Credenciais de Estacionamento
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Mapa de Linhas e Pontos
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
           </div>
         </div>
       </div>
