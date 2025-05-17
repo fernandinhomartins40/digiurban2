@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,26 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: [
+					"Open Sans",
+					"ui-sans-serif",
+					"system-ui",
+					"sans-serif",
+				],
+				title: [
+					"Lato",
+					"ui-sans-serif",
+					"system-ui",
+					"sans-serif",
+				],
+				body: [
+					"Open Sans",
+					"ui-sans-serif",
+					"system-ui",
+					"sans-serif",
+				],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -25,8 +46,31 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					50: "#f3f1ff",
+					100: "#e9e5ff",
+					200: "#d5cfff",
+					300: "#b7a9ff",
+					400: "#9478ff",
+					500: "#7341ff",
+					600: "#631bff",
+					700: "#611bf8",
+					800: "#4607d0",
+					900: "#3c08aa",
+					950: "#220174",
+					DEFAULT: "#611bf8",
+				},
+				neutral: {
+					50: "#f7f7f7",
+					100: "#eeeeee",
+					200: "#e0e0e0",
+					300: "#cacaca",
+					400: "#b1b1b1",
+					500: "#999999",
+					600: "#7f7f7f",
+					700: "#676767",
+					800: "#545454",
+					900: "#464646",
+					950: "#282828",
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -52,21 +96,49 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				none: "0px",
+				sm: "6px",
+				DEFAULT: "12px",
+				md: "18px",
+				lg: "24px",
+				xl: "36px",
+				"2xl": "48px",
+				"3xl": "72px",
+				full: "9999px",
+			},
+			spacing: {
+				0: "0px",
+				1: "4px",
+				2: "8px",
+				3: "12px",
+				4: "16px",
+				5: "20px",
+				6: "24px",
+				7: "28px",
+				8: "32px",
+				9: "36px",
+				10: "40px",
+				11: "44px",
+				12: "48px",
+				14: "56px",
+				16: "64px",
+				20: "80px",
+				24: "96px",
+				28: "112px",
+				32: "128px",
+				36: "144px",
+				40: "160px",
+				44: "176px",
+				48: "192px",
+				52: "208px",
+				56: "224px",
+				60: "240px",
+				64: "256px",
+				72: "288px",
+				80: "320px",
+				96: "384px",
 			},
 			keyframes: {
 				'accordion-down': {
