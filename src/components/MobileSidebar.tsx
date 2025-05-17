@@ -22,7 +22,11 @@ import {
   Building,
   HandCoins,
   Package,
-  Bell
+  Bell,
+  Leaf,
+  Tractor,
+  Handshake,
+  Wheat
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -288,6 +292,32 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Registro de Visitas
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Agricultura" 
+                icon={<Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Tractor className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Cadastro de Produtores
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Handshake className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Assistência Técnica
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Wheat className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Programas Rurais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Cursos e Capacitações
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
