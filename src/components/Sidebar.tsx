@@ -2,6 +2,7 @@ import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truck } from "lucide-react";
 
 export const Sidebar: FC = () => {
   return (
@@ -114,7 +115,7 @@ export const Sidebar: FC = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    d="M7 21h10a2 2 0 002-2V9a2 2 0 012-2m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                   ></path>
                 </svg>
               }
@@ -168,11 +169,42 @@ export const Sidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="#">Consultas Agendadas</SidebarMenuItem>
-              <SidebarMenuItem href="#">Medicamentos Distribuídos</SidebarMenuItem>
-              <SidebarMenuItem href="#">Campanhas de Saúde</SidebarMenuItem>
-              <SidebarMenuItem href="#">Encaminhamentos (TFD)</SidebarMenuItem>
-              <SidebarMenuItem href="#">Atendimento Domiciliar</SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Agendamentos Médicos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Pill className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Controle de Medicamentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Heart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Campanhas de Saúde
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Heart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                Programas de Saúde
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <ArrowRightToLine className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Encaminhamentos TFD
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <TestTube className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Exames
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                ACS - Agentes de Saúde
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Truck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Transporte de Pacientes
+              </SidebarMenuItem>
             </SidebarSubmenu>
 
             <SidebarSubmenu 

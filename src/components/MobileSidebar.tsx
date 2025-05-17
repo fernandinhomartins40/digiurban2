@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truck } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -144,8 +145,42 @@ export const MobileSidebar: FC = () => {
                   </svg>
                 }
               >
-                <SidebarMenuItem href="#">Consultas Agendadas</SidebarMenuItem>
-                <SidebarMenuItem href="#">Medicamentos Distribuídos</SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Agendamentos Médicos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Pill className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Controle de Medicamentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Heart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Campanhas de Saúde
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Heart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                  Programas de Saúde
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <ArrowRightToLine className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Encaminhamentos TFD
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <TestTube className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Exames
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  ACS - Agentes de Saúde
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Truck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Transporte de Pacientes
+                </SidebarMenuItem>
               </SidebarSubmenu>
 
               <SidebarSubmenu 
