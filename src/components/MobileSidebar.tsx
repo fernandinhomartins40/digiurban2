@@ -2,7 +2,22 @@ import { FC, useState } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
-import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truck } from "lucide-react";
+import { 
+  Activity, 
+  Calendar, 
+  Pill, 
+  Heart, 
+  ArrowRightToLine, 
+  TestTube, 
+  User, 
+  Truck,
+  Book,
+  School,
+  Bus,
+  FileText,
+  MessageSquare,
+  BookOpenText
+} from "lucide-react";
 
 export const MobileSidebar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -202,8 +217,38 @@ export const MobileSidebar: FC = () => {
                   </svg>
                 }
               >
-                <SidebarMenuItem href="#">Matrículas</SidebarMenuItem>
-                <SidebarMenuItem href="#">Comunicação com Responsáveis</SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Matrículas Online
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <School className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Escolas /CMEI's
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Bus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Transporte Escolar
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Notas e Frequências
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Comunicação com Responsáveis
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <BookOpenText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Cardápios Escolares
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Registro de Ocorrências
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Calendário Escolar
+                </SidebarMenuItem>
               </SidebarSubmenu>
 
               <SidebarSubmenu 

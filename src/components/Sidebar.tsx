@@ -2,7 +2,22 @@ import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
-import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truck } from "lucide-react";
+import { 
+  Activity, 
+  Calendar, 
+  Pill, 
+  Heart, 
+  ArrowRightToLine, 
+  TestTube, 
+  User, 
+  Truck,
+  Book,
+  School,
+  Bus,
+  FileText,
+  MessageSquare,
+  BookOpenText
+} from "lucide-react";
 
 export const Sidebar: FC = () => {
   return (
@@ -226,11 +241,38 @@ export const Sidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="#">Matrículas</SidebarMenuItem>
-              <SidebarMenuItem href="#">Comunicação com Responsáveis</SidebarMenuItem>
-              <SidebarMenuItem href="#">Cardápio Escolar</SidebarMenuItem>
-              <SidebarMenuItem href="#">Transporte Escolar</SidebarMenuItem>
-              <SidebarMenuItem href="#">Ocorrências Escolares</SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Matrículas Online
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <School className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Escolas /CMEI's
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Bus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Transporte Escolar
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Notas e Frequências
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Comunicação com Responsáveis
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <BookOpenText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Cardápios Escolares
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Registro de Ocorrências
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Calendário Escolar
+              </SidebarMenuItem>
             </SidebarSubmenu>
 
             <SidebarSubmenu 
@@ -301,7 +343,7 @@ export const Sidebar: FC = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                   ></path>
                 </svg>
               }
