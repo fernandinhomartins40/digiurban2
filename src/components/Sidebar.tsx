@@ -38,7 +38,14 @@ import {
   Map,
   Info,
   Home,
-  FileSearch
+  FileSearch,
+  FileBadge,
+  AlertTriangle,
+  TreeDeciduous,
+  Award,
+  LucideLeafyGreen,
+  BarChart,
+  FileWarning
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
@@ -444,6 +451,44 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">
                 <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Regularização Fundiária
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Meio Ambiente" 
+              icon={<Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileBadge className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Licenças
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <AlertTriangle className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Registro de Denúncias
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <TreeDeciduous className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Cadastro de Áreas Protegidas
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                Programas Ambientais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Award className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Campanhas Ambientais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Indicadores Ambientais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Mapa de Ocorrências
               </SidebarMenuItem>
             </SidebarSubmenu>
 
