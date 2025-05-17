@@ -29,7 +29,9 @@ import {
   Wheat,
   Trophy,
   MapPin,
-  UserCheck
+  UserCheck,
+  Headphones,
+  Film
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -355,6 +357,44 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Registro de Resultados
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Cultura" 
+                icon={<Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Cursos e Oficinas
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Espaços Culturais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Solicitação de Espaços
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Grupos Artísticos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Film className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Eventos Culturais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Agenda de Eventos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                  Programas Culturais
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
