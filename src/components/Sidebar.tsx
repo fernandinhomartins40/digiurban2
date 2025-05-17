@@ -36,7 +36,9 @@ import {
   Landmark,
   Store,
   Map,
-  Info
+  Info,
+  Home,
+  FileSearch
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
@@ -416,6 +418,32 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">
                 <Info className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Informações Turisticas
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Habitação" 
+              icon={<Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Inscrições
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Programas Habitacionais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                Unidades Habitacionais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Regularização Fundiária
               </SidebarMenuItem>
             </SidebarSubmenu>
 
