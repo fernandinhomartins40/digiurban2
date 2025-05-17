@@ -26,7 +26,10 @@ import {
   Leaf,
   Tractor,
   Handshake,
-  Wheat
+  Wheat,
+  Trophy,
+  MapPin,
+  UserCheck
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -318,6 +321,40 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Cursos e Capacitações
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Esportes" 
+                icon={<Trophy className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <UserCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atletas e Professores
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <School className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Aulas e Treinamentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Trophy className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                  Campeonatoes e Competições
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <MapPin className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Espaços Esportivos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Agendamento de Espaços
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Registro de Resultados
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
