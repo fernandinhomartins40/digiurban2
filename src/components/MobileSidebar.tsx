@@ -45,7 +45,8 @@ import {
   Award,
   LucideLeafyGreen,
   BarChart,
-  FileWarning
+  FileWarning,
+  Search
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -503,6 +504,36 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Mapa de Ocorrências
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Planejamento Urbano" 
+                icon={<Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Aprovação de Projetos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Emissão de Alvarás
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Reclamações e Denuncias
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Search className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Consultas Públicas
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Mapa Urbano
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
