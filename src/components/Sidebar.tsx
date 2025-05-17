@@ -1,4 +1,3 @@
-
 import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -14,7 +13,7 @@ import {
   Leaf, 
   Bug, 
   TreeDeciduous, 
-  Bulb, 
+  Lightbulb, 
   ChartLine, 
   Map, 
   ListOrdered, 
@@ -149,7 +148,7 @@ export const Sidebar: FC = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    d="M7 21h10a2 2 0 002-2V9a2 2 0 012-2m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0M7 13h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                   ></path>
                 </svg>
               }
@@ -412,7 +411,7 @@ export const Sidebar: FC = () => {
               </SidebarMenuItem>
               <SidebarMenuItem href="#">
                 <span className="flex items-center">
-                  <Bulb className="mr-2 h-4 w-4" />
+                  <Lightbulb className="mr-2 h-4 w-4" />
                   Conscientização
                 </span>
               </SidebarMenuItem>

@@ -13,7 +13,7 @@ import {
   Leaf, 
   Bug, 
   TreeDeciduous, 
-  Bulb, 
+  Lightbulb, 
   ChartLine, 
   Map, 
   ListOrdered, 
