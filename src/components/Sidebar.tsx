@@ -1,4 +1,3 @@
-
 import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -248,11 +247,12 @@ export const Sidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="#">Guias de Pagamento</SidebarMenuItem>
+              <SidebarMenuItem href="#">Emissão de Guias</SidebarMenuItem>
               <SidebarMenuItem href="#">Consulta de Débitos</SidebarMenuItem>
               <SidebarMenuItem href="#">Certidões Online</SidebarMenuItem>
-              <SidebarMenuItem href="#">Parcelamentos</SidebarMenuItem>
-              <SidebarMenuItem href="#">Relatórios Financeiros</SidebarMenuItem>
+              <SidebarMenuItem href="#">Parcelamento de Dívidas</SidebarMenuItem>
+              <SidebarMenuItem href="#">Painel de Arrecadação</SidebarMenuItem>
+              <SidebarMenuItem href="#">Projeções Financeiras</SidebarMenuItem>
             </SidebarSubmenu>
             
             <SidebarSubmenu 
