@@ -16,7 +16,13 @@ import {
   Bus,
   FileText,
   MessageSquare,
-  BookOpenText
+  BookOpenText,
+  Users,
+  HandHeart,
+  Building,
+  HandCoins,
+  Package,
+  Bell
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
@@ -272,6 +278,40 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">
                 <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Calendário Escolar
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Assistência Social" 
+              icon={<HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <HandCoins className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Famílias Vulneraveis
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                CRAS e CREAS
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                Programas Sociais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <HandCoins className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                Gerenciamento de Benefícios
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Package className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Entregas Emergenciais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Registro de Visitas
               </SidebarMenuItem>
             </SidebarSubmenu>
 
