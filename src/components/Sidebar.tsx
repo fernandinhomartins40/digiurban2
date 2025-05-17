@@ -3,6 +3,39 @@ import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { 
+  BarChart2, 
+  Building, 
+  FileText, 
+  ShoppingBag, 
+  ShoppingCart, 
+  Users, 
+  Archive, 
+  Leaf, 
+  Bug, 
+  TreeDeciduous, 
+  Bulb, 
+  ChartLine, 
+  Map, 
+  ListOrdered, 
+  ShieldCheck, 
+  Settings, 
+  Mail, 
+  Pen, 
+  History, 
+  Folder, 
+  MessageSquare, 
+  Bell, 
+  Loader, 
+  Search, 
+  Check, 
+  User, 
+  UserPlus, 
+  Globe, 
+  Lock, 
+  Activity, 
+  LayoutDashboard 
+} from "lucide-react";
 
 export const Sidebar: FC = () => {
   return (
@@ -15,6 +48,7 @@ export const Sidebar: FC = () => {
           <UserProfile />
         </div>
         <div className="flex-1 overflow-y-auto py-2">
+          {/* Portal do Cidadão */}
           <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
             <SidebarMenuItem 
               href="#" 
@@ -147,9 +181,10 @@ export const Sidebar: FC = () => {
 
           <div className="px-3 py-2 mt-3">
             <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
-              Módulos Setoriais
+              <span className="mr-1">🏢</span> Módulos Setoriais
             </div>
             
+            {/* Saúde */}
             <SidebarSubmenu 
               title="Saúde" 
               icon={
@@ -176,6 +211,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">Atendimento Domiciliar</SidebarMenuItem>
             </SidebarSubmenu>
 
+            {/* Educação */}
             <SidebarSubmenu 
               title="Educação" 
               icon={
@@ -202,6 +238,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">Ocorrências Escolares</SidebarMenuItem>
             </SidebarSubmenu>
 
+            {/* Obras Públicas */}
             <SidebarSubmenu 
               title="Obras Públicas" 
               icon={
@@ -229,6 +266,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">Feedback da População</SidebarMenuItem>
             </SidebarSubmenu>
 
+            {/* Finanças */}
             <SidebarSubmenu 
               title="Finanças" 
               icon={
@@ -255,6 +293,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">Relatórios Financeiros</SidebarMenuItem>
             </SidebarSubmenu>
             
+            {/* Recursos Humanos */}
             <SidebarSubmenu 
               title="Recursos Humanos" 
               icon={
@@ -281,6 +320,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">Documentos Pessoais</SidebarMenuItem>
             </SidebarSubmenu>
 
+            {/* Compras - Updated with correct items */}
             <SidebarSubmenu 
               title="Compras" 
               icon={
@@ -300,12 +340,316 @@ export const Sidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="#">Licitações</SidebarMenuItem>
-              <SidebarMenuItem href="#">Compras Diretas</SidebarMenuItem>
-              <SidebarMenuItem href="#">Contratos</SidebarMenuItem>
-              <SidebarMenuItem href="#">Fornecedores</SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <ShoppingBag className="mr-2 h-4 w-4" />
+                  Solicitação de Materiais
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Aprovações de Compras
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Users className="mr-2 h-4 w-4" />
+                  Fornecedores
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Orçamentos
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Archive className="mr-2 h-4 w-4" />
+                  Estoque e Almoxarifado
+                </span>
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+            
+            {/* New: Meio Ambiente */}
+            <SidebarSubmenu 
+              title="Meio Ambiente" 
+              icon={
+                <svg
+                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                  ></path>
+                </svg>
+              }
+            >
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Leaf className="mr-2 h-4 w-4" />
+                  Solicitação de Licenças
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Bug className="mr-2 h-4 w-4" />
+                  Denúncias Ambientais
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <TreeDeciduous className="mr-2 h-4 w-4" />
+                  Áreas Protegidas
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Bulb className="mr-2 h-4 w-4" />
+                  Conscientização
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <ChartLine className="mr-2 h-4 w-4" />
+                  Indicadores Ambientais
+                </span>
+              </SidebarMenuItem>
             </SidebarSubmenu>
           </div>
+          
+          {/* New: Gabinete do Prefeito */}
+          <SidebarMenuGroup title="Gabinete do Prefeito" icon="🏛">
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Visão Geral
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Mapa de Demandas
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Relatórios Executivos
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <ListOrdered className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Ordens aos Setores
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <ShieldCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Protocolos Prioritários
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Gerenciar Permissões
+              </span>
+            </SidebarMenuItem>
+          </SidebarMenuGroup>
+          
+          {/* New: Correio Interno */}
+          <SidebarMenuGroup title="Correio Interno" icon="✉️">
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Criar Ofício
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Modelos de Documentos
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Pen className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Assinaturas Digitais
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <History className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Histórico de Envio/Recebimento
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Folder className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Arquivos e Pastas
+              </span>
+            </SidebarMenuItem>
+          </SidebarMenuGroup>
+          
+          {/* New: Comunicação Integrada */}
+          <SidebarMenuGroup title="Comunicação Integrada" icon="💬">
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Chat Interno
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Chat Cidadão ↔ Setor
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Bell className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Notificações Push/SMS/Email
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Modelos de Mensagens
+              </span>
+            </SidebarMenuItem>
+          </SidebarMenuGroup>
+          
+          {/* New: Sistema de Protocolos */}
+          <SidebarMenuGroup title="Sistema de Protocolos" icon="🧾">
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Todos os Protocolos
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Loader className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Aguardando Atendimento
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Search className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Em Análise
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Check className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Finalizados
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Minhas Responsabilidades
+              </span>
+            </SidebarMenuItem>
+          </SidebarMenuGroup>
+          
+          {/* New: Administração do Sistema */}
+          <SidebarMenuGroup title="Administração do Sistema" icon="📂">
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <UserPlus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Cadastro de Usuários
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Perfis e Permissões
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Folder className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Setores e Grupos
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Configurações Gerais
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <ShieldCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Auditoria de Acessos
+              </span>
+            </SidebarMenuItem>
+          </SidebarMenuGroup>
+          
+          {/* New: Relatórios e Indicadores */}
+          <SidebarMenuGroup title="Relatórios e Indicadores" icon="📈">
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <BarChart2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Relatórios por Setor
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Dashboards de Atendimentos
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Estatísticas de Uso
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Exportações (PDF/Excel)
+              </span>
+            </SidebarMenuItem>
+          </SidebarMenuGroup>
+          
+          {/* New: Configurações do Usuário */}
+          <SidebarMenuGroup title="Configurações do Usuário" icon="⚙️">
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Meu Perfil
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Lock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Trocar Senha
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Preferências de Notificação
+              </span>
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <span className="flex items-center">
+                <Globe className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Idioma e Acessibilidade
+              </span>
+            </SidebarMenuItem>
+          </SidebarMenuGroup>
         </div>
       </div>
     </div>

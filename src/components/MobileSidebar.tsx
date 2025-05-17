@@ -1,8 +1,40 @@
-
 import { FC, useState } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { 
+  BarChart2, 
+  Building, 
+  FileText, 
+  ShoppingBag, 
+  ShoppingCart, 
+  Users, 
+  Archive, 
+  Leaf, 
+  Bug, 
+  TreeDeciduous, 
+  Bulb, 
+  ChartLine, 
+  Map, 
+  ListOrdered, 
+  ShieldCheck, 
+  Settings, 
+  Mail, 
+  Pen, 
+  History, 
+  Folder, 
+  MessageSquare, 
+  Bell, 
+  Loader, 
+  Search, 
+  Check, 
+  User, 
+  UserPlus, 
+  Globe, 
+  Lock, 
+  Activity, 
+  LayoutDashboard 
+} from "lucide-react";
 
 export const MobileSidebar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,6 +109,7 @@ export const MobileSidebar: FC = () => {
             <UserProfile />
           </div>
           <div className="flex-1 overflow-y-auto py-2">
+            {/* Portal do Cidadão */}
             <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
               <SidebarMenuItem 
                 href="#" 
@@ -121,11 +154,34 @@ export const MobileSidebar: FC = () => {
               >
                 Catálogo de Serviços
               </SidebarMenuItem>
+              <SidebarMenuItem href="#" 
+                icon={
+                  <svg
+                    className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    ></path>
+                  </svg>
+                }
+              >
+                Meus Protocolos
+              </SidebarMenuItem>
             </SidebarMenuGroup>
+            
             <div className="px-3 py-2 mt-3">
               <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
-                Módulos Setoriais
+                <span className="mr-1">🏢</span> Módulos Setoriais
               </div>
+              
+              {/* Saúde */}
               <SidebarSubmenu 
                 title="Saúde" 
                 icon={
@@ -149,6 +205,7 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">Medicamentos Distribuídos</SidebarMenuItem>
               </SidebarSubmenu>
 
+              {/* Educação */}
               <SidebarSubmenu 
                 title="Educação" 
                 icon={
@@ -171,7 +228,70 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">Matrículas</SidebarMenuItem>
                 <SidebarMenuItem href="#">Comunicação com Responsáveis</SidebarMenuItem>
               </SidebarSubmenu>
+              
+              {/* Other modules (simplified for mobile) */}
+              <SidebarSubmenu 
+                title="Compras" 
+                icon={<ShoppingCart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">Solicitação de Materiais</SidebarMenuItem>
+                <SidebarMenuItem href="#">Fornecedores</SidebarMenuItem>
+              </SidebarSubmenu>
+              
+              <SidebarSubmenu 
+                title="Meio Ambiente" 
+                icon={<Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">Denúncias Ambientais</SidebarMenuItem>
+                <SidebarMenuItem href="#">Solicitação de Licenças</SidebarMenuItem>
+              </SidebarSubmenu>
             </div>
+            
+            {/* Additional menu groups (simplified for mobile) */}
+            <SidebarMenuGroup title="Gabinete do Prefeito" icon="🏛">
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Building className="mr-2 h-4 w-4" />
+                  Visão Geral
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Map className="mr-2 h-4 w-4" />
+                  Mapa de Demandas
+                </span>
+              </SidebarMenuItem>
+            </SidebarMenuGroup>
+            
+            <SidebarMenuGroup title="Sistema de Protocolos" icon="🧾">
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Todos os Protocolos
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Check className="mr-2 h-4 w-4" />
+                  Finalizados
+                </span>
+              </SidebarMenuItem>
+            </SidebarMenuGroup>
+            
+            <SidebarMenuGroup title="Configurações do Usuário" icon="⚙️">
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <User className="mr-2 h-4 w-4" />
+                  Meu Perfil
+                </span>
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <span className="flex items-center">
+                  <Lock className="mr-2 h-4 w-4" />
+                  Trocar Senha
+                </span>
+              </SidebarMenuItem>
+            </SidebarMenuGroup>
           </div>
         </div>
       </div>
