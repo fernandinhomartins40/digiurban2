@@ -31,7 +31,12 @@ import {
   MapPin,
   UserCheck,
   Headphones,
-  Film
+  Film,
+  Compass,
+  Landmark,
+  Store,
+  Map,
+  Info
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -395,6 +400,36 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                   Programas Culturais
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Turismo" 
+                icon={<Compass className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Landmark className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Pontos Turísticos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Store className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Estabelecimentos Locais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Compass className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                  Programas Turisticos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Mapa Turistico
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Info className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Informações Turisticas
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
