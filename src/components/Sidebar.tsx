@@ -49,7 +49,10 @@ import {
   Search,
   Clock,
   Car,
-  Signpost
+  Signpost,
+  Construction,
+  Hammer,
+  Camera
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
@@ -403,6 +406,44 @@ export const Sidebar: FC = () => {
             </SidebarSubmenu>
 
             <SidebarSubmenu 
+              title="Cultura" 
+              icon={<Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Cursos e Oficinas
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Espaços Culturais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Solicitação de Espaços
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Grupos Artísticos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Film className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Eventos Culturais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Agenda de Eventos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                Programas Culturais
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
               title="Turismo" 
               icon={<Compass className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
@@ -433,7 +474,7 @@ export const Sidebar: FC = () => {
             </SidebarSubmenu>
 
             <SidebarSubmenu 
-              title="Habitaç��o" 
+              title="Habitação" 
               icon={<Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               <SidebarMenuItem href="#">
@@ -528,142 +569,27 @@ export const Sidebar: FC = () => {
 
             <SidebarSubmenu 
               title="Obras Públicas" 
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                  ></path>
-                </svg>
-              }
-              defaultOpen={true}
-            >
-              <SidebarMenuItem href="#">Acompanhamento de Obras</SidebarMenuItem>
-              <SidebarMenuItem href="#">Registro Fotográfico</SidebarMenuItem>
-              <SidebarMenuItem href="#">Solicitação de Intervenções</SidebarMenuItem>
-              <SidebarMenuItem href="#">Cronograma de Obras</SidebarMenuItem>
-              <SidebarMenuItem href="#">Feedback da População</SidebarMenuItem>
-            </SidebarSubmenu>
-
-            <SidebarSubmenu 
-              title="Finanças" 
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-              }
-            >
-              <SidebarMenuItem href="#">Emissão de Guias</SidebarMenuItem>
-              <SidebarMenuItem href="#">Consulta de Débitos</SidebarMenuItem>
-              <SidebarMenuItem href="#">Certidões Online</SidebarMenuItem>
-              <SidebarMenuItem href="#">Parcelamento de Dívidas</SidebarMenuItem>
-              <SidebarMenuItem href="#">Painel de Arrecadação</SidebarMenuItem>
-              <SidebarMenuItem href="#">Projeções Financeiras</SidebarMenuItem>
-            </SidebarSubmenu>
-            
-            <SidebarSubmenu 
-              title="Recursos Humanos" 
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                  ></path>
-                </svg>
-              }
-            >
-              <SidebarMenuItem href="#">Solicitações de Férias/Licenças</SidebarMenuItem>
-              <SidebarMenuItem href="#">Declarações</SidebarMenuItem>
-              <SidebarMenuItem href="#">Comunicação de Ocorrências</SidebarMenuItem>
-              <SidebarMenuItem href="#">Ponto Eletrônico</SidebarMenuItem>
-              <SidebarMenuItem href="#">Documentos Pessoais</SidebarMenuItem>
-            </SidebarSubmenu>
-
-            <SidebarSubmenu 
-              title="Compras" 
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  ></path>
-                </svg>
-              }
-            >
-              <SidebarMenuItem href="#">Solicitação de Materiais</SidebarMenuItem>
-              <SidebarMenuItem href="#">Aprovações Pendentes</SidebarMenuItem>
-              <SidebarMenuItem href="#">Fluxo de Compra</SidebarMenuItem>
-              <SidebarMenuItem href="#">Cadastro de Fornecedores</SidebarMenuItem>
-              <SidebarMenuItem href="#">Gestão de Orçamentos</SidebarMenuItem>
-              <SidebarMenuItem href="#">Relatórios por Setor</SidebarMenuItem>
-            </SidebarSubmenu>
-
-            <SidebarSubmenu 
-              title="Transporte e Mobilidade" 
-              icon={<Bus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              icon={<Construction className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               <SidebarMenuItem href="#">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
               <SidebarMenuItem href="#">
-                <MapPin className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Solicitação de Pontos de Ônibus
+                <Hammer className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Obras e Pequenas Intervenções
               </SidebarMenuItem>
               <SidebarMenuItem href="#">
-                <Car className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Cadastro de Transporte Especial
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Signpost className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Sinalização Viária
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Clock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Horários de Transporte Público
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Credenciais de Estacionamento
+                <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Progresso de Obras
               </SidebarMenuItem>
               <SidebarMenuItem href="#">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Mapa de Linhas e Pontos
+                Mapa de Obras
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Feedback dos Cidadãos
               </SidebarMenuItem>
             </SidebarSubmenu>
 

@@ -49,7 +49,9 @@ import {
   Search,
   Clock,
   Car,
-  Signpost
+  Signpost,
+  Construction,
+  Hammer
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -625,6 +627,32 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Mapa de Linhas e Pontos
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Obras Públicas" 
+                icon={<Construction className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Hammer className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Obras e Pequenas Intervenções
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Progresso de Obras
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Mapa de Obras
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Feedback dos Cidadãos
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
