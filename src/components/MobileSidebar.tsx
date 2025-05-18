@@ -1,3 +1,4 @@
+
 import { FC, useState } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -51,7 +52,11 @@ import {
   Car,
   Signpost,
   Construction,
-  Hammer
+  Hammer,
+  Lightbulb, 
+  Trash2, 
+  Box, 
+  Image
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -653,6 +658,36 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Feedback dos Cidadãos
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Serviços Públicos" 
+                icon={<Construction className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Lightbulb className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Iluminação Pública
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Trash2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Limpeza Urbana
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Box className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Coleta Especial
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Image className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Problemas com Foto
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Programação de Equipes
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
