@@ -1,311 +1,140 @@
 import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
+import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truck, 
+  Book, School, Bus, FileText, MessageSquare, BookOpenText, Users, HandHeart, 
+  Building, HandCoins, Package, Bell, Leaf, Tractor, Handshake, Wheat, Trophy, 
+  MapPin, UserCheck, Headphones, Film, Compass, Landmark, Store, Map, Info, Home, 
+  FileSearch, FileBadge, AlertTriangle, TreeDeciduous, Award, BarChart, FileWarning, 
+  Search, Clock, Car, Signpost, Construction, Hammer, Camera, Lightbulb, Trash2, 
+  Box, Image, Shield, FileCheck, BadgeHelp, Radio, CreditCard, Receipt, FileSpreadsheet, 
+  Calculator, TrendingUp, ShoppingCart, ClipboardList, ShoppingBag, Briefcase, BadgeCheck, 
+  UserPlus, ListChecks, Mail, Presentation, GraduationCap, Settings, Eye, LayoutDashboard, 
+  FileOutput, UserCog, KeyRound, Lock, BellRing, Languages, Network, UsersRound, ShieldCheck, 
+  FolderCog, ScrollText, Send, FileType2, Signature, FileArchive, PieChart, BarChart3, 
+  Download, UserCircle2 } from "lucide-react";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
-import { 
-  Activity, 
-  Calendar, 
-  Pill, 
-  Heart, 
-  ArrowRightToLine, 
-  TestTube, 
-  User, 
-  Truck,
-  Book,
-  School,
-  Bus,
-  FileText,
-  MessageSquare,
-  BookOpenText,
-  Users,
-  HandHeart,
-  Building,
-  HandCoins,
-  Package,
-  Bell,
-  Leaf,
-  Tractor,
-  Handshake,
-  Wheat,
-  Trophy,
-  MapPin,
-  UserCheck,
-  Headphones,
-  Film,
-  Compass,
-  Landmark,
-  Store,
-  Map,
-  Info,
-  Home,
-  FileSearch,
-  FileBadge,
-  AlertTriangle,
-  TreeDeciduous,
-  Award,
-  LucideLeafyGreen,
-  BarChart,
-  FileWarning,
-  Search,
-  Clock,
-  Car,
-  Signpost,
-  Construction,
-  Hammer,
-  Camera,
-  Lightbulb,
-  Trash2,
-  Box,
-  Image,
-  Shield,
-  FileCheck,
-  BadgeHelp,
-  Radio,
-  CreditCard,
-  Receipt,
-  FileSpreadsheet,
-  Calculator,
-  TrendingUp,
-  ShoppingCart,
-  ClipboardList,
-  ShoppingBag,
-  Briefcase,
-  BadgeCheck,
-  ListChecks,
-  UserPlus,
-  Mail,
-  Presentation,
-  GraduationCap,
-  Settings,
-  Eye,
-  LayoutDashboard,
-  FileOutput,
-  UserCog,
-  KeyRound,
-  Lock,
-  BellRing,
-  Languages,
-  Network,
-  UsersRound,
-  ShieldCheck,
-  FolderCog,
-  ScrollText,
-  Mail as EnvelopeMail,
-  Send,
-  FileType2,
-  Signature,
-  FileArchive,
-  PieChart,
-  BarChart3,
-  Download,
-  UserCircle2
-} from "lucide-react";
 
 export const Sidebar: FC = () => {
   return (
-    <div className="w-64 bg-white dark:bg-gray-800 shadow-lg hidden md:block transition-all duration-300 ease-in-out h-screen">
-      <div className="flex flex-col h-full">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <SidebarLogo />
-        </div>
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <UserProfile />
-        </div>
-        <div className="flex-1 overflow-y-auto py-2">
-          <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
-            <SidebarMenuItem 
-              href="#" 
-              active={true}
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h7"
-                  ></path>
-                </svg>
-              }
-            >
-              Painel do Cidadão
-            </SidebarMenuItem>
-            <SidebarMenuItem 
-              href="#"
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  ></path>
-                </svg>
-              }
-            >
-              Catálogo de Serviços
-            </SidebarMenuItem>
-            <SidebarMenuItem 
-              href="#"
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2m0 0V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  ></path>
-                </svg>
-              }
-            >
-              Meus Protocolos
-            </SidebarMenuItem>
-            <SidebarMenuItem 
-              href="#"
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  ></path>
-                </svg>
-              }
-            >
-              Chat com Setores
-            </SidebarMenuItem>
-            <SidebarMenuItem 
-              href="#"
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M7 21h10a2 2 0 002-2V9a2 2 0 012-2m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  ></path>
-                </svg>
-              }
-            >
-              Documentos Pessoais
-            </SidebarMenuItem>
-            <SidebarMenuItem 
-              href="#"
-              icon={
-                <svg
-                  className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                  ></path>
-                </svg>
-              }
-            >
-              Minhas Avaliações
-            </SidebarMenuItem>
-          </SidebarMenuGroup>
+    <div className="w-64 bg-white dark:bg-gray-800 shadow-lg hidden md:flex flex-col h-screen">
+      {/* Topo fixo - Logo */}
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <SidebarLogo />
+      </div>
+      
+      {/* Meio com scroll - Menus */}
+      <div className="flex-1 overflow-y-auto py-2">
+        <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
+          <SidebarMenuItem 
+            href="#" 
+            active={true}
+            icon={
+              <svg
+                className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h7"
+                ></path>
+              </svg>
+            }
+          >
+            Painel do Cidadão
+          </SidebarMenuItem>
+          <SidebarMenuItem 
+            href="#"
+            icon={
+              <svg
+                className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                ></path>
+              </svg>
+            }
+          >
+            Catálogo de Serviços
+          </SidebarMenuItem>
+        </SidebarMenuGroup>
 
-          <div className="px-3 py-2 mt-3">
-            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
-              Área Administrativa
-            </div>
-            
-            <SidebarSubmenu 
-              title="Gabinete do Prefeito" 
-              icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
-            >
-              <SidebarMenuItem href="#">
-                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Atendimentos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Visão Geral
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Mapa de Demandas
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Relatórios Executivos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <FileOutput className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Ordens aos Setores
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Lock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Gerenciar Permissões
-              </SidebarMenuItem>
-            </SidebarSubmenu>
+        <div className="px-3 py-2 mt-3">
+          <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
+            Área Administrativa
+          </div>
+          
+          <SidebarSubmenu 
+            title="Gabinete do Prefeito" 
+            icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+          >
+            <SidebarMenuItem href="#">
+              <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Atendimentos
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Visão Geral
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Mapa de Demandas
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Relatórios Executivos
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <FileOutput className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Ordens aos Setores
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <Lock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Gerenciar Permissões
+            </SidebarMenuItem>
+          </SidebarSubmenu>
 
-            <SidebarSubmenu 
-              title="Correio Interno" 
-              icon={<Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
-            >
-              <SidebarMenuItem href="#">
-                <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Chat
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <EnvelopeMail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Email Interno
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Send className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Criador de Ofícios
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <FileType2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Biblioteca de Modelos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Signature className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Assinaturas Digitais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <FileArchive className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Protocolos
-              </SidebarMenuItem>
-            </SidebarSubmenu>
+          <SidebarSubmenu 
+            title="Correio Interno" 
+            icon={<Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+          >
+            <SidebarMenuItem href="#">
+              <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Chat
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Email Interno
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <Send className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Criador de Ofícios
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <FileType2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Biblioteca de Modelos
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <Signature className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Assinaturas Digitais
+            </SidebarMenuItem>
+            <SidebarMenuItem href="#">
+              <FileArchive className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Protocolos
+            </SidebarMenuItem>
+          </SidebarSubmenu>
 
             <SidebarSubmenu 
               title="Administração do Sistema" 
@@ -940,6 +769,11 @@ export const Sidebar: FC = () => {
             </SidebarSubmenu>
           </div>
         </div>
+      </div>
+      
+      {/* Parte inferior fixa - Perfil do usuário */}
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <UserProfile />
       </div>
     </div>
   );
