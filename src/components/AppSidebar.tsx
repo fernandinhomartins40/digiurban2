@@ -5,13 +5,15 @@ import {
   SidebarHeader, 
   SidebarContent, 
   SidebarFooter,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { Home, Settings, LayoutDashboard, FileText, Users, Mail, Briefcase } from "lucide-react";
+import { 
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+} from "@/components/ui/sidebar";
 
 export const AppSidebar: FC = () => {
   return (
