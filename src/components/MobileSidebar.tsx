@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -53,10 +52,15 @@ import {
   Signpost,
   Construction,
   Hammer,
+  Camera,
   Lightbulb, 
   Trash2, 
   Box, 
-  Image
+  Image,
+  Shield,
+  FileCheck,
+  BadgeHelp,
+  Radio
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -688,6 +692,40 @@ export const MobileSidebar: FC = () => {
                 <SidebarMenuItem href="#">
                   <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Programação de Equipes
+                </SidebarMenuItem>
+              </SidebarSubmenu>
+
+              <SidebarSubmenu 
+                title="Segurança Pública" 
+                icon={<Shield className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Registro de Ocorrências
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <BadgeHelp className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Apoio da Guarda
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Mapa de Pontos Críticos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Bell className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Alertas de Segurança
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Estatísticas Regionais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Radio className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Vigilância Integrada
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
