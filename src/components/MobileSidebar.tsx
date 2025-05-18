@@ -60,7 +60,22 @@ import {
   Shield,
   FileCheck,
   BadgeHelp,
-  Radio
+  Radio,
+  CreditCard,
+  Receipt,
+  FileSpreadsheet,
+  Calculator,
+  TrendingUp,
+  ShoppingCart,
+  ClipboardList,
+  ShoppingBag,
+  Briefcase,
+  BadgeCheck,
+  UserPlus,
+  ListChecks,
+  Mail,
+  Presentation,
+  GraduationCap
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -553,56 +568,70 @@ export const MobileSidebar: FC = () => {
 
               <SidebarSubmenu 
                 title="Finanças" 
-                icon={
-                  <svg
-                    className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                }
+                icon={<CreditCard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               >
-                <SidebarMenuItem href="#">Emissão de Guias</SidebarMenuItem>
-                <SidebarMenuItem href="#">Consulta de Débitos</SidebarMenuItem>
-                <SidebarMenuItem href="#">Certidões Online</SidebarMenuItem>
-                <SidebarMenuItem href="#">Parcelamento de Dívidas</SidebarMenuItem>
-                <SidebarMenuItem href="#">Painel de Arrecadação</SidebarMenuItem>
-                <SidebarMenuItem href="#">Projeções Financeiras</SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Receipt className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Emissão de Guias
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Consulta de Débitos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileSpreadsheet className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Certidões Online
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Calculator className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Parcelamento de Dívidas
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Painel de Arrecadação
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <TrendingUp className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Projeções Financeiras
+                </SidebarMenuItem>
               </SidebarSubmenu>
 
               <SidebarSubmenu 
                 title="Compras" 
-                icon={
-                  <svg
-                    className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    ></path>
-                  </svg>
-                }
+                icon={<ShoppingCart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               >
-                <SidebarMenuItem href="#">Solicitação de Materiais</SidebarMenuItem>
-                <SidebarMenuItem href="#">Aprovações Pendentes</SidebarMenuItem>
-                <SidebarMenuItem href="#">Fluxo de Compra</SidebarMenuItem>
-                <SidebarMenuItem href="#">Cadastro de Fornecedores</SidebarMenuItem>
-                <SidebarMenuItem href="#">Gestão de Orçamentos</SidebarMenuItem>
-                <SidebarMenuItem href="#">Relatórios por Setor</SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <ClipboardList className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Solicitação de Materiais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Aprovações Pendentes
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <ShoppingBag className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Fluxo de Compra
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Cadastro de Fornecedores
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <BadgeCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Gestão de Orçamentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <FileSpreadsheet className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Relatórios por Setor
+                </SidebarMenuItem>
               </SidebarSubmenu>
 
               <SidebarSubmenu 
@@ -729,6 +758,39 @@ export const MobileSidebar: FC = () => {
                 </SidebarMenuItem>
               </SidebarSubmenu>
 
+              <SidebarSubmenu 
+                title="Gabinete do Prefeito" 
+                icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              >
+                <SidebarMenuItem href="#">
+                  <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Atendimentos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Agenda do Prefeito
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <UserPlus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Solicitação de Audiências
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <ListChecks className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Acompanhamento de Projetos
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Comunicações Oficiais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <Presentation className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Eventos Institucionais
+                </SidebarMenuItem>
+                <SidebarMenuItem href="#">
+                  <GraduationCap className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  Projetos Especiais
+                </SidebarMenuItem>
+              </SidebarSubmenu>
             </div>
           </div>
         </div>

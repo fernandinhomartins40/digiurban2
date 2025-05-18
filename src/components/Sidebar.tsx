@@ -60,7 +60,22 @@ import {
   Shield,
   FileCheck,
   BadgeHelp,
-  Radio
+  Radio,
+  CreditCard,
+  Receipt,
+  FileSpreadsheet,
+  Calculator,
+  TrendingUp,
+  ShoppingCart,
+  ClipboardList,
+  ShoppingBag,
+  Briefcase,
+  BadgeCheck,
+  ListChecks,
+  UserPlus,
+  Mail,
+  Presentation,
+  GraduationCap
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
@@ -665,6 +680,141 @@ export const Sidebar: FC = () => {
               </SidebarMenuItem>
             </SidebarSubmenu>
 
+            <SidebarSubmenu 
+              title="Finanças" 
+              icon={<CreditCard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Receipt className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Emissão de Guias
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Consulta de Débitos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileSpreadsheet className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Certidões Online
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Calculator className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Parcelamento de Dívidas
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Painel de Arrecadação
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <TrendingUp className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Projeções Financeiras
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Compras" 
+              icon={<ShoppingCart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <ClipboardList className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Solicitação de Materiais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Aprovações Pendentes
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <ShoppingBag className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Fluxo de Compra
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Cadastro de Fornecedores
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <BadgeCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Gestão de Orçamentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileSpreadsheet className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Relatórios por Setor
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Transporte e Mobilidade" 
+              icon={<Bus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <MapPin className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Solicitação de Pontos de Ônibus
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Car className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Cadastro de Transporte Especial
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Signpost className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Sinalização Viária
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Clock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Horários de Transporte Público
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Credenciais de Estacionamento
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Mapa de Linhas e Pontos
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Gabinete do Prefeito" 
+              icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Agenda do Prefeito
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <UserPlus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Solicitação de Audiências
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <ListChecks className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Acompanhamento de Projetos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Comunicações Oficiais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Presentation className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Eventos Institucionais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <GraduationCap className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Projetos Especiais
+              </SidebarMenuItem>
+            </SidebarSubmenu>
           </div>
         </div>
       </div>
