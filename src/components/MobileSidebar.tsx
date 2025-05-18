@@ -79,7 +79,6 @@ import {
   Settings,
   Eye,
   LayoutDashboard,
-  FileText2,
   FileOutput,
   UserCog,
   KeyRound,
@@ -243,7 +242,7 @@ export const MobileSidebar: FC = () => {
                   Mapa de Demandas
                 </SidebarMenuItem>
                 <SidebarMenuItem href="#">
-                  <FileText2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                   Relatórios Executivos
                 </SidebarMenuItem>
                 <SidebarMenuItem href="#">
