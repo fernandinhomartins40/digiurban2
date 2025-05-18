@@ -75,7 +75,31 @@ import {
   UserPlus,
   Mail,
   Presentation,
-  GraduationCap
+  GraduationCap,
+  Settings,
+  Eye,
+  LayoutDashboard,
+  FileText2,
+  FileOutput,
+  UserCog,
+  KeyRound,
+  Lock,
+  BellRing,
+  Languages,
+  Network,
+  UsersRound,
+  ShieldCheck,
+  FolderCog,
+  ScrollText,
+  Mail as EnvelopeMail,
+  Send,
+  FileType2,
+  Signature,
+  FileArchive,
+  PieChart,
+  BarChart3,
+  Download,
+  UserCircle2
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
@@ -221,6 +245,140 @@ export const Sidebar: FC = () => {
 
           <div className="px-3 py-2 mt-3">
             <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
+              Área Administrativa
+            </div>
+            
+            <SidebarSubmenu 
+              title="Gabinete do Prefeito" 
+              icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Visão Geral
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Mapa de Demandas
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileText2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Relatórios Executivos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileOutput className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Ordens aos Setores
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Lock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Gerenciar Permissões
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Correio Interno" 
+              icon={<Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Chat
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <EnvelopeMail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Email Interno
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Send className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Criador de Ofícios
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileType2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Biblioteca de Modelos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Signature className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Assinaturas Digitais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FileArchive className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Protocolos
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Administração do Sistema" 
+              icon={<Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <UsersRound className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Gerenciamento de Usuários
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <ShieldCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Perfis e Permissões
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Network className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Setores e Grupos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <FolderCog className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Configurações Gerais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <ScrollText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Auditoria de Acessos
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Relatórios e Indicadores" 
+              icon={<BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Relatórios
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <PieChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Indicadores de Atendimentos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <BarChart3 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Estatísticas de Uso
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Download className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Exportações (PDF/Excel)
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Configurações do Usuário" 
+              icon={<User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="#">
+                <UserCircle2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Meu Perfil
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <KeyRound className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Trocar Senha
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <BellRing className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Preferências de Notificação
+              </SidebarMenuItem>
+              <SidebarMenuItem href="#">
+                <Languages className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Idioma e Acessibilidade
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center mt-4">
               Módulos Setoriais
             </div>
             
@@ -779,40 +937,6 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="#">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Mapa de Linhas e Pontos
-              </SidebarMenuItem>
-            </SidebarSubmenu>
-
-            <SidebarSubmenu 
-              title="Gabinete do Prefeito" 
-              icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
-            >
-              <SidebarMenuItem href="#">
-                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Atendimentos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Agenda do Prefeito
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <UserPlus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Solicitação de Audiências
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <ListChecks className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Acompanhamento de Projetos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Comunicações Oficiais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Presentation className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Eventos Institucionais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <GraduationCap className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Projetos Especiais
               </SidebarMenuItem>
             </SidebarSubmenu>
           </div>
