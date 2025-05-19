@@ -1,3 +1,4 @@
+
 import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -12,7 +13,7 @@ import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truc
   UserPlus, ListChecks, Mail, Presentation, GraduationCap, Settings, Eye, LayoutDashboard, 
   FileOutput, UserCog, KeyRound, Lock, BellRing, Languages, Network, UsersRound, ShieldCheck, 
   FolderCog, ScrollText, Send, FileType2, Signature, FileArchive, PieChart, BarChart3, 
-  Download, UserCircle2 } from "lucide-react";
+  Download, UserCircle2, Star } from "lucide-react";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
 
 export const Sidebar: FC = () => {
