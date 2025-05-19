@@ -15,6 +15,7 @@ import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truc
   FolderCog, ScrollText, Send, FileType2, Signature, FileArchive, PieChart, BarChart3, 
   Download, UserCircle2, Star } from "lucide-react";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { Link } from "react-router-dom";
 
 export const Sidebar: FC = () => {
   return (
@@ -28,8 +29,8 @@ export const Sidebar: FC = () => {
       <div className="flex-1 overflow-y-auto py-2">
         <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
           <SidebarMenuItem 
-            href="#" 
-            active={true}
+            href="/" 
+            active={window.location.pathname === "/"}
             icon={
               <svg
                 className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400"
@@ -51,14 +52,16 @@ export const Sidebar: FC = () => {
           </SidebarMenuItem>
           
           <SidebarMenuItem 
-            href="#"
+            href="/chat"
+            active={window.location.pathname === "/chat"}
             icon={<MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
             Chat
           </SidebarMenuItem>
           
           <SidebarMenuItem 
-            href="#"
+            href="/catalogo-servicos"
+            active={window.location.pathname === "/catalogo-servicos"}
             icon={
               <svg
                 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
@@ -80,21 +83,24 @@ export const Sidebar: FC = () => {
           </SidebarMenuItem>
           
           <SidebarMenuItem 
-            href="#"
+            href="/meus-protocolos"
+            active={window.location.pathname === "/meus-protocolos"}
             icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
             Meus Protocolos
           </SidebarMenuItem>
           
           <SidebarMenuItem 
-            href="#"
+            href="/documentos-pessoais"
+            active={window.location.pathname === "/documentos-pessoais"}
             icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
             Documentos Pessoais
           </SidebarMenuItem>
           
           <SidebarMenuItem 
-            href="#"
+            href="/minhas-avaliacoes"
+            active={window.location.pathname === "/minhas-avaliacoes"}
             icon={<Star className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
             Minhas Avaliações

@@ -1,6 +1,7 @@
 
 import { FC, ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 type SidebarMenuItemProps = {
   href: string;
@@ -17,8 +18,8 @@ export const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
 }) => {
   return (
     <li>
-      <a
-        href={href}
+      <Link
+        to={href}
         className={cn(
           "group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
           active
@@ -28,7 +29,7 @@ export const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
       >
         {icon}
         {children}
-      </a>
+      </Link>
     </li>
   );
 };
