@@ -49,6 +49,14 @@ export const Sidebar: FC = () => {
           >
             Painel do Cidadão
           </SidebarMenuItem>
+          
+          <SidebarMenuItem 
+            href="#"
+            icon={<MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+          >
+            Chat
+          </SidebarMenuItem>
+          
           <SidebarMenuItem 
             href="#"
             icon={
@@ -69,6 +77,27 @@ export const Sidebar: FC = () => {
             }
           >
             Catálogo de Serviços
+          </SidebarMenuItem>
+          
+          <SidebarMenuItem 
+            href="#"
+            icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+          >
+            Meus Protocolos
+          </SidebarMenuItem>
+          
+          <SidebarMenuItem 
+            href="#"
+            icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+          >
+            Documentos Pessoais
+          </SidebarMenuItem>
+          
+          <SidebarMenuItem 
+            href="#"
+            icon={<Star className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+          >
+            Minhas Avaliações
           </SidebarMenuItem>
         </SidebarMenuGroup>
 
