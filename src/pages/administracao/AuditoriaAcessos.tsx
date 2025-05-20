@@ -8,7 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download, Filter, Search, RefreshCw, Eye, AlertCircle, CheckCircle, Clock, XCircle, UserX } from "lucide-react";
-import { DatePicker } from "@/components/ui/calendar";
+import { useState } from "react";
+import { DatePicker } from "@/components/ui/date-picker";
 
 // Mock data para logs de auditoria
 const mockAuditLogs = [
@@ -63,6 +64,9 @@ const getStatusIcon = (status: string) => {
 };
 
 const AuditoriaAcessos = () => {
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  
   return (
     <Layout>
       <div className="px-6 py-4">
@@ -132,8 +136,18 @@ const AuditoriaAcessos = () => {
                   </div>
                   
                   <div className="flex gap-2">
-                    <DatePicker className="flex-1" placeholder="Data Início" />
-                    <DatePicker className="flex-1" placeholder="Data Fim" />
+                    <DatePicker 
+                      date={startDate} 
+                      setDate={setStartDate} 
+                      placeholder="Data Início" 
+                      className="flex-1" 
+                    />
+                    <DatePicker 
+                      date={endDate} 
+                      setDate={setEndDate} 
+                      placeholder="Data Fim" 
+                      className="flex-1" 
+                    />
                   </div>
                 </div>
               </CardContent>
