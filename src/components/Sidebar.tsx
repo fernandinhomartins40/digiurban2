@@ -200,23 +200,38 @@ export const Sidebar: FC = () => {
             title="Administração do Sistema" 
             icon={<Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/administracao/gerenciamento-usuarios"
+              active={window.location.pathname === "/administracao/gerenciamento-usuarios"}
+            >
               <UsersRound className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Gerenciamento de Usuários
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/administracao/perfis-permissoes"
+              active={window.location.pathname === "/administracao/perfis-permissoes"}
+            >
               <ShieldCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Perfis e Permissões
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/administracao/setores-grupos"
+              active={window.location.pathname === "/administracao/setores-grupos"}
+            >
               <Network className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Setores e Grupos
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/administracao/configuracoes-gerais"
+              active={window.location.pathname === "/administracao/configuracoes-gerais"}
+            >
               <FolderCog className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Configurações Gerais
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/administracao/auditoria-acessos"
+              active={window.location.pathname === "/administracao/auditoria-acessos"}
+            >
               <ScrollText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Auditoria de Acessos
             </SidebarMenuItem>

@@ -24,6 +24,11 @@ import Rascunhos from "./pages/correio/Rascunhos";
 import Lixeira from "./pages/correio/Lixeira";
 import BibliotecaModelos from "./pages/correio/BibliotecaModelos";
 import AssinaturasDigitais from "./pages/correio/AssinaturasDigitais";
+import GerenciamentoUsuarios from "./pages/administracao/GerenciamentoUsuarios";
+import PerfisPermissoes from "./pages/administracao/PerfisPermissoes";
+import SetoresGrupos from "./pages/administracao/SetoresGrupos";
+import ConfiguracoesGerais from "./pages/administracao/ConfiguracoesGerais";
+import AuditoriaAcessos from "./pages/administracao/AuditoriaAcessos";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +59,12 @@ const App = () => (
           <Route path="/correio/lixeira" element={<Lixeira />} />
           <Route path="/correio/biblioteca-modelos" element={<BibliotecaModelos />} />
           <Route path="/correio/assinaturas-digitais" element={<AssinaturasDigitais />} />
+          {/* Administração do Sistema Routes */}
+          <Route path="/administracao/gerenciamento-usuarios" element={<GerenciamentoUsuarios />} />
+          <Route path="/administracao/perfis-permissoes" element={<PerfisPermissoes />} />
+          <Route path="/administracao/setores-grupos" element={<SetoresGrupos />} />
+          <Route path="/administracao/configuracoes-gerais" element={<ConfiguracoesGerais />} />
+          <Route path="/administracao/auditoria-acessos" element={<AuditoriaAcessos />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
