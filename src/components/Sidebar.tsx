@@ -1,3 +1,4 @@
+
 import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -263,19 +264,19 @@ export const Sidebar: FC = () => {
             title="Configurações do Usuário" 
             icon={<User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/configuracoes/meu-perfil">
               <UserCircle2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Meu Perfil
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/configuracoes/trocar-senha">
               <KeyRound className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Trocar Senha
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/configuracoes/preferencias-notificacao">
               <BellRing className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Preferências de Notificação
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/configuracoes/idioma-acessibilidade">
               <Languages className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Idioma e Acessibilidade
             </SidebarMenuItem>

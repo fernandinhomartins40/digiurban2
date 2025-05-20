@@ -33,6 +33,10 @@ import Relatorios from "./pages/relatorios/Relatorios";
 import IndicadoresAtendimentos from "./pages/relatorios/IndicadoresAtendimentos";
 import EstatisticasUso from "./pages/relatorios/EstatisticasUso";
 import Exportacoes from "./pages/relatorios/Exportacoes";
+import MeuPerfil from "./pages/configuracoes/MeuPerfil";
+import TrocarSenha from "./pages/configuracoes/TrocarSenha";
+import PreferenciasNotificacao from "./pages/configuracoes/PreferenciasNotificacao";
+import IdiomaAcessibilidade from "./pages/configuracoes/IdiomaAcessibilidade";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +78,11 @@ const App = () => (
           <Route path="/relatorios/indicadores-atendimentos" element={<IndicadoresAtendimentos />} />
           <Route path="/relatorios/estatisticas-uso" element={<EstatisticasUso />} />
           <Route path="/relatorios/exportacoes" element={<Exportacoes />} />
+          {/* Configurações do Usuário Routes */}
+          <Route path="/configuracoes/meu-perfil" element={<MeuPerfil />} />
+          <Route path="/configuracoes/trocar-senha" element={<TrocarSenha />} />
+          <Route path="/configuracoes/preferencias-notificacao" element={<PreferenciasNotificacao />} />
+          <Route path="/configuracoes/idioma-acessibilidade" element={<IdiomaAcessibilidade />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
