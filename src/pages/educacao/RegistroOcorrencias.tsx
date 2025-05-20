@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -43,7 +42,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Occurrence } from "@/types/educacao";
-import { Search, ChevronDown, AlertTriangle, Calendar, User, File, Bell, Filter, FileText, Plus } from "lucide-react";
+import { 
+  Search, Filter, Calendar, User, School, AlertTriangle, 
+  Clock, MessageSquare, CheckCircle, FileText, Plus, ChevronDown 
+} from "lucide-react";
 
 // Mock data for occurrences
 const mockOccurrences: Occurrence[] = [
