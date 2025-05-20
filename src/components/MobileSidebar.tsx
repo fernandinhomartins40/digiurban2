@@ -1,3 +1,4 @@
+
 import { FC, useState } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -100,6 +101,9 @@ import {
   UserCircle2,
   Star
 } from "lucide-react";
+
+// Add the missing EnvelopeMail icon
+const EnvelopeMail = Mail; // Using Mail as a substitute for EnvelopeMail since it's not available
 
 export const MobileSidebar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
