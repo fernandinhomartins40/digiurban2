@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import type {
@@ -6,7 +7,7 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+const TOAST_REMOVE_DELAY = 5000
 
 type ToasterToast = ToastProps & {
   id: string
@@ -168,7 +169,8 @@ function toast({ ...props }: Toast) {
   }
 }
 
-function useToast() {
+// This is the custom hook
+export function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
 
   React.useEffect(() => {
@@ -188,4 +190,4 @@ function useToast() {
   }
 }
 
-export { useToast, toast }
+export { toast }
