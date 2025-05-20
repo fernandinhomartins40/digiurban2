@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -44,7 +45,7 @@ import {
 import { Occurrence } from "@/types/educacao";
 import { 
   Search, Filter, Calendar, User, School, AlertTriangle, 
-  Clock, MessageSquare, CheckCircle, FileText, Plus, ChevronDown 
+  Clock, MessageSquare, CheckCircle, FileText, Plus, ChevronDown, Bell
 } from "lucide-react";
 
 // Mock data for occurrences
