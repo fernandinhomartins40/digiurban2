@@ -49,6 +49,15 @@ import Exames from "./pages/saude/Exames";
 import ACS from "./pages/saude/ACS";
 import TransportePacientes from "./pages/saude/TransportePacientes";
 
+// Assistência Social module imports
+import AtendimentosAssistencia from "./pages/assistencia-social/Atendimentos";
+import FamiliasVulneraveis from "./pages/assistencia-social/FamiliasVulneraveis";
+import CRASeCREAS from "./pages/assistencia-social/CRASeCREAS";
+import ProgramasSociais from "./pages/assistencia-social/ProgramasSociais";
+import GerenciamentoBeneficios from "./pages/assistencia-social/GerenciamentoBeneficios";
+import EntregasEmergenciais from "./pages/assistencia-social/EntregasEmergenciais";
+import RegistroVisitas from "./pages/assistencia-social/RegistroVisitas";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -104,6 +113,14 @@ const App = () => (
           <Route path="/saude/exames" element={<Exames />} />
           <Route path="/saude/acs" element={<ACS />} />
           <Route path="/saude/transporte-pacientes" element={<TransportePacientes />} />
+          {/* Módulo de Assistência Social Routes */}
+          <Route path="/assistencia-social/atendimentos" element={<AtendimentosAssistencia />} />
+          <Route path="/assistencia-social/familias-vulneraveis" element={<FamiliasVulneraveis />} />
+          <Route path="/assistencia-social/cras-creas" element={<CRASeCREAS />} />
+          <Route path="/assistencia-social/programas-sociais" element={<ProgramasSociais />} />
+          <Route path="/assistencia-social/gerenciamento-beneficios" element={<GerenciamentoBeneficios />} />
+          <Route path="/assistencia-social/entregas-emergenciais" element={<EntregasEmergenciais />} />
+          <Route path="/assistencia-social/registro-visitas" element={<RegistroVisitas />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

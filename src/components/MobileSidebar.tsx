@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -91,7 +90,6 @@ import {
   ShieldCheck,
   FolderCog,
   ScrollText,
-  Mail as EnvelopeMail,
   Send,
   FileType2,
   Signature,
@@ -503,31 +501,31 @@ export const MobileSidebar: FC = () => {
               title="Assistência Social" 
               icon={<HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/atendimentos">
                 <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/familias-vulneraveis">
                 <HandCoins className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Famílias Vulneraveis
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/cras-creas">
                 <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 CRAS e CREAS
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/programas-sociais">
                 <HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                 Programas Sociais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/gerenciamento-beneficios">
                 <HandCoins className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                 Gerenciamento de Benefícios
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/entregas-emergenciais">
                 <Package className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Entregas Emergenciais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/registro-visitas">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Registro de Visitas
               </SidebarMenuItem>
