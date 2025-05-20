@@ -17,6 +17,13 @@ import MapaDemandas from "./pages/gabinete/MapaDemandas";
 import RelatoriosExecutivos from "./pages/gabinete/RelatoriosExecutivos";
 import OrdensSetores from "./pages/gabinete/OrdensSetores";
 import GerenciarPermissoes from "./pages/gabinete/GerenciarPermissoes";
+import CaixaEntrada from "./pages/correio/CaixaEntrada";
+import CaixaSaida from "./pages/correio/CaixaSaida";
+import NovoEmail from "./pages/correio/NovoEmail";
+import Rascunhos from "./pages/correio/Rascunhos";
+import Lixeira from "./pages/correio/Lixeira";
+import BibliotecaModelos from "./pages/correio/BibliotecaModelos";
+import AssinaturasDigitais from "./pages/correio/AssinaturasDigitais";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +46,14 @@ const App = () => (
           <Route path="/gabinete/relatorios-executivos" element={<RelatoriosExecutivos />} />
           <Route path="/gabinete/ordens-setores" element={<OrdensSetores />} />
           <Route path="/gabinete/gerenciar-permissoes" element={<GerenciarPermissoes />} />
+          {/* Correio Interno Routes */}
+          <Route path="/correio/caixa-entrada" element={<CaixaEntrada />} />
+          <Route path="/correio/caixa-saida" element={<CaixaSaida />} />
+          <Route path="/correio/novo-email" element={<NovoEmail />} />
+          <Route path="/correio/rascunhos" element={<Rascunhos />} />
+          <Route path="/correio/lixeira" element={<Lixeira />} />
+          <Route path="/correio/biblioteca-modelos" element={<BibliotecaModelos />} />
+          <Route path="/correio/assinaturas-digitais" element={<AssinaturasDigitais />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,4 +1,3 @@
-
 import { FC } from "react";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
@@ -13,7 +12,7 @@ import { Activity, Calendar, Pill, Heart, ArrowRightToLine, TestTube, User, Truc
   UserPlus, ListChecks, Mail, Presentation, GraduationCap, Settings, Eye, LayoutDashboard, 
   FileOutput, UserCog, KeyRound, Lock, BellRing, Languages, Network, UsersRound, ShieldCheck, 
   FolderCog, ScrollText, Send, FileType2, Signature, FileArchive, PieChart, BarChart3, 
-  Download, UserCircle2, Star } from "lucide-react";
+  Download, UserCircle2, Star, Edit, Inbox } from "lucide-react";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
 import { Link } from "react-router-dom";
 
@@ -146,29 +145,54 @@ export const Sidebar: FC = () => {
             title="Correio Interno" 
             icon={<Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
-            <SidebarMenuItem href="#">
-              <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-              Chat
+            <SidebarMenuItem 
+              href="/correio/caixa-entrada"
+              active={window.location.pathname === "/correio/caixa-entrada"}
+            >
+              <Inbox className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Caixa de Entrada
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
-              <Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-              Email Interno
-            </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/correio/caixa-saida"
+              active={window.location.pathname === "/correio/caixa-saida"}
+            >
               <Send className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-              Criador de Ofícios
+              Caixa de Saída
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/correio/novo-email"
+              active={window.location.pathname === "/correio/novo-email"}
+            >
+              <Edit className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Novo Email
+            </SidebarMenuItem>
+            <SidebarMenuItem 
+              href="/correio/rascunhos"
+              active={window.location.pathname === "/correio/rascunhos"}
+            >
+              <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Rascunhos
+            </SidebarMenuItem>
+            <SidebarMenuItem 
+              href="/correio/lixeira"
+              active={window.location.pathname === "/correio/lixeira"}
+            >
+              <Trash2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              Lixeira
+            </SidebarMenuItem>
+            <SidebarMenuItem 
+              href="/correio/biblioteca-modelos"
+              active={window.location.pathname === "/correio/biblioteca-modelos"}
+            >
               <FileType2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Biblioteca de Modelos
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem 
+              href="/correio/assinaturas-digitais"
+              active={window.location.pathname === "/correio/assinaturas-digitais"}
+            >
               <Signature className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Assinaturas Digitais
-            </SidebarMenuItem>
-            <SidebarMenuItem href="#">
-              <FileArchive className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-              Protocolos
             </SidebarMenuItem>
           </SidebarSubmenu>
 
