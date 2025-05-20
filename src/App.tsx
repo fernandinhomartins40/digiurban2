@@ -38,6 +38,17 @@ import TrocarSenha from "./pages/configuracoes/TrocarSenha";
 import PreferenciasNotificacao from "./pages/configuracoes/PreferenciasNotificacao";
 import IdiomaAcessibilidade from "./pages/configuracoes/IdiomaAcessibilidade";
 
+// Saúde module imports
+import AtendimentosSaude from "./pages/saude/Atendimentos";
+import AgendamentosMedicos from "./pages/saude/AgendamentosMedicos";
+import ControleMedicamentos from "./pages/saude/ControleMedicamentos";
+import CampanhasSaude from "./pages/saude/CampanhasSaude";
+import ProgramasSaude from "./pages/saude/ProgramasSaude";
+import EncaminhamentosTFD from "./pages/saude/EncaminhamentosTFD";
+import Exames from "./pages/saude/Exames";
+import ACS from "./pages/saude/ACS";
+import TransportePacientes from "./pages/saude/TransportePacientes";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -83,6 +94,16 @@ const App = () => (
           <Route path="/configuracoes/trocar-senha" element={<TrocarSenha />} />
           <Route path="/configuracoes/preferencias-notificacao" element={<PreferenciasNotificacao />} />
           <Route path="/configuracoes/idioma-acessibilidade" element={<IdiomaAcessibilidade />} />
+          {/* Módulo de Saúde Routes */}
+          <Route path="/saude/atendimentos" element={<AtendimentosSaude />} />
+          <Route path="/saude/agendamentos-medicos" element={<AgendamentosMedicos />} />
+          <Route path="/saude/controle-medicamentos" element={<ControleMedicamentos />} />
+          <Route path="/saude/campanhas-saude" element={<CampanhasSaude />} />
+          <Route path="/saude/programas-saude" element={<ProgramasSaude />} />
+          <Route path="/saude/encaminhamentos-tfd" element={<EncaminhamentosTFD />} />
+          <Route path="/saude/exames" element={<Exames />} />
+          <Route path="/saude/acs" element={<ACS />} />
+          <Route path="/saude/transporte-pacientes" element={<TransportePacientes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
