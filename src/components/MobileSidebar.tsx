@@ -465,35 +465,35 @@ export const MobileSidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/matriculas-online">
                 <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Matrículas Online
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/escolas">
                 <School className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Escolas /CMEI's
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/transporte-escolar">
                 <Bus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Transporte Escolar
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/notas-frequencias">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Notas e Frequências
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/comunicacao-responsaveis">
                 <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Comunicação com Responsáveis
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/cardapios-escolares">
                 <BookOpenText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Cardápios Escolares
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/registro-ocorrencias">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Registro de Ocorrências
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/educacao/calendario-escolar">
                 <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Calendário Escolar
               </SidebarMenuItem>
