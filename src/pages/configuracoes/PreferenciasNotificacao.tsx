@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Layout } from "@/components/Layout";
@@ -8,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Bell, Mail, MessageSquare, Calendar, Activity, FileText } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface NotificationPreference {
   id: string;
