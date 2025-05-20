@@ -29,6 +29,10 @@ import PerfisPermissoes from "./pages/administracao/PerfisPermissoes";
 import SetoresGrupos from "./pages/administracao/SetoresGrupos";
 import ConfiguracoesGerais from "./pages/administracao/ConfiguracoesGerais";
 import AuditoriaAcessos from "./pages/administracao/AuditoriaAcessos";
+import Relatorios from "./pages/relatorios/Relatorios";
+import IndicadoresAtendimentos from "./pages/relatorios/IndicadoresAtendimentos";
+import EstatisticasUso from "./pages/relatorios/EstatisticasUso";
+import Exportacoes from "./pages/relatorios/Exportacoes";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +69,11 @@ const App = () => (
           <Route path="/administracao/setores-grupos" element={<SetoresGrupos />} />
           <Route path="/administracao/configuracoes-gerais" element={<ConfiguracoesGerais />} />
           <Route path="/administracao/auditoria-acessos" element={<AuditoriaAcessos />} />
+          {/* Relatórios e Indicadores Routes */}
+          <Route path="/relatorios/relatorios" element={<Relatorios />} />
+          <Route path="/relatorios/indicadores-atendimentos" element={<IndicadoresAtendimentos />} />
+          <Route path="/relatorios/estatisticas-uso" element={<EstatisticasUso />} />
+          <Route path="/relatorios/exportacoes" element={<Exportacoes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

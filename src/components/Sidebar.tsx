@@ -241,19 +241,19 @@ export const Sidebar: FC = () => {
             title="Relatórios e Indicadores" 
             icon={<BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/relatorios/relatorios">
               <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Relatórios
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/relatorios/indicadores-atendimentos">
               <PieChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Indicadores de Atendimentos
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/relatorios/estatisticas-uso">
               <BarChart3 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Estatísticas de Uso
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/relatorios/exportacoes">
               <Download className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Exportações (PDF/Excel)
             </SidebarMenuItem>
