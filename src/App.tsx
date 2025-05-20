@@ -4,9 +4,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Chat from "./pages/Chat";
+import { lazy, Suspense } from "react";
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Chat = lazy(() => import("./pages/Chat"));
 import CatalogoServicos from "./pages/CatalogoServicos";
 import MeusProtocolos from "./pages/MeusProtocolos";
 import DocumentosPessoais from "./pages/DocumentosPessoais";
@@ -57,7 +58,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
+        <Suspense fallback={<div className="flex items-center justify-center h-screen">Carregando...</div>}>
+          <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/catalogo-servicos" element={<CatalogoServicos />} />
