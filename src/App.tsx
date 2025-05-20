@@ -11,6 +11,12 @@ import CatalogoServicos from "./pages/CatalogoServicos";
 import MeusProtocolos from "./pages/MeusProtocolos";
 import DocumentosPessoais from "./pages/DocumentosPessoais";
 import MinhasAvaliacoes from "./pages/MinhasAvaliacoes";
+import Atendimentos from "./pages/gabinete/Atendimentos";
+import VisaoGeral from "./pages/gabinete/VisaoGeral";
+import MapaDemandas from "./pages/gabinete/MapaDemandas";
+import RelatoriosExecutivos from "./pages/gabinete/RelatoriosExecutivos";
+import OrdensSetores from "./pages/gabinete/OrdensSetores";
+import GerenciarPermissoes from "./pages/gabinete/GerenciarPermissoes";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +33,12 @@ const App = () => (
           <Route path="/meus-protocolos" element={<MeusProtocolos />} />
           <Route path="/documentos-pessoais" element={<DocumentosPessoais />} />
           <Route path="/minhas-avaliacoes" element={<MinhasAvaliacoes />} />
+          <Route path="/gabinete/atendimentos" element={<Atendimentos />} />
+          <Route path="/gabinete/visao-geral" element={<VisaoGeral />} />
+          <Route path="/gabinete/mapa-demandas" element={<MapaDemandas />} />
+          <Route path="/gabinete/relatorios-executivos" element={<RelatoriosExecutivos />} />
+          <Route path="/gabinete/ordens-setores" element={<OrdensSetores />} />
+          <Route path="/gabinete/gerenciar-permissoes" element={<GerenciarPermissoes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

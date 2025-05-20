@@ -116,27 +116,27 @@ export const Sidebar: FC = () => {
             title="Gabinete do Prefeito" 
             icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
           >
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/gabinete/atendimentos">
               <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Atendimentos
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/gabinete/visao-geral">
               <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Visão Geral
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/gabinete/mapa-demandas">
               <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Mapa de Demandas
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/gabinete/relatorios-executivos">
               <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Relatórios Executivos
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/gabinete/ordens-setores">
               <FileOutput className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Ordens aos Setores
             </SidebarMenuItem>
-            <SidebarMenuItem href="#">
+            <SidebarMenuItem href="/gabinete/gerenciar-permissoes">
               <Lock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
               Gerenciar Permissões
             </SidebarMenuItem>
