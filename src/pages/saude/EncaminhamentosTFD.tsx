@@ -33,7 +33,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, FileText, Search, User, MapPin, Ambulance } from "lucide-react";
+import { 
+  Search,
+  FileText,
+  Calendar,
+  User,
+  Ambulance,
+  MapPin,
+  FileCheck,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+} from "lucide-react";
 import { TFDReferral } from "@/types/saude";
 
 // Mock data
@@ -43,7 +54,7 @@ const mockReferrals: TFDReferral[] = [
     patientId: "101",
     patientName: "Maria Silva",
     originUnit: "UBS Central",
-    destinationUnit: "Hospital Regional",
+    destinationUnit: "Hospital Regional de Cardiologia",
     specialtyRequired: "Cardiologia",
     referralDate: "2025-05-10",
     scheduledDate: "2025-05-25",
@@ -51,197 +62,194 @@ const mockReferrals: TFDReferral[] = [
     priority: "normal",
     transportation: "terrestre",
     accommodationNeeded: false,
-    medicalReport: "Paciente com histórico de arritmia cardíaca, necessita avaliação especializada."
+    medicalReport: "Paciente com histórico de hipertensão necessitando de avaliação cardiológica especializada."
   },
   {
     id: "2",
     patientId: "102",
     patientName: "João Oliveira",
-    originUnit: "UBS Norte",
-    destinationUnit: "Hospital Estadual",
-    specialtyRequired: "Neurologia",
-    referralDate: "2025-05-12",
-    scheduledDate: "2025-06-05",
-    status: "aprovado",
+    originUnit: "UBS Jardim América",
+    destinationUnit: "Centro de Tratamento Oncológico",
+    specialtyRequired: "Oncologia",
+    referralDate: "2025-05-08",
+    status: "solicitado",
     priority: "urgente",
     transportation: "terrestre",
     accommodationNeeded: true,
-    medicalReport: "Paciente com suspeita de AVC isquêmico, necessita avaliação neurológica urgente."
+    medicalReport: "Paciente com suspeita de neoplasia requer avaliação urgente por especialista."
   },
   {
     id: "3",
     patientId: "103",
     patientName: "Antônio Ferreira",
-    originUnit: "UBS Leste",
+    originUnit: "UBS Vila Nova",
     destinationUnit: "Hospital Universitário",
-    specialtyRequired: "Oncologia",
-    referralDate: "2025-05-15",
-    status: "solicitado",
-    priority: "normal",
-    transportation: "terrestre",
-    accommodationNeeded: false,
-    medicalReport: "Paciente com lesão suspeita, necessita avaliação oncológica."
+    specialtyRequired: "Neurologia",
+    referralDate: "2025-04-30",
+    scheduledDate: "2025-05-20",
+    status: "em andamento",
+    priority: "emergência",
+    transportation: "aéreo",
+    accommodationNeeded: true,
+    medicalReport: "Paciente com síndrome neurológica grave necessitando de avaliação imediata."
   },
   {
     id: "4",
     patientId: "104",
     patientName: "Luiza Costa",
-    originUnit: "UBS Sul",
-    destinationUnit: "Hospital de Referência",
-    specialtyRequired: "Oftalmologia",
-    referralDate: "2025-05-08",
-    scheduledDate: "2025-05-30",
-    status: "em andamento",
+    originUnit: "UBS Centro",
+    destinationUnit: "Hospital Infantil",
+    specialtyRequired: "Ortopedia Pediátrica",
+    referralDate: "2025-05-05",
+    scheduledDate: "2025-05-15",
+    status: "concluído",
     priority: "normal",
     transportation: "terrestre",
     accommodationNeeded: false,
-    medicalReport: "Paciente com suspeita de glaucoma, necessita avaliação especializada."
+    medicalReport: "Criança com suspeita de fratura necessitando de tratamento especializado."
   },
   {
     id: "5",
     patientId: "105",
     patientName: "Roberto Gomes",
-    originUnit: "UBS Oeste",
-    destinationUnit: "Hospital Regional",
-    specialtyRequired: "Pneumologia",
-    referralDate: "2025-05-05",
-    status: "solicitado",
-    priority: "emergência",
-    transportation: "aéreo",
-    accommodationNeeded: true,
-    medicalReport: "Paciente com insuficiência respiratória grave, necessita transferência urgente."
+    originUnit: "UBS Jardim Esperança",
+    destinationUnit: "Centro de Especialidades Médicas",
+    specialtyRequired: "Nefrologia",
+    referralDate: "2025-05-12",
+    status: "negado",
+    priority: "urgente",
+    transportation: "terrestre",
+    accommodationNeeded: false,
+    medicalReport: "Paciente com insuficiência renal requer avaliação por nefrologista."
   },
   {
     id: "6",
     patientId: "106",
     patientName: "Fernanda Martins",
-    originUnit: "UBS Central",
-    destinationUnit: "Hospital Estadual",
-    specialtyRequired: "Ortopedia",
-    referralDate: "2025-05-01",
+    originUnit: "UBS São José",
+    destinationUnit: "Instituto do Coração",
+    specialtyRequired: "Cirurgia Cardíaca",
+    referralDate: "2025-05-03",
     scheduledDate: "2025-05-18",
-    status: "concluído",
-    priority: "normal",
-    transportation: "terrestre",
-    accommodationNeeded: false,
-    medicalReport: "Paciente com fratura no fêmur, necessitou avaliação e procedimento especializado."
-  },
-  {
-    id: "7",
-    patientId: "107",
-    patientName: "Paulo Rodrigues",
-    originUnit: "UBS Norte",
-    destinationUnit: "Hospital Universitário",
-    specialtyRequired: "Nefrologia",
-    referralDate: "2025-04-28",
-    status: "negado",
-    priority: "normal",
-    transportation: "terrestre",
-    accommodationNeeded: false,
-    medicalReport: "Solicitação negada. Tratamento disponível na rede municipal."
-  },
+    status: "em andamento",
+    priority: "urgente",
+    transportation: "aéreo",
+    accommodationNeeded: true,
+    medicalReport: "Paciente com indicação de cirurgia cardíaca não disponível no município."
+  }
 ];
 
 const statusColors: Record<string, string> = {
-  "solicitado": "bg-amber-500",
-  "aprovado": "bg-blue-500",
-  "em andamento": "bg-purple-500",
-  "concluído": "bg-green-500",
-  "negado": "bg-red-500",
+  "solicitado": "bg-blue-500",
+  "aprovado": "bg-green-500",
+  "em andamento": "bg-amber-500",
+  "concluído": "bg-purple-500",
+  "negado": "bg-red-500"
 };
 
 const priorityColors: Record<string, string> = {
   "normal": "bg-blue-500",
   "urgente": "bg-amber-500",
-  "emergência": "bg-red-500",
+  "emergência": "bg-red-500"
+};
+
+const transportationColors: Record<string, string> = {
+  "terrestre": "bg-green-500",
+  "aéreo": "bg-blue-500",
+  "não necessário": "bg-gray-500"
 };
 
 const EncaminhamentosTFD = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState<string>("");
-  const [filterSpecialty, setFilterSpecialty] = useState<string>("");
-  
-  // Filter referrals based on search, status, and specialty
+  const [statusFilter, setStatusFilter] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
+
+  // Filter referrals based on search term, status, and priority
   const filteredReferrals = mockReferrals.filter((referral) => {
     const matchesSearch = 
       referral.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       referral.specialtyRequired.toLowerCase().includes(searchTerm.toLowerCase()) ||
       referral.destinationUnit.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus ? referral.status === filterStatus : true;
-    const matchesSpecialty = filterSpecialty ? referral.specialtyRequired === filterSpecialty : true;
+    const matchesStatus = statusFilter ? referral.status === statusFilter : true;
+    const matchesPriority = priorityFilter ? referral.priority === priorityFilter : true;
     
-    return matchesSearch && matchesStatus && matchesSpecialty;
+    return matchesSearch && matchesStatus && matchesPriority;
   });
 
-  // Extract unique specialties for the filter
-  const specialties = Array.from(new Set(mockReferrals.map((ref) => ref.specialtyRequired)));
-  
-  // Extract unique statuses for the filter
-  const statuses = Array.from(new Set(mockReferrals.map((ref) => ref.status)));
-
   // Count referrals by status
-  const pendingCount = mockReferrals.filter(r => r.status === "solicitado").length;
-  const approvedCount = mockReferrals.filter(r => r.status === "aprovado").length;
-  const inProgressCount = mockReferrals.filter(r => r.status === "em andamento").length;
-  const completedCount = mockReferrals.filter(r => r.status === "concluído").length;
-  
+  const pending = mockReferrals.filter(r => r.status === "solicitado").length;
+  const approved = mockReferrals.filter(r => r.status === "aprovado").length;
+  const inProgress = mockReferrals.filter(r => r.status === "em andamento").length;
+  const completed = mockReferrals.filter(r => r.status === "concluído").length;
+  const denied = mockReferrals.filter(r => r.status === "negado").length;
+
   return (
     <Layout>
       <div className="container mx-auto py-6 space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Encaminhamentos TFD</h1>
           <Button>
-            <FileText className="mr-2 h-4 w-4" /> Novo Encaminhamento
+            <FileText className="mr-2 h-4 w-4" /> Nova Solicitação TFD
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className={pendingCount > 0 ? "border-amber-500" : ""}>
-            <CardHeader className="bg-amber-50 dark:bg-amber-900/20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+          <Card className={pending > 0 ? "border-blue-500" : ""}>
+            <CardHeader className="bg-blue-50 dark:bg-blue-900/20">
               <CardTitle>Solicitados</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{pendingCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Aguardando aprovação</p>
+              <div className="text-3xl font-bold">{pending}</div>
+              <p className="text-sm text-muted-foreground mt-2">Aguardando análise</p>
             </CardContent>
           </Card>
           
-          <Card className={approvedCount > 0 ? "border-blue-500" : ""}>
-            <CardHeader className="bg-blue-50 dark:bg-blue-900/20">
+          <Card className={approved > 0 ? "border-green-500" : ""}>
+            <CardHeader className="bg-green-50 dark:bg-green-900/20">
               <CardTitle>Aprovados</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{approvedCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Em processo de agendamento</p>
+              <div className="text-3xl font-bold">{approved}</div>
+              <p className="text-sm text-muted-foreground mt-2">Aguardando agendamento</p>
             </CardContent>
           </Card>
           
-          <Card className={inProgressCount > 0 ? "border-purple-500" : ""}>
-            <CardHeader className="bg-purple-50 dark:bg-purple-900/20">
+          <Card className={inProgress > 0 ? "border-amber-500" : ""}>
+            <CardHeader className="bg-amber-50 dark:bg-amber-900/20">
               <CardTitle>Em Andamento</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{inProgressCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Processos iniciados</p>
+              <div className="text-3xl font-bold">{inProgress}</div>
+              <p className="text-sm text-muted-foreground mt-2">Agendados/em execução</p>
             </CardContent>
           </Card>
           
-          <Card className={completedCount > 0 ? "border-green-500" : ""}>
-            <CardHeader className="bg-green-50 dark:bg-green-900/20">
+          <Card className={completed > 0 ? "border-purple-500" : ""}>
+            <CardHeader className="bg-purple-50 dark:bg-purple-900/20">
               <CardTitle>Concluídos</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{completedCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Processos finalizados</p>
+              <div className="text-3xl font-bold">{completed}</div>
+              <p className="text-sm text-muted-foreground mt-2">Encaminhamentos realizados</p>
+            </CardContent>
+          </Card>
+          
+          <Card className={denied > 0 ? "border-red-500" : ""}>
+            <CardHeader className="bg-red-50 dark:bg-red-900/20">
+              <CardTitle>Negados</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="text-3xl font-bold">{denied}</div>
+              <p className="text-sm text-muted-foreground mt-2">Solicitações não aprovadas</p>
             </CardContent>
           </Card>
         </div>
 
         <Tabs defaultValue="todos">
           <TabsList className="grid grid-cols-3 mb-4 w-[400px]">
-            <TabsTrigger value="todos">Todos</TabsTrigger>
-            <TabsTrigger value="documentos">Documentos</TabsTrigger>
-            <TabsTrigger value="estatisticas">Estatísticas</TabsTrigger>
+            <TabsTrigger value="todos">Todos os Encaminhamentos</TabsTrigger>
+            <TabsTrigger value="emergencia">Casos de Emergência</TabsTrigger>
+            <TabsTrigger value="relatorios">Relatórios</TabsTrigger>
           </TabsList>
           
           <TabsContent value="todos">
@@ -249,7 +257,7 @@ const EncaminhamentosTFD = () => {
               <CardHeader>
                 <CardTitle>Encaminhamentos TFD</CardTitle>
                 <CardDescription>
-                  Visualize e gerencie encaminhamentos para Tratamento Fora do Domicílio
+                  Gerenciamento de Tratamentos Fora do Domicílio
                 </CardDescription>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-4">
@@ -264,31 +272,29 @@ const EncaminhamentosTFD = () => {
                     />
                   </div>
                   
-                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-full sm:w-[180px]">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">Todos os status</SelectItem>
-                      {statuses.map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="solicitado">Solicitado</SelectItem>
+                      <SelectItem value="aprovado">Aprovado</SelectItem>
+                      <SelectItem value="em andamento">Em Andamento</SelectItem>
+                      <SelectItem value="concluído">Concluído</SelectItem>
+                      <SelectItem value="negado">Negado</SelectItem>
                     </SelectContent>
                   </Select>
                   
-                  <Select value={filterSpecialty} onValueChange={setFilterSpecialty}>
+                  <Select value={priorityFilter} onValueChange={setPriorityFilter}>
                     <SelectTrigger className="w-full sm:w-[180px]">
-                      <SelectValue placeholder="Especialidade" />
+                      <SelectValue placeholder="Prioridade" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as especialidades</SelectItem>
-                      {specialties.map((specialty) => (
-                        <SelectItem key={specialty} value={specialty}>
-                          {specialty}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="">Todas as prioridades</SelectItem>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="urgente">Urgente</SelectItem>
+                      <SelectItem value="emergência">Emergência</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -302,17 +308,18 @@ const EncaminhamentosTFD = () => {
                         <TableHead>Paciente</TableHead>
                         <TableHead>Especialidade</TableHead>
                         <TableHead>Destino</TableHead>
-                        <TableHead>Data Solicitação</TableHead>
+                        <TableHead>Data de Solicitação</TableHead>
                         <TableHead>Data Agendada</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Transporte</TableHead>
                         <TableHead>Prioridade</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead>Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredReferrals.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={8} className="text-center py-4">
+                          <TableCell colSpan={9} className="text-center py-4">
                             Nenhum encaminhamento encontrado com os filtros aplicados.
                           </TableCell>
                         </TableRow>
@@ -332,17 +339,15 @@ const EncaminhamentosTFD = () => {
                                 {referral.destinationUnit}
                               </div>
                             </TableCell>
-                            <TableCell>
-                              {new Date(referral.referralDate).toLocaleDateString('pt-BR')}
-                            </TableCell>
+                            <TableCell>{new Date(referral.referralDate).toLocaleDateString('pt-BR')}</TableCell>
                             <TableCell>
                               {referral.scheduledDate 
                                 ? new Date(referral.scheduledDate).toLocaleDateString('pt-BR')
                                 : "-"}
                             </TableCell>
                             <TableCell>
-                              <Badge variant="secondary" className={`${statusColors[referral.status]} text-white`}>
-                                {referral.status.charAt(0).toUpperCase() + referral.status.slice(1)}
+                              <Badge variant="secondary" className={`${transportationColors[referral.transportation]} text-white`}>
+                                {referral.transportation.charAt(0).toUpperCase() + referral.transportation.slice(1)}
                               </Badge>
                             </TableCell>
                             <TableCell>
@@ -351,15 +356,18 @@ const EncaminhamentosTFD = () => {
                               </Badge>
                             </TableCell>
                             <TableCell>
+                              <Badge variant="secondary" className={`${statusColors[referral.status]} text-white`}>
+                                {referral.status.charAt(0).toUpperCase() + referral.status.slice(1)}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
                               <div className="flex space-x-2">
                                 <Button variant="outline" size="sm">
                                   <FileText className="h-4 w-4" />
                                 </Button>
-                                {referral.status === "solicitado" && (
-                                  <Button variant="outline" size="sm">
-                                    <CalendarIcon className="h-4 w-4" />
-                                  </Button>
-                                )}
+                                <Button variant="outline" size="sm">
+                                  <Calendar className="h-4 w-4" />
+                                </Button>
                               </div>
                             </TableCell>
                           </TableRow>
@@ -382,139 +390,133 @@ const EncaminhamentosTFD = () => {
             </Card>
           </TabsContent>
           
-          <TabsContent value="documentos">
+          <TabsContent value="emergencia">
             <Card>
-              <CardHeader>
-                <CardTitle>Documentos Necessários</CardTitle>
+              <CardHeader className="bg-red-50 dark:bg-red-900/20 border-b border-red-200 dark:border-red-900/50">
+                <CardTitle className="flex items-center">
+                  <AlertTriangle className="text-red-500 mr-2 h-5 w-5" />
+                  Encaminhamentos de Emergência
+                </CardTitle>
                 <CardDescription>
-                  Documentação exigida para encaminhamentos TFD
+                  Visualização prioritária de casos urgentes e emergenciais
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              
+              <CardContent className="pt-6">
                 <div className="space-y-6">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-md">
-                    <h3 className="text-lg font-medium mb-2">Requisitos para solicitação de TFD</h3>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Laudo médico detalhado do especialista solicitante</li>
-                      <li>Justificativa da necessidade do encaminhamento</li>
-                      <li>Exames comprobatórios da condição de saúde do paciente</li>
-                      <li>Documentos pessoais do paciente (RG, CPF, Cartão SUS, comprovante de residência)</li>
-                      <li>Formulário de solicitação de TFD preenchido pelo médico</li>
-                      <li>Termo de consentimento informado assinado pelo paciente ou responsável</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Formulários</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="space-y-2">
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Formulário de Solicitação de TFD</a>
-                          </li>
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Laudo Médico Padrão</a>
-                          </li>
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Termo de Consentimento</a>
-                          </li>
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Formulário de Acompanhante</a>
-                          </li>
-                        </ul>
-                      </CardContent>
-                    </Card>
+                  {mockReferrals
+                    .filter(r => r.priority === "emergência" || r.priority === "urgente")
+                    .map((referral) => (
+                      <Card key={referral.id} className="border-l-4 border-l-red-500">
+                        <CardHeader className="pb-2">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <CardTitle className="text-lg">{referral.patientName}</CardTitle>
+                              <CardDescription>
+                                {referral.specialtyRequired} - {referral.destinationUnit}
+                              </CardDescription>
+                            </div>
+                            <Badge variant="secondary" className={`${priorityColors[referral.priority]} text-white`}>
+                              {referral.priority.charAt(0).toUpperCase() + referral.priority.slice(1)}
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pb-2">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <h4 className="font-medium text-sm mb-1">Detalhes do Encaminhamento</h4>
+                              <div className="space-y-1 text-sm">
+                                <div className="flex items-center">
+                                  <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
+                                  <span className="text-muted-foreground">Data da Solicitação:</span>
+                                  <span className="ml-2">{new Date(referral.referralDate).toLocaleDateString('pt-BR')}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                                  <span className="text-muted-foreground">Origem:</span>
+                                  <span className="ml-2">{referral.originUnit}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <Ambulance className="h-4 w-4 mr-2 text-muted-foreground" />
+                                  <span className="text-muted-foreground">Transporte:</span>
+                                  <span className="ml-2">{referral.transportation.charAt(0).toUpperCase() + referral.transportation.slice(1)}</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-md">
+                              <h4 className="font-medium text-sm mb-1">Situação Atual</h4>
+                              <div className="flex items-center mb-2">
+                                <FileCheck className="h-4 w-4 mr-2 text-muted-foreground" />
+                                <span className="text-muted-foreground">Status:</span>
+                                <Badge variant="secondary" className={`${statusColors[referral.status]} text-white ml-2`}>
+                                  {referral.status.charAt(0).toUpperCase() + referral.status.slice(1)}
+                                </Badge>
+                              </div>
+                              <div className="text-sm">{referral.medicalReport.substring(0, 100)}...</div>
+                            </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="pt-2">
+                          <div className="flex space-x-2 w-full justify-end">
+                            <Button variant="outline" size="sm">
+                              <FileText className="mr-2 h-4 w-4" />
+                              Ver Laudo Médico
+                            </Button>
+                            <Button size="sm">
+                              {referral.status === "solicitado" ? (
+                                <>
+                                  <CheckCircle className="mr-2 h-4 w-4" />
+                                  Aprovar Solicitação
+                                </>
+                              ) : referral.status === "aprovado" ? (
+                                <>
+                                  <Calendar className="mr-2 h-4 w-4" />
+                                  Agendar Atendimento
+                                </>
+                              ) : (
+                                <>
+                                  <CheckCircle className="mr-2 h-4 w-4" />
+                                  Atualizar Status
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    ))}
                     
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Instruções</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="space-y-2">
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Manual de Preenchimento</a>
-                          </li>
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Fluxo do Processo de TFD</a>
-                          </li>
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Critérios de Elegibilidade</a>
-                          </li>
-                        </ul>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Legislação</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="space-y-2">
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Portaria SAS/MS nº 055/1999</a>
-                          </li>
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Portaria Municipal nº 123/2024</a>
-                          </li>
-                          <li className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <a href="#" className="text-blue-600 hover:underline">Manual Operacional TFD</a>
-                          </li>
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </div>
-                  
-                  <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-md">
-                    <h3 className="text-lg font-medium mb-2 flex items-center">
-                      <Ambulance className="mr-2 h-5 w-5" />
-                      Transporte e Hospedagem
-                    </h3>
-                    <p className="mb-2">
-                      O TFD pode incluir ajuda de custo para transporte, alimentação e hospedagem para o paciente e acompanhante (quando necessário). 
-                      Os requisitos específicos incluem:
-                    </p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Justificativa médica para necessidade de acompanhante</li>
-                      <li>Documentação do acompanhante (RG, CPF)</li>
-                      <li>Comprovante de agendamento na unidade de destino</li>
-                      <li>Formulário de solicitação de transporte especial (quando aplicável)</li>
-                    </ul>
-                  </div>
+                  {mockReferrals.filter(r => r.priority === "emergência" || r.priority === "urgente").length === 0 && (
+                    <div className="text-center py-8">
+                      <h3 className="text-lg font-medium">Nenhum caso de emergência ou urgência</h3>
+                      <p className="text-muted-foreground mt-2">
+                        Não há casos prioritários no momento.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-center">
-                <Button>
-                  <FileText className="mr-2 h-4 w-4" />
-                  Iniciar Nova Solicitação
-                </Button>
-              </CardFooter>
             </Card>
           </TabsContent>
           
-          <TabsContent value="estatisticas">
+          <TabsContent value="relatorios">
             <Card>
               <CardHeader>
-                <CardTitle>Estatísticas de Encaminhamentos</CardTitle>
+                <CardTitle>Relatórios e Estatísticas TFD</CardTitle>
                 <CardDescription>
-                  Análise dos encaminhamentos por especialidade e destino
+                  Análise dos encaminhamentos e tratamentos fora do domicílio
                 </CardDescription>
               </CardHeader>
-              <CardContent className="h-[400px] flex items-center justify-center">
-                <p className="text-muted-foreground">
-                  [Aqui serão exibidos gráficos e estatísticas dos encaminhamentos TFD]
-                </p>
+              <CardContent className="h-[400px] flex items-center justify-center space-y-4">
+                <div className="text-center">
+                  <div className="flex justify-center gap-4 mb-4">
+                    <Ambulance size={48} className="text-blue-500" />
+                    <MapPin size={48} className="text-red-500" />
+                  </div>
+                  <p className="text-muted-foreground">
+                    Aqui serão exibidos gráficos e relatórios estatísticos sobre os encaminhamentos TFD.
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

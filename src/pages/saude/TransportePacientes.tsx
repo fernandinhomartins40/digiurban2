@@ -33,8 +33,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Ambulance, Calendar, Search, User, MapPin, FileText } from "lucide-react";
+import { 
+  Search, 
+  Calendar, 
+  User, 
+  Ambulance, 
+  MapPin, 
+  Clock, 
+  CheckCircle, 
+  Truck, 
+  Car, 
+  CalendarClock,
+  FileText
+} from "lucide-react";
 import { PatientTransport } from "@/types/saude";
 
 // Mock data
@@ -43,80 +54,79 @@ const mockTransports: PatientTransport[] = [
     id: "1",
     patientId: "101",
     patientName: "Maria Silva",
-    origin: "Residência - Rua das Flores, 123",
+    origin: "UBS Central",
     destination: "Hospital Regional",
     date: "2025-05-22",
-    time: "09:00",
+    time: "08:30",
     returnScheduled: true,
     returnDate: "2025-05-22",
-    returnTime: "13:00",
+    returnTime: "14:00",
     reason: "Consulta com cardiologista",
-    specialRequirements: "Paciente com dificuldade de locomoção",
     vehicleType: "van",
     status: "agendado",
-    responsibleName: "Pedro Motorista"
+    responsibleName: "Carlos Motorista"
   },
   {
     id: "2",
     patientId: "102",
     patientName: "João Oliveira",
-    origin: "UBS Central",
-    destination: "Hospital Estadual",
+    origin: "Residência - Rua das Flores, 123",
+    destination: "Centro de Fisioterapia",
     date: "2025-05-22",
-    time: "10:30",
+    time: "10:00",
     returnScheduled: true,
     returnDate: "2025-05-22",
-    returnTime: "16:00",
-    reason: "Ressonância Magnética",
-    vehicleType: "ambulância",
-    status: "em andamento",
-    responsibleName: "Carlos Motorista"
+    returnTime: "11:30",
+    reason: "Sessão de fisioterapia",
+    specialRequirements: "Paciente usa cadeira de rodas",
+    vehicleType: "van",
+    status: "agendado",
+    responsibleName: "Pedro Motorista"
   },
   {
     id: "3",
     patientId: "103",
     patientName: "Antônio Ferreira",
-    origin: "Residência - Av. Principal, 456",
-    destination: "Clínica de Fisioterapia",
-    date: "2025-05-22",
-    time: "14:00",
+    origin: "UBS Vila Nova",
+    destination: "Hospital Universitário",
+    date: "2025-05-21",
+    time: "06:00",
     returnScheduled: true,
-    returnDate: "2025-05-22",
-    returnTime: "15:30",
-    reason: "Sessão de fisioterapia",
-    vehicleType: "carro",
-    status: "agendado",
-    responsibleName: "Ana Motorista"
+    returnDate: "2025-05-21",
+    returnTime: "18:00",
+    reason: "Exame de ressonância magnética",
+    vehicleType: "ambulância",
+    status: "concluído",
+    responsibleName: "José Motorista"
   },
   {
     id: "4",
     patientId: "104",
     patientName: "Luiza Costa",
-    origin: "Residência - Rua dos Pinheiros, 789",
+    origin: "Residência - Av. Principal, 456",
     destination: "Hospital Regional",
-    date: "2025-05-21",
-    time: "08:30",
-    returnScheduled: true,
-    returnDate: "2025-05-21",
-    returnTime: "12:00",
-    reason: "Hemodiálise",
-    specialRequirements: "Paciente em cadeira de rodas",
-    vehicleType: "van",
-    status: "concluído",
-    responsibleName: "Pedro Motorista"
+    date: "2025-05-23",
+    time: "07:30",
+    returnScheduled: false,
+    reason: "Internação para cirurgia",
+    specialRequirements: "Paciente acamado, necessita de maca",
+    vehicleType: "ambulância",
+    status: "agendado",
+    responsibleName: "Roberto Motorista"
   },
   {
     id: "5",
     patientId: "105",
     patientName: "Roberto Gomes",
-    origin: "UBS Norte",
-    destination: "Hospital de Especialidades",
-    date: "2025-05-23",
-    time: "07:00",
-    returnScheduled: false,
-    reason: "Internação para cirurgia",
-    specialRequirements: "Paciente acamado, necessita de maca",
-    vehicleType: "ambulância",
+    origin: "UBS Jardim Esperança",
+    destination: "Centro de Hemodiálise",
+    date: "2025-05-22",
+    time: "13:00",
+    returnScheduled: true,
+    returnDate: "2025-05-22",
+    returnTime: "17:00",
+    reason: "Sessão de hemodiálise",
+    vehicleType: "van",
     status: "agendado",
     responsibleName: "Carlos Motorista"
   },
@@ -124,95 +134,106 @@ const mockTransports: PatientTransport[] = [
     id: "6",
     patientId: "106",
     patientName: "Fernanda Martins",
-    origin: "Residência - Rua das Acácias, 234",
-    destination: "Centro de Reabilitação",
+    origin: "Residência - Rua dos Pinheiros, 789",
+    destination: "Hospital Infantil",
     date: "2025-05-21",
-    time: "13:30",
+    time: "09:00",
     returnScheduled: true,
     returnDate: "2025-05-21",
-    returnTime: "15:30",
-    reason: "Terapia ocupacional",
+    returnTime: "12:00",
+    reason: "Consulta pediátrica",
     vehicleType: "carro",
-    status: "concluído",
+    status: "cancelado",
     responsibleName: "Ana Motorista"
   },
   {
     id: "7",
     patientId: "107",
     patientName: "Paulo Rodrigues",
-    origin: "CAPS",
-    destination: "Residência - Rua Bela Vista, 567",
-    date: "2025-05-20",
-    time: "16:00",
-    returnScheduled: false,
-    reason: "Retorno para residência após atendimento",
+    origin: "UBS Centro",
+    destination: "Hospital Regional",
+    date: "2025-05-21",
+    time: "14:30",
+    returnScheduled: true,
+    returnDate: "2025-05-21",
+    returnTime: "16:00",
+    reason: "Consulta com neurologista",
+    vehicleType: "carro",
+    status: "em andamento",
+    responsibleName: "Marcos Motorista"
+  },
+  {
+    id: "8",
+    patientId: "108",
+    patientName: "Carla Mendes",
+    origin: "Centro de Saúde",
+    destination: "Hospital de Referência (Capital)",
+    date: "2025-05-24",
+    time: "05:00",
+    returnScheduled: true,
+    returnDate: "2025-05-24",
+    returnTime: "19:00",
+    reason: "Consulta de acompanhamento oncológico",
     vehicleType: "van",
-    status: "cancelado",
-    responsibleName: "Pedro Motorista"
+    status: "agendado",
+    responsibleName: "José Motorista"
   }
 ];
 
-// Mock vehicle data
+// Mock data for vehicles
 const mockVehicles = [
-  { id: "V01", type: "ambulância", plate: "AAA-1234", driver: "Carlos Motorista", capacity: "1 maca + 3 passageiros", status: "disponível" },
-  { id: "V02", type: "ambulância", plate: "BBB-5678", driver: "Amanda Motorista", capacity: "1 maca + 3 passageiros", status: "em serviço" },
-  { id: "V03", type: "van", plate: "CCC-9012", driver: "Pedro Motorista", capacity: "8 passageiros", status: "disponível" },
-  { id: "V04", type: "van", plate: "DDD-3456", driver: "Regina Motorista", capacity: "6 passageiros + 2 cadeirantes", status: "em manutenção" },
-  { id: "V05", type: "carro", plate: "EEE-7890", driver: "Ana Motorista", capacity: "4 passageiros", status: "disponível" },
-  { id: "V06", type: "carro", plate: "FFF-1234", driver: "João Motorista", capacity: "4 passageiros", status: "em serviço" },
+  { id: "V1", plate: "ABC-1234", type: "van", capacity: 15, status: "disponível", driver: "Carlos Motorista" },
+  { id: "V2", plate: "DEF-5678", type: "van", capacity: 12, status: "em uso", driver: "Pedro Motorista" },
+  { id: "V3", plate: "GHI-9012", type: "ambulância", capacity: 3, status: "disponível", driver: "Roberto Motorista" },
+  { id: "V4", plate: "JKL-3456", type: "ambulância", capacity: 3, status: "em manutenção", driver: "N/A" },
+  { id: "V5", plate: "MNO-7890", type: "carro", capacity: 4, status: "em uso", driver: "Marcos Motorista" },
+  { id: "V6", plate: "PQR-1234", type: "carro", capacity: 4, status: "disponível", driver: "Ana Motorista" }
 ];
+
+// Calculate stats
+const totalTransportsToday = mockTransports.filter(t => t.date === "2025-05-22").length;
+const scheduledTransports = mockTransports.filter(t => t.status === "agendado").length;
+const inProgressTransports = mockTransports.filter(t => t.status === "em andamento").length;
+const completedTransports = mockTransports.filter(t => t.status === "concluído").length;
 
 const statusColors: Record<string, string> = {
   "agendado": "bg-blue-500",
-  "em andamento": "bg-purple-500",
+  "em andamento": "bg-amber-500",
   "concluído": "bg-green-500",
-  "cancelado": "bg-red-500",
+  "cancelado": "bg-red-500"
 };
 
-const vehicleColors: Record<string, string> = {
+const vehicleTypeColors: Record<string, string> = {
   "ambulância": "bg-red-500",
   "van": "bg-blue-500",
   "carro": "bg-green-500",
-  "outro": "bg-purple-500",
+  "outro": "bg-gray-500"
 };
 
 const vehicleStatusColors: Record<string, string> = {
   "disponível": "bg-green-500",
-  "em serviço": "bg-blue-500",
-  "em manutenção": "bg-amber-500",
-  "indisponível": "bg-red-500",
+  "em uso": "bg-blue-500",
+  "em manutenção": "bg-red-500"
 };
 
 const TransportePacientes = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState<string>("");
-  const [filterVehicleType, setFilterVehicleType] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  
-  // Filter transports based on the search, status, vehicle type, and date
+  const [dateFilter, setDateFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [vehicleFilter, setVehicleFilter] = useState("");
+
+  // Filter transports based on search term, date, status, and vehicle type
   const filteredTransports = mockTransports.filter((transport) => {
     const matchesSearch = 
       transport.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       transport.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
       transport.reason.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus ? transport.status === filterStatus : true;
-    const matchesVehicle = filterVehicleType ? transport.vehicleType === filterVehicleType : true;
-    const matchesDate = selectedDate ? transport.date === selectedDate : true;
+    const matchesDate = dateFilter ? transport.date === dateFilter : true;
+    const matchesStatus = statusFilter ? transport.status === statusFilter : true;
+    const matchesVehicle = vehicleFilter ? transport.vehicleType === vehicleFilter : true;
     
-    return matchesSearch && matchesStatus && matchesVehicle && matchesDate;
+    return matchesSearch && matchesDate && matchesStatus && matchesVehicle;
   });
-
-  // Extract unique statuses for the filter
-  const statuses = Array.from(new Set(mockTransports.map((t) => t.status)));
-  
-  // Extract unique vehicle types for the filter
-  const vehicleTypes = Array.from(new Set(mockTransports.map((t) => t.vehicleType)));
-
-  // Count transports by status
-  const scheduledCount = mockTransports.filter(t => t.status === "agendado").length;
-  const inProgressCount = mockTransports.filter(t => t.status === "em andamento").length;
-  const completedCount = mockTransports.filter(t => t.status === "concluído").length;
-  const canceledCount = mockTransports.filter(t => t.status === "cancelado").length;
 
   return (
     <Layout>
@@ -220,66 +241,65 @@ const TransportePacientes = () => {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Transporte de Pacientes</h1>
           <Button>
-            <Ambulance className="mr-2 h-4 w-4" /> Novo Transporte
+            <Calendar className="mr-2 h-4 w-4" /> Novo Agendamento
           </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className={scheduledCount > 0 ? "border-blue-500" : ""}>
+          <Card className={totalTransportsToday > 0 ? "border-blue-500" : ""}>
             <CardHeader className="bg-blue-50 dark:bg-blue-900/20">
+              <CardTitle>Transportes Hoje</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="text-3xl font-bold">{totalTransportsToday}</div>
+              <p className="text-sm text-muted-foreground mt-2">Viagens para 22/05/2025</p>
+            </CardContent>
+          </Card>
+          
+          <Card className={scheduledTransports > 0 ? "border-amber-500" : ""}>
+            <CardHeader className="bg-amber-50 dark:bg-amber-900/20">
               <CardTitle>Agendados</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{scheduledCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Transportes programados</p>
+              <div className="text-3xl font-bold">{scheduledTransports}</div>
+              <p className="text-sm text-muted-foreground mt-2">Aguardando realização</p>
             </CardContent>
           </Card>
           
-          <Card className={inProgressCount > 0 ? "border-purple-500" : ""}>
-            <CardHeader className="bg-purple-50 dark:bg-purple-900/20">
+          <Card className={inProgressTransports > 0 ? "border-green-500" : ""}>
+            <CardHeader className="bg-green-50 dark:bg-green-900/20">
               <CardTitle>Em Andamento</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{inProgressCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Transportes em execução</p>
+              <div className="text-3xl font-bold">{inProgressTransports}</div>
+              <p className="text-sm text-muted-foreground mt-2">Transportes em curso</p>
             </CardContent>
           </Card>
           
-          <Card className={completedCount > 0 ? "border-green-500" : ""}>
-            <CardHeader className="bg-green-50 dark:bg-green-900/20">
+          <Card>
+            <CardHeader className="bg-purple-50 dark:bg-purple-900/20">
               <CardTitle>Concluídos</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{completedCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Transportes finalizados</p>
-            </CardContent>
-          </Card>
-          
-          <Card className={canceledCount > 0 ? "border-red-500" : ""}>
-            <CardHeader className="bg-red-50 dark:bg-red-900/20">
-              <CardTitle>Cancelados</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{canceledCount}</div>
-              <p className="text-sm text-muted-foreground mt-2">Transportes não realizados</p>
+              <div className="text-3xl font-bold">{completedTransports}</div>
+              <p className="text-sm text-muted-foreground mt-2">Transportes realizados</p>
             </CardContent>
           </Card>
         </div>
 
-        <Tabs defaultValue="agenda">
-          <TabsList className="grid grid-cols-4 mb-4 w-[600px]">
-            <TabsTrigger value="agenda">Agenda de Transportes</TabsTrigger>
+        <Tabs defaultValue="agendamentos">
+          <TabsList className="grid grid-cols-3 mb-4 w-[400px]">
+            <TabsTrigger value="agendamentos">Agendamentos</TabsTrigger>
             <TabsTrigger value="veiculos">Veículos</TabsTrigger>
-            <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
-            <TabsTrigger value="rotas">Rotas e Otimização</TabsTrigger>
+            <TabsTrigger value="relatorios">Relatórios</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="agenda">
+          <TabsContent value="agendamentos">
             <Card>
               <CardHeader>
-                <CardTitle>Agenda de Transportes</CardTitle>
+                <CardTitle>Agendamentos de Transporte</CardTitle>
                 <CardDescription>
-                  Gerenciamento dos transportes de pacientes programados
+                  Gerenciamento de transporte de pacientes para consultas e tratamentos
                 </CardDescription>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-4">
@@ -294,40 +314,38 @@ const TransportePacientes = () => {
                     />
                   </div>
                   
-                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                  <Input
+                    type="date"
+                    value={dateFilter}
+                    onChange={(e) => setDateFilter(e.target.value)}
+                    className="w-full sm:w-[180px]"
+                  />
+                  
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-full sm:w-[180px]">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">Todos os status</SelectItem>
-                      {statuses.map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="agendado">Agendado</SelectItem>
+                      <SelectItem value="em andamento">Em Andamento</SelectItem>
+                      <SelectItem value="concluído">Concluído</SelectItem>
+                      <SelectItem value="cancelado">Cancelado</SelectItem>
                     </SelectContent>
                   </Select>
                   
-                  <Select value={filterVehicleType} onValueChange={setFilterVehicleType}>
+                  <Select value={vehicleFilter} onValueChange={setVehicleFilter}>
                     <SelectTrigger className="w-full sm:w-[180px]">
-                      <SelectValue placeholder="Tipo de Veículo" />
+                      <SelectValue placeholder="Veículo" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">Todos os veículos</SelectItem>
-                      {vehicleTypes.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type.charAt(0).toUpperCase() + type.slice(1)}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="ambulância">Ambulância</SelectItem>
+                      <SelectItem value="van">Van</SelectItem>
+                      <SelectItem value="carro">Carro</SelectItem>
+                      <SelectItem value="outro">Outro</SelectItem>
                     </SelectContent>
                   </Select>
-                  
-                  <Input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full sm:w-[180px]"
-                  />
                 </div>
               </CardHeader>
               
@@ -337,11 +355,11 @@ const TransportePacientes = () => {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Paciente</TableHead>
-                        <TableHead>Data/Hora</TableHead>
-                        <TableHead>Origem</TableHead>
                         <TableHead>Destino</TableHead>
+                        <TableHead>Data/Hora</TableHead>
                         <TableHead>Motivo</TableHead>
                         <TableHead>Veículo</TableHead>
+                        <TableHead>Retorno</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Ações</TableHead>
                       </TableRow>
@@ -363,28 +381,36 @@ const TransportePacientes = () => {
                               </div>
                             </TableCell>
                             <TableCell>
-                              <div>
-                                <div>{new Date(transport.date).toLocaleDateString('pt-BR')}</div>
-                                <div className="text-xs text-muted-foreground">{transport.time}</div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center">
-                                <MapPin className="mr-2 h-4 w-4" />
-                                {transport.origin}
-                              </div>
-                            </TableCell>
-                            <TableCell>
                               <div className="flex items-center">
                                 <MapPin className="mr-2 h-4 w-4" />
                                 {transport.destination}
                               </div>
                             </TableCell>
-                            <TableCell>{transport.reason}</TableCell>
                             <TableCell>
-                              <Badge variant="secondary" className={`${vehicleColors[transport.vehicleType]} text-white`}>
+                              <div className="flex flex-col">
+                                <span>{new Date(transport.date).toLocaleDateString('pt-BR')}</span>
+                                <span className="text-xs text-muted-foreground">{transport.time}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <span className="text-sm">{transport.reason}</span>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="secondary" className={`${vehicleTypeColors[transport.vehicleType]} text-white`}>
                                 {transport.vehicleType.charAt(0).toUpperCase() + transport.vehicleType.slice(1)}
                               </Badge>
+                            </TableCell>
+                            <TableCell>
+                              {transport.returnScheduled ? (
+                                <div className="flex flex-col">
+                                  <span className="text-xs text-muted-foreground">
+                                    {new Date(transport.returnDate!).toLocaleDateString('pt-BR')}
+                                  </span>
+                                  <span className="text-xs">{transport.returnTime}</span>
+                                </div>
+                              ) : (
+                                <span className="text-xs text-muted-foreground">Não programado</span>
+                              )}
                             </TableCell>
                             <TableCell>
                               <Badge variant="secondary" className={`${statusColors[transport.status]} text-white`}>
@@ -396,9 +422,9 @@ const TransportePacientes = () => {
                                 <Button variant="outline" size="sm">
                                   <FileText className="h-4 w-4" />
                                 </Button>
-                                {(transport.status === "agendado" || transport.status === "em andamento") && (
+                                {transport.status === "agendado" && (
                                   <Button variant="outline" size="sm">
-                                    <Calendar className="h-4 w-4" />
+                                    <CheckCircle className="h-4 w-4" />
                                   </Button>
                                 )}
                               </div>
@@ -430,54 +456,88 @@ const TransportePacientes = () => {
                 <CardDescription>
                   Gerenciamento da frota disponível para transporte de pacientes
                 </CardDescription>
+                
+                <div className="flex justify-end mt-4">
+                  <Button>
+                    <Truck className="mr-2 h-4 w-4" /> Cadastrar Veículo
+                  </Button>
+                </div>
               </CardHeader>
+              
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <Card>
-                    <CardHeader className="bg-red-50 dark:bg-red-900/20 py-3">
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-base">Ambulâncias</CardTitle>
-                        <Badge>
-                          {mockVehicles.filter(v => v.type === "ambulância" && v.status === "disponível").length}/{mockVehicles.filter(v => v.type === "ambulância").length} disponíveis
-                        </Badge>
+                    <CardHeader className="bg-red-50 dark:bg-red-900/20 pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">Ambulâncias</CardTitle>
+                        <Ambulance className="h-6 w-6 text-red-500" />
                       </div>
                     </CardHeader>
-                    <CardContent className="p-3">
-                      <p className="text-muted-foreground text-sm">
-                        Veículos equipados para transporte de pacientes que necessitam de monitoramento especial
-                      </p>
+                    <CardContent className="pt-4">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="text-3xl font-bold">
+                            {mockVehicles.filter(v => v.type === "ambulância").length}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Total na frota</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xl font-semibold text-green-500">
+                            {mockVehicles.filter(v => v.type === "ambulância" && v.status === "disponível").length}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Disponíveis</p>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                   
                   <Card>
-                    <CardHeader className="bg-blue-50 dark:bg-blue-900/20 py-3">
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-base">Vans</CardTitle>
-                        <Badge>
-                          {mockVehicles.filter(v => v.type === "van" && v.status === "disponível").length}/{mockVehicles.filter(v => v.type === "van").length} disponíveis
-                        </Badge>
+                    <CardHeader className="bg-blue-50 dark:bg-blue-900/20 pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">Vans</CardTitle>
+                        <Truck className="h-6 w-6 text-blue-500" />
                       </div>
                     </CardHeader>
-                    <CardContent className="p-3">
-                      <p className="text-muted-foreground text-sm">
-                        Veículos para transporte coletivo adaptados para pessoas com necessidades especiais
-                      </p>
+                    <CardContent className="pt-4">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="text-3xl font-bold">
+                            {mockVehicles.filter(v => v.type === "van").length}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Total na frota</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xl font-semibold text-green-500">
+                            {mockVehicles.filter(v => v.type === "van" && v.status === "disponível").length}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Disponíveis</p>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                   
                   <Card>
-                    <CardHeader className="bg-green-50 dark:bg-green-900/20 py-3">
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-base">Carros</CardTitle>
-                        <Badge>
-                          {mockVehicles.filter(v => v.type === "carro" && v.status === "disponível").length}/{mockVehicles.filter(v => v.type === "carro").length} disponíveis
-                        </Badge>
+                    <CardHeader className="bg-green-50 dark:bg-green-900/20 pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">Carros</CardTitle>
+                        <Car className="h-6 w-6 text-green-500" />
                       </div>
                     </CardHeader>
-                    <CardContent className="p-3">
-                      <p className="text-muted-foreground text-sm">
-                        Veículos para transporte individual ou de pequenos grupos de pacientes
-                      </p>
+                    <CardContent className="pt-4">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="text-3xl font-bold">
+                            {mockVehicles.filter(v => v.type === "carro").length}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Total na frota</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xl font-semibold text-green-500">
+                            {mockVehicles.filter(v => v.type === "carro" && v.status === "disponível").length}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Disponíveis</p>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
@@ -486,44 +546,37 @@ const TransportePacientes = () => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>ID</TableHead>
-                        <TableHead>Tipo</TableHead>
                         <TableHead>Placa</TableHead>
-                        <TableHead>Motorista</TableHead>
+                        <TableHead>Tipo</TableHead>
                         <TableHead>Capacidade</TableHead>
+                        <TableHead>Motorista</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead>Próxima Manutenção</TableHead>
                         <TableHead>Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {mockVehicles.map((vehicle) => (
                         <TableRow key={vehicle.id}>
-                          <TableCell className="font-medium">{vehicle.id}</TableCell>
+                          <TableCell className="font-medium">{vehicle.plate}</TableCell>
                           <TableCell>
-                            <Badge variant="outline" className={`${vehicleColors[vehicle.type]} text-white`}>
+                            <Badge variant="outline" className={`${vehicleTypeColors[vehicle.type]} text-white`}>
                               {vehicle.type.charAt(0).toUpperCase() + vehicle.type.slice(1)}
                             </Badge>
                           </TableCell>
-                          <TableCell>{vehicle.plate}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center">
-                              <User className="mr-2 h-4 w-4" />
-                              {vehicle.driver}
-                            </div>
-                          </TableCell>
-                          <TableCell>{vehicle.capacity}</TableCell>
+                          <TableCell>{vehicle.capacity} lugares</TableCell>
+                          <TableCell>{vehicle.driver}</TableCell>
                           <TableCell>
                             <Badge variant="secondary" className={`${vehicleStatusColors[vehicle.status]} text-white`}>
                               {vehicle.status.charAt(0).toUpperCase() + vehicle.status.slice(1)}
                             </Badge>
                           </TableCell>
+                          <TableCell>15/06/2025</TableCell>
                           <TableCell>
                             <div className="flex space-x-2">
+                              <Button variant="outline" size="sm">Detalhes</Button>
                               <Button variant="outline" size="sm">
-                                <FileText className="h-4 w-4" />
-                              </Button>
-                              <Button variant="outline" size="sm">
-                                <Calendar className="h-4 w-4" />
+                                <CalendarClock className="h-4 w-4" />
                               </Button>
                             </div>
                           </TableCell>
@@ -533,276 +586,75 @@ const TransportePacientes = () => {
                   </Table>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button>
-                  <Ambulance className="mr-2 h-4 w-4" />
-                  Adicionar Veículo
-                </Button>
-              </CardFooter>
             </Card>
           </TabsContent>
           
-          <TabsContent value="solicitacoes">
+          <TabsContent value="relatorios">
             <Card>
               <CardHeader>
-                <CardTitle>Solicitação de Transporte</CardTitle>
+                <CardTitle>Relatórios de Transporte</CardTitle>
                 <CardDescription>
-                  Formulário para solicitação de transporte de pacientes
+                  Estatísticas e relatórios sobre o transporte de pacientes
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-medium">Informações do Paciente</h3>
-                      <p className="text-xs text-muted-foreground">
-                        Dados do paciente que será transportado
-                      </p>
-                    </div>
-                    <div className="md:col-span-2 space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="patient-name">Nome do Paciente</Label>
-                          <Input id="patient-name" placeholder="Nome completo" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Transportes por Tipo</CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="flex justify-center space-x-4">
+                          <Ambulance className="h-8 w-8 text-red-500" />
+                          <Truck className="h-8 w-8 text-blue-500" />
+                          <Car className="h-8 w-8 text-green-500" />
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="patient-id">Nº do Cartão SUS</Label>
-                          <Input id="patient-id" placeholder="000 0000 0000 0000" />
-                        </div>
+                        <p className="text-muted-foreground mt-4">
+                          Aqui será exibido um gráfico com a distribuição de transportes por tipo de veículo.
+                        </p>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="patient-address">Endereço Completo</Label>
-                        <Input id="patient-address" placeholder="Rua, número, bairro" />
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="patient-phone">Telefone</Label>
-                          <Input id="patient-phone" placeholder="(00) 00000-0000" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="patient-companion">Acompanhante</Label>
-                          <Input id="patient-companion" placeholder="Nome do acompanhante (se houver)" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-medium">Detalhes do Transporte</h3>
-                      <p className="text-xs text-muted-foreground">
-                        Informações sobre o transporte solicitado
-                      </p>
-                    </div>
-                    <div className="md:col-span-2 space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="origin">Origem</Label>
-                          <Input id="origin" placeholder="Local de origem" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="destination">Destino</Label>
-                          <Input id="destination" placeholder="Local de destino" />
-                        </div>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Destinos Mais Frequentes</CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <MapPin size={48} className="mx-auto text-blue-500 mb-4" />
+                        <p className="text-muted-foreground">
+                          Aqui será exibido um gráfico com os destinos mais frequentes dos transportes.
+                        </p>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="transport-date">Data</Label>
-                          <Input id="transport-date" type="date" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="transport-time">Hora</Label>
-                          <Input id="transport-time" type="time" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="vehicle-type">Tipo de Veículo</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Selecione" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="ambulancia">Ambulância</SelectItem>
-                              <SelectItem value="van">Van</SelectItem>
-                              <SelectItem value="carro">Carro</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="reason">Motivo do Transporte</Label>
-                        <Input id="reason" placeholder="Consulta, exame, terapia, etc." />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="special-requirements">Necessidades Especiais</Label>
-                        <Input id="special-requirements" placeholder="Cadeira de rodas, maca, etc." />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <input type="checkbox" id="return-trip" className="rounded" />
-                        <Label htmlFor="return-trip">Necessita de transporte de retorno</Label>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="return-date">Data de Retorno</Label>
-                          <Input id="return-date" type="date" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="return-time">Hora de Retorno</Label>
-                          <Input id="return-time" type="time" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-medium">Solicitante</h3>
-                      <p className="text-xs text-muted-foreground">
-                        Informações sobre quem está solicitando o transporte
-                      </p>
-                    </div>
-                    <div className="md:col-span-2 space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="requester-name">Nome</Label>
-                          <Input id="requester-name" placeholder="Nome do solicitante" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="requester-role">Função</Label>
-                          <Input id="requester-role" placeholder="Médico, enfermeiro, etc." />
-                        </div>
+                  <Card className="md:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Volumetria de Transportes</CardTitle>
+                      <CardDescription>Análise por período</CardDescription>
+                    </CardHeader>
+                    <CardContent className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <Calendar size={48} className="mx-auto text-green-500 mb-4" />
+                        <p className="text-muted-foreground">
+                          Aqui será exibido um gráfico com a volumetria de transportes ao longo do tempo.
+                        </p>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="requester-unit">Unidade</Label>
-                        <Input id="requester-unit" placeholder="Unidade de saúde" />
-                      </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="outline">Limpar</Button>
-                <div className="space-x-2">
-                  <Button variant="outline">Salvar Rascunho</Button>
-                  <Button>Enviar Solicitação</Button>
-                </div>
+              <CardFooter className="flex justify-center">
+                <Button>Gerar Relatório Completo</Button>
               </CardFooter>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="rotas">
-            <Card>
-              <CardHeader>
-                <CardTitle>Rotas e Otimização</CardTitle>
-                <CardDescription>
-                  Planejamento e otimização de rotas para transporte de pacientes
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="h-[400px] bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
-                    <p className="text-muted-foreground">
-                      [Aqui será exibido o mapa interativo com as rotas]
-                    </p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Otimização de Rotas</CardTitle>
-                        <CardDescription>
-                          Planejamento para maximizar a eficiência
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h4 className="font-medium">Rota 1: Norte → Centro → Hospital Regional</h4>
-                              <p className="text-sm text-muted-foreground">3 pacientes • Carlos Motorista • Van</p>
-                            </div>
-                            <Badge>Ativa</Badge>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h4 className="font-medium">Rota 2: Sul → Oeste → Hospital Estadual</h4>
-                              <p className="text-sm text-muted-foreground">2 pacientes • Ana Motorista • Carro</p>
-                            </div>
-                            <Badge>Pendente</Badge>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h4 className="font-medium">Rota 3: Centro → Clínica Especializada</h4>
-                              <p className="text-sm text-muted-foreground">4 pacientes • Pedro Motorista • Van</p>
-                            </div>
-                            <Badge>Planejada</Badge>
-                          </div>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button variant="outline" className="w-full">Ver Todas as Rotas</Button>
-                      </CardFooter>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Indicadores de Eficiência</CardTitle>
-                        <CardDescription>
-                          Métricas de utilização e eficiência
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm">Ocupação média dos veículos</span>
-                              <span className="text-sm font-medium">78%</span>
-                            </div>
-                            <Progress value={78} />
-                          </div>
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm">Pontualidade</span>
-                              <span className="text-sm font-medium">93%</span>
-                            </div>
-                            <Progress value={93} className="bg-green-500" />
-                          </div>
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm">Otimização de rotas</span>
-                              <span className="text-sm font-medium">65%</span>
-                            </div>
-                            <Progress value={65} className="bg-amber-500" />
-                          </div>
-                          <div>
-                            <div className="flex justify-between mb-1">
-                              <span className="text-sm">Solicitações atendidas</span>
-                              <span className="text-sm font-medium">87%</span>
-                            </div>
-                            <Progress value={87} className="bg-blue-500" />
-                          </div>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button variant="outline" className="w-full">Ver Relatório Completo</Button>
-                      </CardFooter>
-                    </Card>
-                  </div>
-                </div>
-              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
     </Layout>
-  );
-};
-
-// Simple Label component for the form
-const Label = ({ htmlFor, children }: { htmlFor: string, children: React.ReactNode }) => {
-  return (
-    <label htmlFor={htmlFor} className="text-sm font-medium">
-      {children}
-    </label>
   );
 };
 

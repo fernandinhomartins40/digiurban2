@@ -33,7 +33,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, Search, Activity, FileText, User } from "lucide-react";
+import { 
+  Calendar,
+  FileText,
+  Search,
+  Users,
+  Activity,
+  Heart,
+  ClipboardList,
+  User,
+} from "lucide-react";
 import { HealthProgram } from "@/types/saude";
 
 // Mock data
@@ -163,12 +172,6 @@ const mockPrograms: HealthProgram[] = [
   }
 ];
 
-const statusColors: Record<string, string> = {
-  "ativo": "bg-green-500",
-  "em planejamento": "bg-amber-500",
-  "inativo": "bg-red-500",
-};
-
 // Sample patient data for the detailed program view
 const samplePatients = [
   { id: "P1", name: "Maria Silva", age: 65, enrollment: "2023-02-25", lastVisit: "2025-05-10", status: "regular" },
@@ -177,6 +180,12 @@ const samplePatients = [
   { id: "P4", name: "Luiza Costa", age: 67, enrollment: "2023-04-05", lastVisit: "2025-05-15", status: "regular" },
   { id: "P5", name: "Roberto Gomes", age: 70, enrollment: "2023-03-18", lastVisit: "2025-03-10", status: "irregular" },
 ];
+
+const statusColors: Record<string, string> = {
+  "ativo": "bg-green-500",
+  "em planejamento": "bg-amber-500",
+  "inativo": "bg-red-500",
+};
 
 const ProgramasSaude = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -199,6 +208,9 @@ const ProgramasSaude = () => {
 
   // Get statuses for the filter
   const statuses = Array.from(new Set(mockPrograms.map((p) => p.status)));
+  
+  // Get the selected program details
+  const selectedProgramDetails = selectedProgram ? mockPrograms.find(p => p.id === selectedProgram) : null;
 
   return (
     <Layout>
@@ -315,25 +327,19 @@ const ProgramasSaude = () => {
                         filteredPrograms.map((program) => (
                           <TableRow key={program.id}>
                             <TableCell className="font-medium">
-                              <div>
-                                <div className="font-bold">{program.name}</div>
-                                <div className="text-xs text-muted-foreground">
-                                  {program.description}
-                                </div>
+                              <div className="flex flex-col">
+                                <span>{program.name}</span>
+                                <span className="text-xs text-muted-foreground">{program.description.substring(0, 50)}...</span>
                               </div>
                             </TableCell>
-                            <TableCell>
-                              <div className="flex items-center">
-                                <Users className="mr-2 h-4 w-4" />
-                                {program.targetAudience}
-                              </div>
-                            </TableCell>
+                            <TableCell>{program.targetAudience}</TableCell>
                             <TableCell>{program.coordinator}</TableCell>
                             <TableCell>{new Date(program.startDate).toLocaleDateString('pt-BR')}</TableCell>
                             <TableCell>
-                              <Badge variant="outline">
-                                {program.enrolledPatients} pacientes
-                              </Badge>
+                              <div className="flex items-center">
+                                <Users className="h-4 w-4 mr-2" />
+                                {program.enrolledPatients.toLocaleString()}
+                              </div>
                             </TableCell>
                             <TableCell>
                               <Badge variant="secondary" className={`${statusColors[program.status]} text-white`}>
@@ -341,14 +347,9 @@ const ProgramasSaude = () => {
                               </Badge>
                             </TableCell>
                             <TableCell>
-                              <div className="flex space-x-2">
-                                <Button variant="outline" size="sm" onClick={() => setSelectedProgram(program.id)}>
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                                <Button variant="outline" size="sm">
-                                  <Activity className="h-4 w-4" />
-                                </Button>
-                              </div>
+                              <Button variant="outline" size="sm" onClick={() => setSelectedProgram(program.id)}>
+                                Ver Detalhes
+                              </Button>
                             </TableCell>
                           </TableRow>
                         ))
@@ -362,175 +363,225 @@ const ProgramasSaude = () => {
                 <p className="text-sm text-muted-foreground">
                   Exibindo {filteredPrograms.length} de {mockPrograms.length} programas
                 </p>
+                <div className="flex space-x-2">
+                  <Button variant="outline" size="sm">Anterior</Button>
+                  <Button variant="outline" size="sm">Próximo</Button>
+                </div>
               </CardFooter>
             </Card>
           </TabsContent>
           
-          {filteredPrograms.map((program) => (
+          {mockPrograms.map((program) => (
             <TabsContent key={program.id} value={program.id}>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="md:col-span-2 space-y-6">
                   <Card>
                     <CardHeader>
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle>{program.name}</CardTitle>
-                          <CardDescription>{program.description}</CardDescription>
+                          <CardTitle className="text-2xl">{program.name}</CardTitle>
+                          <CardDescription className="mt-2">{program.description}</CardDescription>
                         </div>
                         <Badge variant="secondary" className={`${statusColors[program.status]} text-white`}>
                           {program.status.charAt(0).toUpperCase() + program.status.slice(1)}
                         </Badge>
                       </div>
                     </CardHeader>
-                    
                     <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h3 className="text-lg font-medium mb-3">Informações do Programa</h3>
-                          <div className="space-y-4">
-                            <div>
-                              <p className="text-sm font-medium text-muted-foreground">Público Alvo</p>
-                              <p>{program.targetAudience}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium text-muted-foreground">Coordenador</p>
-                              <p>{program.coordinator}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium text-muted-foreground">Data de Início</p>
-                              <p>{new Date(program.startDate).toLocaleDateString('pt-BR')}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium text-muted-foreground">Total de Pacientes</p>
-                              <p>{program.enrolledPatients} pacientes em acompanhamento</p>
-                            </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-sm font-medium text-muted-foreground">Público Alvo</h3>
+                            <p>{program.targetAudience}</p>
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-medium text-muted-foreground">Coordenador</h3>
+                            <p>{program.coordinator}</p>
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-medium text-muted-foreground">Data de Início</h3>
+                            <p>{new Date(program.startDate).toLocaleDateString('pt-BR')}</p>
                           </div>
                         </div>
-                        
-                        <div>
-                          <h3 className="text-lg font-medium mb-3">Indicadores</h3>
-                          <div className="space-y-4">
-                            {Object.entries(program.metrics).map(([key, value]) => (
-                              <div key={key}>
-                                <p className="text-sm font-medium text-muted-foreground">
-                                  {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}
-                                </p>
-                                <p>{value}</p>
-                              </div>
-                            ))}
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-sm font-medium text-muted-foreground">Pacientes Cadastrados</h3>
+                            <p className="text-2xl font-bold">{program.enrolledPatients.toLocaleString()}</p>
                           </div>
-                        </div>
-                      </div>
-                      
-                      <div className="mt-6">
-                        <h3 className="text-lg font-medium mb-3">Pacientes Cadastrados</h3>
-                        
-                        <div className="rounded-md border">
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                                <TableHead>Nome</TableHead>
-                                <TableHead>Idade</TableHead>
-                                <TableHead>Data de Cadastro</TableHead>
-                                <TableHead>Último Atendimento</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Ações</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              {samplePatients.map((patient) => (
-                                <TableRow key={patient.id}>
-                                  <TableCell className="font-medium">
-                                    <div className="flex items-center">
-                                      <User className="mr-2 h-4 w-4" />
-                                      {patient.name}
-                                    </div>
-                                  </TableCell>
-                                  <TableCell>{patient.age} anos</TableCell>
-                                  <TableCell>{new Date(patient.enrollment).toLocaleDateString('pt-BR')}</TableCell>
-                                  <TableCell>{new Date(patient.lastVisit).toLocaleDateString('pt-BR')}</TableCell>
-                                  <TableCell>
-                                    <Badge variant="outline" className={patient.status === "regular" ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"}>
-                                      {patient.status === "regular" ? "Regular" : "Irregular"}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell>
-                                    <div className="flex space-x-2">
-                                      <Button variant="outline" size="sm">
-                                        <FileText className="h-4 w-4" />
-                                      </Button>
-                                    </div>
-                                  </TableCell>
-                                </TableRow>
+                          <div>
+                            <h3 className="text-sm font-medium text-muted-foreground">Atividades Realizadas</h3>
+                            <div className="grid grid-cols-2 gap-2 mt-2">
+                              {program.metrics && Object.entries(program.metrics).map(([key, value]) => (
+                                <div key={key} className="bg-blue-50 dark:bg-blue-900/20 rounded p-2">
+                                  <p className="text-xs text-muted-foreground capitalize">{key}</p>
+                                  <p className="font-semibold">{value.toLocaleString()}</p>
+                                </div>
                               ))}
-                            </TableBody>
-                          </Table>
-                        </div>
-                        
-                        <div className="mt-2 flex justify-between">
-                          <p className="text-sm text-muted-foreground">
-                            Exibindo {samplePatients.length} de {program.enrolledPatients} pacientes
-                          </p>
-                          <Button variant="outline" size="sm">Ver todos os pacientes</Button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
-                    
                     <CardFooter className="flex justify-between">
-                      <Button variant="outline" onClick={() => setSelectedProgram("")}>
-                        Voltar para a lista
-                      </Button>
-                      <div>
-                        <Button variant="outline" className="mr-2">
-                          <FileText className="mr-2 h-4 w-4" />
-                          Relatórios
+                      <Button variant="outline">Editar Programa</Button>
+                      <div className="flex space-x-2">
+                        <Button variant="outline">
+                          <FileText className="h-4 w-4 mr-2" />
+                          Relatório
                         </Button>
                         <Button>
-                          Gerenciar Programa
+                          <Users className="h-4 w-4 mr-2" />
+                          Gerenciar Pacientes
                         </Button>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Lista de Pacientes</CardTitle>
+                      <CardDescription>Pacientes cadastrados neste programa</CardDescription>
+                      
+                      <div className="relative mt-4">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="search"
+                          placeholder="Buscar paciente..."
+                          className="pl-8"
+                        />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="rounded-md border">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Nome</TableHead>
+                              <TableHead>Idade</TableHead>
+                              <TableHead>Data de Cadastro</TableHead>
+                              <TableHead>Última Visita</TableHead>
+                              <TableHead>Status</TableHead>
+                              <TableHead>Ações</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {samplePatients.map((patient) => (
+                              <TableRow key={patient.id}>
+                                <TableCell className="font-medium">
+                                  <div className="flex items-center">
+                                    <User className="mr-2 h-4 w-4" />
+                                    {patient.name}
+                                  </div>
+                                </TableCell>
+                                <TableCell>{patient.age} anos</TableCell>
+                                <TableCell>{new Date(patient.enrollment).toLocaleDateString('pt-BR')}</TableCell>
+                                <TableCell>{new Date(patient.lastVisit).toLocaleDateString('pt-BR')}</TableCell>
+                                <TableCell>
+                                  <Badge variant={patient.status === "regular" ? "default" : "destructive"}>
+                                    {patient.status === "regular" ? "Regular" : "Irregular"}
+                                  </Badge>
+                                </TableCell>
+                                <TableCell>
+                                  <Button variant="outline" size="sm">Ver Prontuário</Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <p className="text-sm text-muted-foreground">
+                        Exibindo {samplePatients.length} de {program.enrolledPatients} pacientes
+                      </p>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm">Anterior</Button>
+                        <Button variant="outline" size="sm">Próximo</Button>
                       </div>
                     </CardFooter>
                   </Card>
                 </div>
                 
-                <div>
-                  <div className="space-y-6">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Faixa Etária</CardTitle>
-                        <CardDescription>Distribuição por idade</CardDescription>
-                      </CardHeader>
-                      <CardContent className="h-[200px] flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-md">
+                <div className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Ações Rápidas</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <Button className="w-full justify-start">
+                        <Users className="mr-2 h-4 w-4" />
+                        Adicionar Paciente
+                      </Button>
+                      <Button className="w-full justify-start" variant="outline">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Programar Atividade
+                      </Button>
+                      <Button className="w-full justify-start" variant="outline">
+                        <ClipboardList className="mr-2 h-4 w-4" />
+                        Registrar Atendimento
+                      </Button>
+                      <Button className="w-full justify-start" variant="outline">
+                        <Activity className="mr-2 h-4 w-4" />
+                        Ver Indicadores
+                      </Button>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Métricas do Programa</CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <Activity size={48} className="mx-auto text-blue-500 mb-4" />
                         <p className="text-muted-foreground">
-                          [Gráfico de faixa etária]
+                          Aqui serão exibidos gráficos e estatísticas do programa.
                         </p>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Área Geográfica</CardTitle>
-                        <CardDescription>Cobertura por bairro</CardDescription>
-                      </CardHeader>
-                      <CardContent className="h-[200px] flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-md">
-                        <p className="text-muted-foreground">
-                          [Mapa de calor por região]
-                        </p>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Efetividade</CardTitle>
-                        <CardDescription>Indicadores de resultado</CardDescription>
-                      </CardHeader>
-                      <CardContent className="h-[200px] flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-md">
-                        <p className="text-muted-foreground">
-                          [Gráfico de efetividade]
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Próximos Eventos</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-start space-x-3">
+                          <div className="bg-blue-100 dark:bg-blue-900/30 rounded p-1.5">
+                            <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Reunião de Equipe</h4>
+                            <p className="text-sm text-muted-foreground">26/05/2025 • 09:00</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-3">
+                          <div className="bg-green-100 dark:bg-green-900/30 rounded p-1.5">
+                            <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Grupo de Apoio</h4>
+                            <p className="text-sm text-muted-foreground">28/05/2025 • 14:00</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-3">
+                          <div className="bg-amber-100 dark:bg-amber-900/30 rounded p-1.5">
+                            <Heart className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Campanha de Conscientização</h4>
+                            <p className="text-sm text-muted-foreground">31/05/2025 • Todo o dia</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button variant="outline" className="w-full">
+                        Ver Todos os Eventos
+                      </Button>
+                    </CardFooter>
+                  </Card>
                 </div>
               </div>
             </TabsContent>

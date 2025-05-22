@@ -23,7 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -34,122 +33,116 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, Search, MapPin, FileText, Calendar as CalendarIcon } from "lucide-react";
+import { Calendar, FileText, Search, Users, Vaccine, Activity, Heart } from "lucide-react";
 import { HealthCampaign } from "@/types/saude";
 
 // Mock data
 const mockCampaigns: HealthCampaign[] = [
   {
     id: "1",
-    title: "Vacinação contra Influenza",
-    description: "Campanha anual de vacinação contra a gripe",
-    startDate: "2025-04-10",
-    endDate: "2025-06-30",
-    targetAudience: "População geral acima de 6 meses",
+    title: "Vacinação Contra Gripe 2025",
+    description: "Campanha anual de vacinação contra o vírus Influenza para idosos e grupos de risco",
+    startDate: "2025-04-15",
+    endDate: "2025-05-31",
+    targetAudience: "Idosos, gestantes, crianças até 6 anos e profissionais de saúde",
     location: "Todas as UBSs do município",
-    status: "em andamento",
-    coverageGoal: 5000,
-    currentCoverage: 3200,
+    status: "planejada",
+    coverageGoal: 85,
+    currentCoverage: 0
   },
   {
     id: "2",
-    title: "Prevenção de Hipertensão",
-    description: "Avaliação e orientação para prevenção da hipertensão arterial",
-    startDate: "2025-05-15",
-    endDate: "2025-05-25",
-    targetAudience: "Adultos acima de 40 anos",
-    location: "UBS Central e UBS Norte",
+    title: "Hiperdia - Atenção à Hipertensão e Diabetes",
+    description: "Campanha de conscientização e prevenção da hipertensão e diabetes",
+    startDate: "2025-03-10",
+    endDate: "2025-06-15",
+    targetAudience: "População adulta acima de 40 anos",
+    location: "UBS Central e unidades móveis",
     status: "em andamento",
-    coverageGoal: 1200,
-    currentCoverage: 450,
+    coverageGoal: 60,
+    currentCoverage: 32
   },
   {
     id: "3",
     title: "Saúde Bucal nas Escolas",
-    description: "Avaliação odontológica preventiva para crianças",
-    startDate: "2025-06-10",
-    endDate: "2025-07-15",
-    targetAudience: "Crianças de 5 a 12 anos",
+    description: "Programa de educação e prevenção em saúde bucal para crianças do ensino fundamental",
+    startDate: "2025-02-10",
+    endDate: "2025-11-30",
+    targetAudience: "Estudantes de 6 a 12 anos da rede municipal",
     location: "Escolas municipais",
-    status: "planejada",
-    coverageGoal: 2800,
-    currentCoverage: 0,
+    status: "em andamento",
+    coverageGoal: 90,
+    currentCoverage: 45
   },
   {
     id: "4",
-    title: "Outubro Rosa",
-    description: "Prevenção e diagnóstico precoce do câncer de mama",
+    title: "Prevenção ao Câncer de Mama",
+    description: "Campanha de conscientização e exames preventivos contra o câncer de mama",
     startDate: "2025-10-01",
     endDate: "2025-10-31",
     targetAudience: "Mulheres acima de 40 anos",
-    location: "Todas as UBSs do município",
+    location: "Unidades de saúde e centros comunitários",
     status: "planejada",
-    coverageGoal: 3500,
-    currentCoverage: 0,
+    coverageGoal: 70,
+    currentCoverage: 0
   },
   {
     id: "5",
     title: "Vacinação contra HPV",
-    description: "Imunização contra o Papilomavírus Humano",
-    startDate: "2025-03-01",
-    endDate: "2025-04-30",
-    targetAudience: "Meninas e meninos de 9 a 14 anos",
-    location: "Escolas e UBSs",
-    status: "concluída",
-    coverageGoal: 1800,
-    currentCoverage: 1650,
+    description: "Campanha de vacinação contra o HPV para adolescentes",
+    startDate: "2025-03-15",
+    endDate: "2025-12-15",
+    targetAudience: "Adolescentes de 9 a 14 anos",
+    location: "Escolas e unidades de saúde",
+    status: "em andamento",
+    coverageGoal: 80,
+    currentCoverage: 35
   },
   {
     id: "6",
     title: "Combate à Dengue",
-    description: "Ações de prevenção e combate ao mosquito Aedes Aegypti",
-    startDate: "2025-01-15",
-    endDate: "2025-04-15",
+    description: "Campanha de prevenção e combate à proliferação do mosquito Aedes aegypti",
+    startDate: "2025-01-10",
+    endDate: "2025-05-31",
     targetAudience: "População geral",
     location: "Todo o município",
     status: "concluída",
-    coverageGoal: 10000,
-    currentCoverage: 9750,
-  },
+    coverageGoal: 100,
+    currentCoverage: 92
+  }
 ];
 
 const statusColors: Record<string, string> = {
-  "em andamento": "bg-blue-500",
-  "planejada": "bg-amber-500",
-  "concluída": "bg-green-500",
+  "planejada": "bg-blue-500",
+  "em andamento": "bg-green-500",
+  "concluída": "bg-purple-500",
   "cancelada": "bg-red-500",
-};
-
-const calculateCoveragePercentage = (current: number, goal: number) => {
-  return Math.min(Math.round((current / goal) * 100), 100);
-};
-
-const getCoverageColor = (percentage: number) => {
-  if (percentage < 30) return "bg-red-500";
-  if (percentage < 70) return "bg-amber-500";
-  return "bg-green-500";
 };
 
 const CampanhasSaude = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState<string>("");
-  
-  // Filter campaigns based on the search term and status
+  const [statusFilter, setStatusFilter] = useState("");
+
+  // Filter campaigns based on search term and status filter
   const filteredCampaigns = mockCampaigns.filter((campaign) => {
-    const matchesSearch = campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = 
+      campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       campaign.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus ? campaign.status === filterStatus : true;
+    const matchesStatus = statusFilter ? campaign.status === statusFilter : true;
     
     return matchesSearch && matchesStatus;
   });
 
-  // Count campaigns by status
-  const activeCampaigns = mockCampaigns.filter(c => c.status === "em andamento").length;
+  const totalCampaigns = mockCampaigns.length;
   const plannedCampaigns = mockCampaigns.filter(c => c.status === "planejada").length;
+  const ongoingCampaigns = mockCampaigns.filter(c => c.status === "em andamento").length;
   const completedCampaigns = mockCampaigns.filter(c => c.status === "concluída").length;
 
-  // Get statuses for the filter
-  const statuses = Array.from(new Set(mockCampaigns.map((c) => c.status)));
+  // Function to calculate progress percentage
+  const calculateProgress = (current: number, goal: number) => {
+    const percentage = (current / goal) * 100;
+    return Math.min(percentage, 100); // Cap at 100%
+  };
 
   return (
     <Layout>
@@ -163,62 +156,59 @@ const CampanhasSaude = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Card>
-            <CardHeader className="bg-green-50 dark:bg-green-900/20">
-              <CardTitle>Campanhas Ativas</CardTitle>
+            <CardHeader className="bg-blue-50 dark:bg-blue-900/20">
+              <CardTitle>Total de Campanhas</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{activeCampaigns}</div>
-              <p className="text-sm text-muted-foreground mt-2">Campanhas em andamento</p>
+              <div className="text-3xl font-bold">{totalCampaigns}</div>
+              <p className="text-sm text-muted-foreground mt-2">Campanhas registradas</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="bg-amber-50 dark:bg-amber-900/20">
-              <CardTitle>Campanhas Planejadas</CardTitle>
+              <CardTitle>Planejadas</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="text-3xl font-bold">{plannedCampaigns}</div>
-              <p className="text-sm text-muted-foreground mt-2">Campanhas a serem iniciadas</p>
+              <p className="text-sm text-muted-foreground mt-2">Campanhas em planejamento</p>
             </CardContent>
           </Card>
           
           <Card>
-            <CardHeader className="bg-blue-50 dark:bg-blue-900/20">
-              <CardTitle>Campanhas Concluídas</CardTitle>
+            <CardHeader className="bg-green-50 dark:bg-green-900/20">
+              <CardTitle>Em Andamento</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="text-3xl font-bold">{ongoingCampaigns}</div>
+              <p className="text-sm text-muted-foreground mt-2">Campanhas ativas</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="bg-purple-50 dark:bg-purple-900/20">
+              <CardTitle>Concluídas</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="text-3xl font-bold">{completedCampaigns}</div>
               <p className="text-sm text-muted-foreground mt-2">Campanhas finalizadas</p>
             </CardContent>
           </Card>
-          
-          <Card>
-            <CardHeader className="bg-purple-50 dark:bg-purple-900/20">
-              <CardTitle>Público Alcançado</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <div className="text-3xl font-bold">
-                {mockCampaigns.reduce((total, campaign) => total + campaign.currentCoverage, 0).toLocaleString()}
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">Pessoas atendidas</p>
-            </CardContent>
-          </Card>
         </div>
 
         <Tabs defaultValue="todas">
-          <TabsList className="grid grid-cols-4 mb-4 w-[500px]">
-            <TabsTrigger value="todas">Todas</TabsTrigger>
-            <TabsTrigger value="ativas">Ativas</TabsTrigger>
-            <TabsTrigger value="planejadas">Planejadas</TabsTrigger>
-            <TabsTrigger value="mapa">Mapa</TabsTrigger>
+          <TabsList className="grid grid-cols-3 mb-4 w-[400px]">
+            <TabsTrigger value="todas">Todas as Campanhas</TabsTrigger>
+            <TabsTrigger value="ativas">Em Andamento</TabsTrigger>
+            <TabsTrigger value="analise">Análise de Resultados</TabsTrigger>
           </TabsList>
           
           <TabsContent value="todas">
             <Card>
               <CardHeader>
-                <CardTitle>Todas as Campanhas de Saúde</CardTitle>
+                <CardTitle>Campanhas de Saúde</CardTitle>
                 <CardDescription>
-                  Visualize e gerencie todas as campanhas de saúde
+                  Visualize e gerencie todas as campanhas de saúde do município
                 </CardDescription>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-4">
@@ -233,17 +223,16 @@ const CampanhasSaude = () => {
                     />
                   </div>
                   
-                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-full sm:w-[180px]">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">Todos os status</SelectItem>
-                      {statuses.map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="planejada">Planejada</SelectItem>
+                      <SelectItem value="em andamento">Em Andamento</SelectItem>
+                      <SelectItem value="concluída">Concluída</SelectItem>
+                      <SelectItem value="cancelada">Cancelada</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -255,11 +244,11 @@ const CampanhasSaude = () => {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Campanha</TableHead>
+                        <TableHead>Público Alvo</TableHead>
                         <TableHead>Período</TableHead>
                         <TableHead>Local</TableHead>
-                        <TableHead>Público Alvo</TableHead>
-                        <TableHead>Status</TableHead>
                         <TableHead>Cobertura</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead>Ações</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -271,72 +260,48 @@ const CampanhasSaude = () => {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        filteredCampaigns.map((campaign) => {
-                          const coveragePercentage = calculateCoveragePercentage(
-                            campaign.currentCoverage, campaign.coverageGoal
-                          );
-                          const coverageColor = getCoverageColor(coveragePercentage);
-                          
-                          return (
-                            <TableRow key={campaign.id}>
-                              <TableCell className="font-medium">
-                                <div>
-                                  <div className="font-bold">{campaign.title}</div>
-                                  <div className="text-xs text-muted-foreground">
-                                    {campaign.description}
-                                  </div>
+                        filteredCampaigns.map((campaign) => (
+                          <TableRow key={campaign.id}>
+                            <TableCell className="font-medium">
+                              <div className="flex flex-col">
+                                <span>{campaign.title}</span>
+                                <span className="text-xs text-muted-foreground">{campaign.description.substring(0, 40)}...</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>{campaign.targetAudience}</TableCell>
+                            <TableCell>
+                              <div className="flex flex-col">
+                                <span>Início: {new Date(campaign.startDate).toLocaleDateString('pt-BR')}</span>
+                                <span>Fim: {new Date(campaign.endDate).toLocaleDateString('pt-BR')}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>{campaign.location}</TableCell>
+                            <TableCell>
+                              <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground">Meta: {campaign.coverageGoal}%</span>
+                                <span className="text-xs text-muted-foreground">Atual: {campaign.currentCoverage}%</span>
+                                <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                  <div 
+                                    className="bg-blue-600 h-2 rounded-full" 
+                                    style={{ width: `${calculateProgress(campaign.currentCoverage, campaign.coverageGoal)}%` }}
+                                  ></div>
                                 </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex items-center">
-                                  <CalendarIcon className="mr-2 h-4 w-4" />
-                                  <div>
-                                    <div>{new Date(campaign.startDate).toLocaleDateString('pt-BR')}</div>
-                                    <div className="text-xs text-muted-foreground">
-                                      até {new Date(campaign.endDate).toLocaleDateString('pt-BR')}
-                                    </div>
-                                  </div>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex items-center">
-                                  <MapPin className="mr-2 h-4 w-4" />
-                                  {campaign.location}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex items-center">
-                                  <Users className="mr-2 h-4 w-4" />
-                                  {campaign.targetAudience}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <Badge variant="secondary" className={`${statusColors[campaign.status]} text-white`}>
-                                  {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                <div className="space-y-1">
-                                  <div className="flex justify-between text-xs">
-                                    <span>{campaign.currentCoverage} pessoas</span>
-                                    <span>{coveragePercentage}%</span>
-                                  </div>
-                                  <Progress value={coveragePercentage} className={coverageColor} />
-                                  <div className="text-xs text-muted-foreground">
-                                    Meta: {campaign.coverageGoal} pessoas
-                                  </div>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex space-x-2">
-                                  <Button variant="outline" size="sm">
-                                    <FileText className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="secondary" className={`${statusColors[campaign.status]} text-white`}>
+                                {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex space-x-2">
+                                <Button variant="outline" size="sm">
+                                  <FileText className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
                       )}
                     </TableBody>
                   </Table>
@@ -347,6 +312,10 @@ const CampanhasSaude = () => {
                 <p className="text-sm text-muted-foreground">
                   Exibindo {filteredCampaigns.length} de {mockCampaigns.length} campanhas
                 </p>
+                <div className="flex space-x-2">
+                  <Button variant="outline" size="sm">Anterior</Button>
+                  <Button variant="outline" size="sm">Próximo</Button>
+                </div>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -354,180 +323,113 @@ const CampanhasSaude = () => {
           <TabsContent value="ativas">
             <Card>
               <CardHeader>
-                <CardTitle>Campanhas Ativas</CardTitle>
+                <CardTitle>Campanhas em Andamento</CardTitle>
                 <CardDescription>
-                  Campanhas de saúde em andamento no município
+                  Campanhas ativas que estão sendo realizadas atualmente
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   {mockCampaigns
-                    .filter((campaign) => campaign.status === "em andamento")
-                    .map((campaign) => {
-                      const coveragePercentage = calculateCoveragePercentage(
-                        campaign.currentCoverage, campaign.coverageGoal
-                      );
-                      const coverageColor = getCoverageColor(coveragePercentage);
-                      
-                      return (
-                        <Card key={campaign.id}>
-                          <CardHeader>
-                            <CardTitle>{campaign.title}</CardTitle>
-                            <CardDescription>{campaign.description}</CardDescription>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                              <div>
-                                <h4 className="text-sm font-medium">Período</h4>
-                                <div className="flex items-center mt-1">
-                                  <CalendarIcon className="mr-2 h-4 w-4" />
-                                  <span>
-                                    {new Date(campaign.startDate).toLocaleDateString('pt-BR')} até{' '}
-                                    {new Date(campaign.endDate).toLocaleDateString('pt-BR')}
+                    .filter(campaign => campaign.status === "em andamento")
+                    .map(campaign => (
+                      <Card key={campaign.id} className="overflow-hidden">
+                        <CardHeader className="bg-green-50 dark:bg-green-900/20 pb-2">
+                          <div className="flex justify-between">
+                            <div>
+                              <CardTitle>{campaign.title}</CardTitle>
+                              <CardDescription>
+                                {campaign.description}
+                              </CardDescription>
+                            </div>
+                            <Badge variant="secondary" className="bg-green-500 text-white">
+                              Em Andamento
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <h4 className="font-medium text-sm mb-2">Informações da Campanha</h4>
+                              <div className="space-y-2">
+                                <div className="flex justify-between">
+                                  <span className="text-sm text-muted-foreground">Público Alvo:</span>
+                                  <span className="text-sm">{campaign.targetAudience}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-sm text-muted-foreground">Local:</span>
+                                  <span className="text-sm">{campaign.location}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-sm text-muted-foreground">Período:</span>
+                                  <span className="text-sm">
+                                    {new Date(campaign.startDate).toLocaleDateString('pt-BR')} a {new Date(campaign.endDate).toLocaleDateString('pt-BR')}
                                   </span>
-                                </div>
-                              </div>
-                              <div>
-                                <h4 className="text-sm font-medium">Local</h4>
-                                <div className="flex items-center mt-1">
-                                  <MapPin className="mr-2 h-4 w-4" />
-                                  <span>{campaign.location}</span>
-                                </div>
-                              </div>
-                              <div>
-                                <h4 className="text-sm font-medium">Público Alvo</h4>
-                                <div className="flex items-center mt-1">
-                                  <Users className="mr-2 h-4 w-4" />
-                                  <span>{campaign.targetAudience}</span>
                                 </div>
                               </div>
                             </div>
                             
-                            <div className="space-y-2">
-                              <h4 className="text-sm font-medium">Progresso</h4>
-                              <div className="flex justify-between text-sm">
-                                <span>{campaign.currentCoverage} pessoas atendidas</span>
-                                <span>{coveragePercentage}% da meta</span>
-                              </div>
-                              <Progress value={coveragePercentage} className={coverageColor} />
-                              <div className="text-sm text-muted-foreground">
-                                Meta: {campaign.coverageGoal} pessoas
-                              </div>
-                            </div>
-                          </CardContent>
-                          <CardFooter>
-                            <Button variant="outline" className="mr-2">
-                              <FileText className="mr-2 h-4 w-4" />
-                              Detalhes
-                            </Button>
-                            <Button>
-                              Atualizar Dados
-                            </Button>
-                          </CardFooter>
-                        </Card>
-                      );
-                    })}
-                    
-                    {mockCampaigns.filter((campaign) => campaign.status === "em andamento").length === 0 && (
-                      <div className="text-center py-8">
-                        <h3 className="text-lg font-medium mb-2">Nenhuma campanha ativa no momento</h3>
-                        <p className="text-muted-foreground">
-                          Não há campanhas de saúde em andamento atualmente.
-                        </p>
-                      </div>
-                    )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="planejadas">
-            <Card>
-              <CardHeader>
-                <CardTitle>Campanhas Planejadas</CardTitle>
-                <CardDescription>
-                  Próximas campanhas de saúde agendadas
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {mockCampaigns
-                    .filter((campaign) => campaign.status === "planejada")
-                    .map((campaign) => (
-                      <Card key={campaign.id}>
-                        <CardHeader>
-                          <CardTitle>{campaign.title}</CardTitle>
-                          <CardDescription>{campaign.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                              <h4 className="text-sm font-medium">Período</h4>
-                              <div className="flex items-center mt-1">
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>
-                                  {new Date(campaign.startDate).toLocaleDateString('pt-BR')} até{' '}
-                                  {new Date(campaign.endDate).toLocaleDateString('pt-BR')}
-                                </span>
+                              <h4 className="font-medium text-sm mb-2">Progresso</h4>
+                              <div className="space-y-2">
+                                <div className="flex justify-between">
+                                  <span className="text-sm text-muted-foreground">Meta de Cobertura:</span>
+                                  <span className="text-sm">{campaign.coverageGoal}%</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-sm text-muted-foreground">Cobertura Atual:</span>
+                                  <span className="text-sm">{campaign.currentCoverage}%</span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-4 mt-1">
+                                  <div 
+                                    className="bg-green-600 h-4 rounded-full text-xs flex items-center justify-center text-white" 
+                                    style={{ width: `${calculateProgress(campaign.currentCoverage, campaign.coverageGoal)}%` }}
+                                  >
+                                    {campaign.currentCoverage}%
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div>
-                              <h4 className="text-sm font-medium">Local</h4>
-                              <div className="flex items-center mt-1">
-                                <MapPin className="mr-2 h-4 w-4" />
-                                <span>{campaign.location}</span>
-                              </div>
-                            </div>
-                            <div>
-                              <h4 className="text-sm font-medium">Público Alvo</h4>
-                              <div className="flex items-center mt-1">
-                                <Users className="mr-2 h-4 w-4" />
-                                <span>{campaign.targetAudience}</span>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="mt-4">
-                            <h4 className="text-sm font-medium">Meta de Atendimentos</h4>
-                            <div className="mt-1 text-lg font-medium">{campaign.coverageGoal} pessoas</div>
                           </div>
                         </CardContent>
-                        <CardFooter>
-                          <Button variant="outline" className="mr-2">
-                            <FileText className="mr-2 h-4 w-4" />
-                            Detalhes
-                          </Button>
-                          <Button>
-                            Iniciar Campanha
-                          </Button>
+                        <CardFooter className="flex justify-between">
+                          <Button variant="outline">Ver Detalhes</Button>
+                          <Button>Atualizar Progresso</Button>
                         </CardFooter>
                       </Card>
                     ))}
                     
-                    {mockCampaigns.filter((campaign) => campaign.status === "planejada").length === 0 && (
-                      <div className="text-center py-8">
-                        <h3 className="text-lg font-medium mb-2">Nenhuma campanha planejada</h3>
-                        <p className="text-muted-foreground">
-                          Não há campanhas planejadas para o futuro próximo.
-                        </p>
-                      </div>
-                    )}
+                  {mockCampaigns.filter(campaign => campaign.status === "em andamento").length === 0 && (
+                    <div className="text-center py-8">
+                      <h3 className="text-lg font-medium">Nenhuma campanha em andamento</h3>
+                      <p className="text-muted-foreground mt-2">
+                        Não há campanhas ativas no momento.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="mapa">
+          <TabsContent value="analise">
             <Card>
               <CardHeader>
-                <CardTitle>Mapa de Campanhas de Saúde</CardTitle>
+                <CardTitle>Análise de Resultados</CardTitle>
                 <CardDescription>
-                  Visualização geográfica das campanhas no município
+                  Visualize métricas e resultados das campanhas de saúde
                 </CardDescription>
               </CardHeader>
-              <CardContent className="h-[600px] flex items-center justify-center">
-                <p className="text-muted-foreground">
-                  [Aqui será exibido um mapa interativo com a localização das campanhas]
+              <CardContent className="h-[400px] flex flex-col items-center justify-center space-y-4">
+                <div className="flex items-center justify-center space-x-4">
+                  <Vaccine size={48} className="text-blue-500" />
+                  <Users size={48} className="text-green-500" />
+                  <Activity size={48} className="text-amber-500" />
+                  <Heart size={48} className="text-red-500" />
+                </div>
+                <p className="text-muted-foreground text-center max-w-lg">
+                  Aqui serão exibidos gráficos e relatórios detalhados sobre o desempenho
+                  e impacto das campanhas de saúde realizadas no município.
                 </p>
               </CardContent>
             </Card>

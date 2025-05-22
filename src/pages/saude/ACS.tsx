@@ -23,7 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -34,48 +33,60 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, Search, MapPin, FileText, Home } from "lucide-react";
+import { 
+  Search, 
+  Users, 
+  Calendar, 
+  ClipboardCheck,
+  Home,
+  Map,
+  CheckCircle,
+  FileText,
+  UserCheck,
+  AlertTriangle,
+  User
+} from "lucide-react";
 import { ACSVisit } from "@/types/saude";
 
-// Mock data
+// Mock data for ACS visits
 const mockVisits: ACSVisit[] = [
   {
     id: "1",
-    agentName: "Ana Santos",
+    agentName: "Ana Maria Silva",
     area: "01",
-    micro: "002",
+    micro: "02",
     familyId: "F12345",
-    address: "Rua das Flores, 123 - Bairro Central",
-    visitDate: "2025-05-18",
-    visitTime: "09:00",
+    address: "Rua das Flores, 123 - Centro",
+    visitDate: "2025-05-20",
+    visitTime: "09:30",
     visitType: "rotina",
     completed: true,
-    findings: "Família em boas condições de saúde. Acompanhamento regular de idoso hipertenso.",
+    findings: "Família completa. Criança com vacinas em dia. Idoso com hipertensão controlada.",
     followUpRequired: false
   },
   {
     id: "2",
-    agentName: "Carlos Oliveira",
-    area: "02",
-    micro: "005",
+    agentName: "Carlos Santos",
+    area: "01",
+    micro: "03",
     familyId: "F23456",
-    address: "Av. Principal, 456 - Bairro Norte",
-    visitDate: "2025-05-18",
-    visitTime: "10:30",
+    address: "Av. Principal, 456 - Jardim América",
+    visitDate: "2025-05-20",
+    visitTime: "11:00",
     visitType: "acompanhamento",
     completed: true,
-    findings: "Gestante no 7º mês, pré-natal em dia. Orientada sobre sinais de alerta.",
+    findings: "Gestante no 7º mês. Consulta pré-natal agendada para próxima semana. Pressão arterial normal.",
     followUpRequired: true
   },
   {
     id: "3",
-    agentName: "Mariana Silva",
-    area: "03",
-    micro: "001",
+    agentName: "João Oliveira",
+    area: "02",
+    micro: "01",
     familyId: "F34567",
-    address: "Rua das Acácias, 789 - Bairro Sul",
-    visitDate: "2025-05-19",
-    visitTime: "14:00",
+    address: "Rua dos Pinheiros, 789 - Vila Nova",
+    visitDate: "2025-05-21",
+    visitTime: "08:30",
     visitType: "busca ativa",
     completed: false,
     findings: "",
@@ -83,13 +94,13 @@ const mockVisits: ACSVisit[] = [
   },
   {
     id: "4",
-    agentName: "Pedro Souza",
+    agentName: "Ana Maria Silva",
     area: "01",
-    micro: "003",
+    micro: "02",
     familyId: "F45678",
-    address: "Rua dos Ipês, 234 - Bairro Central",
-    visitDate: "2025-05-19",
-    visitTime: "15:30",
+    address: "Rua das Acácias, 234 - Centro",
+    visitDate: "2025-05-21",
+    visitTime: "10:00",
     visitType: "rotina",
     completed: false,
     findings: "",
@@ -97,147 +108,176 @@ const mockVisits: ACSVisit[] = [
   },
   {
     id: "5",
-    agentName: "Juliana Costa",
-    area: "04",
-    micro: "002",
+    agentName: "Paulo Ribeiro",
+    area: "03",
+    micro: "02",
     familyId: "F56789",
-    address: "Rua das Palmeiras, 567 - Bairro Oeste",
-    visitDate: "2025-05-18",
-    visitTime: "11:00",
+    address: "Av. São Paulo, 567 - Jardim Esperança",
+    visitDate: "2025-05-19",
+    visitTime: "14:30",
     visitType: "primeira visita",
     completed: true,
-    findings: "Família recém-chegada ao bairro. Dois adultos e três crianças. Uma criança com asma.",
+    findings: "Família recém-chegada ao município. 4 pessoas (casal e 2 filhos). Documentação completa. Crianças precisam atualizar caderneta de vacinação.",
+    followUpRequired: true
+  },
+  {
+    id: "6",
+    agentName: "Mariana Costa",
+    area: "02",
+    micro: "03",
+    familyId: "F67890",
+    address: "Rua das Margaridas, 890 - Jardim das Flores",
+    visitDate: "2025-05-19",
+    visitTime: "15:45",
+    visitType: "acompanhamento",
+    completed: true,
+    findings: "Idoso acamado com úlcera de pressão em tratamento. Cuidador orientado sobre os cuidados necessários.",
     followUpRequired: true
   }
 ];
 
-// Mock ACS Agents
+// Mock data for ACS agents
 const mockAgents = [
-  { id: "1", name: "Ana Santos", area: "01", micros: ["001", "002"], totalFamilies: 120, visitedThisMonth: 78 },
-  { id: "2", name: "Carlos Oliveira", area: "02", micros: ["005"], totalFamilies: 95, visitedThisMonth: 62 },
-  { id: "3", name: "Mariana Silva", area: "03", micros: ["001"], totalFamilies: 110, visitedThisMonth: 55 },
-  { id: "4", name: "Pedro Souza", area: "01", micros: ["003"], totalFamilies: 105, visitedThisMonth: 67 },
-  { id: "5", name: "Juliana Costa", area: "04", micros: ["002"], totalFamilies: 115, visitedThisMonth: 71 },
+  { name: "Ana Maria Silva", area: "01", micro: "02", familiesCount: 120, pendingVisits: 8 },
+  { name: "Carlos Santos", area: "01", micro: "03", familiesCount: 115, pendingVisits: 5 },
+  { name: "João Oliveira", area: "02", micro: "01", familiesCount: 98, pendingVisits: 12 },
+  { name: "Paulo Ribeiro", area: "03", micro: "02", familiesCount: 105, pendingVisits: 3 },
+  { name: "Mariana Costa", area: "02", micro: "03", familiesCount: 110, pendingVisits: 7 }
 ];
 
-// Mock Areas with coverage
-const mockAreas = [
-  { area: "01", name: "Centro", totalFamilies: 225, visitedFamilies: 145, coverage: 64 },
-  { area: "02", name: "Norte", totalFamilies: 95, visitedFamilies: 62, coverage: 65 },
-  { area: "03", name: "Sul", totalFamilies: 110, visitedFamilies: 55, coverage: 50 },
-  { area: "04", name: "Oeste", totalFamilies: 115, visitedFamilies: 71, coverage: 62 },
+// Mock data for microareas coverage
+const mockMicroareasCoverage = [
+  { area: "01", micro: "01", coverage: 98, families: 125, complete: true },
+  { area: "01", micro: "02", coverage: 100, families: 120, complete: true },
+  { area: "01", micro: "03", coverage: 95, families: 115, complete: true },
+  { area: "02", micro: "01", coverage: 90, families: 98, complete: true },
+  { area: "02", micro: "02", coverage: 0, families: 110, complete: false },
+  { area: "02", micro: "03", coverage: 85, families: 110, complete: true },
+  { area: "03", micro: "01", coverage: 0, families: 105, complete: false },
+  { area: "03", micro: "02", coverage: 93, families: 105, complete: true },
+  { area: "03", micro: "03", coverage: 0, families: 112, complete: false }
 ];
+
+// Calculate some statistics
+const totalAgents = mockAgents.length;
+const totalFamilies = mockAgents.reduce((acc, agent) => acc + agent.familiesCount, 0);
+const totalVisitsToday = mockVisits.filter(v => v.visitDate === "2025-05-20").length;
+const totalCompletedVisits = mockVisits.filter(v => v.completed).length;
+const totalPendingVisits = mockVisits.filter(v => !v.completed).length;
+const followUpsRequired = mockVisits.filter(v => v.followUpRequired).length;
+
+// Coverage statistics
+const totalMicroareas = mockMicroareasCoverage.length;
+const coveredMicroareas = mockMicroareasCoverage.filter(m => m.complete).length;
+const coveragePercentage = (coveredMicroareas / totalMicroareas) * 100;
 
 const visitTypeColors: Record<string, string> = {
   "rotina": "bg-blue-500",
-  "acompanhamento": "bg-purple-500",
+  "acompanhamento": "bg-green-500",
   "busca ativa": "bg-amber-500",
-  "primeira visita": "bg-green-500",
+  "primeira visita": "bg-purple-500"
 };
 
 const ACS = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterArea, setFilterArea] = useState<string>("");
-  const [filterAgent, setFilterAgent] = useState<string>("");
+  const [selectedArea, setSelectedArea] = useState<string>("");
+  const [selectedAgent, setSelectedAgent] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState<string>("");
   
-  // Filter visits based on the search, area, and agent
+  // Filter visits based on search term, area, agent, and date
   const filteredVisits = mockVisits.filter((visit) => {
     const matchesSearch = 
       visit.familyId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      visit.address.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesArea = filterArea ? visit.area === filterArea : true;
-    const matchesAgent = filterAgent ? visit.agentName === filterAgent : true;
+      visit.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      visit.agentName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesArea = selectedArea ? visit.area === selectedArea : true;
+    const matchesAgent = selectedAgent ? visit.agentName === selectedAgent : true;
+    const matchesDate = dateFilter ? visit.visitDate === dateFilter : true;
     
-    return matchesSearch && matchesArea && matchesAgent;
+    return matchesSearch && matchesArea && matchesAgent && matchesDate;
   });
 
-  // Extract unique areas for the filter
-  const areas = Array.from(new Set(mockVisits.map((visit) => visit.area)));
+  // Get unique areas for filtering
+  const areas = Array.from(new Set(mockVisits.map(v => v.area)));
   
-  // Extract unique agents for the filter
-  const agents = Array.from(new Set(mockVisits.map((visit) => visit.agentName)));
-
-  // Calculate coverage statistics
-  const totalFamilies = mockAreas.reduce((sum, area) => sum + area.totalFamilies, 0);
-  const totalVisited = mockAreas.reduce((sum, area) => sum + area.visitedFamilies, 0);
-  const overallCoverage = Math.round((totalVisited / totalFamilies) * 100);
-
-  // Count statistics
-  const pendingVisits = mockVisits.filter(v => !v.completed).length;
-  const completedVisits = mockVisits.filter(v => v.completed).length;
-  const followUpRequired = mockVisits.filter(v => v.followUpRequired).length;
+  // Get unique agent names for filtering
+  const agents = Array.from(new Set(mockVisits.map(v => v.agentName)));
 
   return (
     <Layout>
       <div className="container mx-auto py-6 space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">ACS - Agentes Comunitários de Saúde</h1>
-          <Button>
-            <Calendar className="mr-2 h-4 w-4" /> Agendar Visita
-          </Button>
+          <h1 className="text-3xl font-bold">Agentes Comunitários de Saúde (ACS)</h1>
+          <div className="flex space-x-2">
+            <Button variant="outline">
+              <Map className="mr-2 h-4 w-4" /> Mapa de Microáreas
+            </Button>
+            <Button>
+              <Calendar className="mr-2 h-4 w-4" /> Nova Visita
+            </Button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="bg-blue-50 dark:bg-blue-900/20">
-              <CardTitle>Cobertura</CardTitle>
+              <CardTitle>Agentes ACS</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{overallCoverage}%</div>
-              <div className="mt-2">
-                <Progress value={overallCoverage} className="h-2" />
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                {totalVisited} de {totalFamilies} famílias visitadas este mês
-              </p>
+              <div className="text-3xl font-bold">{totalAgents}</div>
+              <p className="text-sm text-muted-foreground mt-2">Agentes ativos</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="bg-green-50 dark:bg-green-900/20">
-              <CardTitle>Visitas Realizadas</CardTitle>
+              <CardTitle>Famílias Cadastradas</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{completedVisits}</div>
-              <p className="text-sm text-muted-foreground mt-2">Visitas concluídas</p>
+              <div className="text-3xl font-bold">{totalFamilies}</div>
+              <p className="text-sm text-muted-foreground mt-2">Total de famílias</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="bg-amber-50 dark:bg-amber-900/20">
-              <CardTitle>Visitas Pendentes</CardTitle>
+              <CardTitle>Visitas Hoje</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{pendingVisits}</div>
-              <p className="text-sm text-muted-foreground mt-2">Agendadas para hoje e amanhã</p>
+              <div className="text-3xl font-bold">{totalVisitsToday}</div>
+              <p className="text-sm text-muted-foreground mt-2">
+                {totalCompletedVisits} realizadas, {totalPendingVisits} pendentes
+              </p>
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader className="bg-purple-50 dark:bg-purple-900/20">
-              <CardTitle>Acompanhamentos</CardTitle>
+          <Card className={coveragePercentage < 100 ? "border-red-500" : ""}>
+            <CardHeader className={`${coveragePercentage < 100 ? "bg-red-50 dark:bg-red-900/20" : "bg-green-50 dark:bg-green-900/20"}`}>
+              <CardTitle>Cobertura Territorial</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="text-3xl font-bold">{followUpRequired}</div>
-              <p className="text-sm text-muted-foreground mt-2">Necessitam de seguimento</p>
+              <div className="text-3xl font-bold">{coveragePercentage.toFixed(1)}%</div>
+              <p className="text-sm text-muted-foreground mt-2">
+                {coveredMicroareas}/{totalMicroareas} microáreas com ACS
+              </p>
             </CardContent>
           </Card>
         </div>
 
         <Tabs defaultValue="visitas">
           <TabsList className="grid grid-cols-4 mb-4 w-[500px]">
-            <TabsTrigger value="visitas">Visitas</TabsTrigger>
+            <TabsTrigger value="visitas">Registro de Visitas</TabsTrigger>
             <TabsTrigger value="agentes">Agentes</TabsTrigger>
-            <TabsTrigger value="areas">Áreas</TabsTrigger>
-            <TabsTrigger value="mapa">Mapa</TabsTrigger>
+            <TabsTrigger value="microareas">Microáreas</TabsTrigger>
+            <TabsTrigger value="relatorios">Relatórios</TabsTrigger>
           </TabsList>
           
           <TabsContent value="visitas">
             <Card>
               <CardHeader>
-                <CardTitle>Gerenciamento de Visitas Domiciliares</CardTitle>
+                <CardTitle>Registro de Visitas Domiciliares</CardTitle>
                 <CardDescription>
-                  Acompanhe e registre as visitas dos Agentes Comunitários de Saúde
+                  Gerencie as visitas dos Agentes Comunitários de Saúde
                 </CardDescription>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-4">
@@ -252,8 +292,8 @@ const ACS = () => {
                     />
                   </div>
                   
-                  <Select value={filterArea} onValueChange={setFilterArea}>
-                    <SelectTrigger className="w-full sm:w-[180px]">
+                  <Select value={selectedArea} onValueChange={setSelectedArea}>
+                    <SelectTrigger className="w-full sm:w-[150px]">
                       <SelectValue placeholder="Área" />
                     </SelectTrigger>
                     <SelectContent>
@@ -266,8 +306,8 @@ const ACS = () => {
                     </SelectContent>
                   </Select>
                   
-                  <Select value={filterAgent} onValueChange={setFilterAgent}>
-                    <SelectTrigger className="w-full sm:w-[220px]">
+                  <Select value={selectedAgent} onValueChange={setSelectedAgent}>
+                    <SelectTrigger className="w-full sm:w-[180px]">
                       <SelectValue placeholder="Agente" />
                     </SelectTrigger>
                     <SelectContent>
@@ -279,6 +319,13 @@ const ACS = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  
+                  <Input
+                    type="date"
+                    value={dateFilter}
+                    onChange={(e) => setDateFilter(e.target.value)}
+                    className="w-full sm:w-[180px]"
+                  />
                 </div>
               </CardHeader>
               
@@ -287,13 +334,13 @@ const ACS = () => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Família</TableHead>
-                        <TableHead>Endereço</TableHead>
+                        <TableHead>Família/Endereço</TableHead>
                         <TableHead>Agente</TableHead>
                         <TableHead>Área/Micro</TableHead>
                         <TableHead>Data/Hora</TableHead>
-                        <TableHead>Tipo de Visita</TableHead>
+                        <TableHead>Tipo</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead>Acompanhamento</TableHead>
                         <TableHead>Ações</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -308,30 +355,17 @@ const ACS = () => {
                         filteredVisits.map((visit) => (
                           <TableRow key={visit.id}>
                             <TableCell className="font-medium">
-                              <div className="flex items-center">
-                                <Home className="mr-2 h-4 w-4" />
-                                {visit.familyId}
+                              <div className="flex flex-col">
+                                <span className="font-medium">{visit.familyId}</span>
+                                <span className="text-xs text-muted-foreground">{visit.address}</span>
                               </div>
                             </TableCell>
+                            <TableCell>{visit.agentName}</TableCell>
+                            <TableCell>{`Área ${visit.area} / Micro ${visit.micro}`}</TableCell>
                             <TableCell>
-                              <div className="flex items-center">
-                                <MapPin className="mr-2 h-4 w-4" />
-                                {visit.address}
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center">
-                                <User className="mr-2 h-4 w-4" />
-                                {visit.agentName}
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              {visit.area}/{visit.micro}
-                            </TableCell>
-                            <TableCell>
-                              <div>
-                                <div>{new Date(visit.visitDate).toLocaleDateString('pt-BR')}</div>
-                                <div className="text-xs text-muted-foreground">{visit.visitTime}</div>
+                              <div className="flex flex-col">
+                                <span>{new Date(visit.visitDate).toLocaleDateString('pt-BR')}</span>
+                                <span className="text-xs text-muted-foreground">{visit.visitTime}</span>
                               </div>
                             </TableCell>
                             <TableCell>
@@ -340,19 +374,34 @@ const ACS = () => {
                               </Badge>
                             </TableCell>
                             <TableCell>
-                              <Badge variant={visit.completed ? "outline" : "secondary"} className={visit.completed ? "bg-green-100 text-green-800" : ""}>
-                                {visit.completed ? "Realizada" : "Pendente"}
-                              </Badge>
+                              {visit.completed ? (
+                                <Badge variant="outline" className="bg-green-500 text-white">
+                                  Realizada
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline" className="bg-blue-500 text-white">
+                                  Pendente
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {visit.followUpRequired && visit.completed ? (
+                                <Badge variant="outline" className="bg-red-500 text-white">
+                                  Necessário
+                                </Badge>
+                              ) : (
+                                <span className="text-muted-foreground">-</span>
+                              )}
                             </TableCell>
                             <TableCell>
                               <div className="flex space-x-2">
-                                {visit.completed ? (
+                                {!visit.completed ? (
                                   <Button variant="outline" size="sm">
-                                    <FileText className="h-4 w-4" />
+                                    <CheckCircle className="h-4 w-4" />
                                   </Button>
                                 ) : (
-                                  <Button variant="default" size="sm">
-                                    Registrar
+                                  <Button variant="outline" size="sm">
+                                    <FileText className="h-4 w-4" />
                                   </Button>
                                 )}
                               </div>
@@ -369,185 +418,228 @@ const ACS = () => {
                 <p className="text-sm text-muted-foreground">
                   Exibindo {filteredVisits.length} de {mockVisits.length} visitas
                 </p>
+                <div className="flex space-x-2">
+                  <Button variant="outline" size="sm">Anterior</Button>
+                  <Button variant="outline" size="sm">Próximo</Button>
+                </div>
               </CardFooter>
             </Card>
           </TabsContent>
           
           <TabsContent value="agentes">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {mockAgents.map((agent) => (
-                <Card key={agent.id}>
-                  <CardHeader>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <User className="mr-2 h-5 w-5" />
-                        <CardTitle>{agent.name}</CardTitle>
-                      </div>
-                      <Badge>Área {agent.area}</Badge>
-                    </div>
-                    <CardDescription>
-                      Microáreas: {agent.micros.join(", ")}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex justify-between mb-1">
-                          <span className="text-sm font-medium">Cobertura do mês</span>
-                          <span className="text-sm font-medium">{Math.round((agent.visitedThisMonth / agent.totalFamilies) * 100)}%</span>
-                        </div>
-                        <Progress value={Math.round((agent.visitedThisMonth / agent.totalFamilies) * 100)} className="h-2" />
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {agent.visitedThisMonth} de {agent.totalFamilies} famílias visitadas
-                        </p>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm font-medium">Visitas hoje</p>
-                          <p className="text-2xl font-bold">
-                            {Math.floor(Math.random() * 8) + 1}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Pendentes</p>
-                          <p className="text-2xl font-bold">
-                            {Math.floor(Math.random() * 5)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <div className="flex gap-2 w-full">
-                      <Button variant="outline" className="flex-1">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        Agenda
-                      </Button>
-                      <Button className="flex-1">
-                        Relatório
-                      </Button>
-                    </div>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="areas">
             <Card>
               <CardHeader>
-                <CardTitle>Cobertura por Área</CardTitle>
+                <CardTitle>Equipe de Agentes Comunitários</CardTitle>
                 <CardDescription>
-                  Acompanhamento da cobertura de visitas por área geográfica
+                  Gerenciamento da equipe de ACS por área e microárea
                 </CardDescription>
+                
+                <div className="flex justify-end mt-4">
+                  <Button>
+                    <UserCheck className="mr-2 h-4 w-4" /> Cadastrar Novo Agente
+                  </Button>
+                </div>
               </CardHeader>
+              
               <CardContent>
                 <div className="rounded-md border">
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead>Agente</TableHead>
                         <TableHead>Área</TableHead>
-                        <TableHead>Nome</TableHead>
-                        <TableHead>Total de Famílias</TableHead>
-                        <TableHead>Visitadas no Mês</TableHead>
-                        <TableHead>Cobertura</TableHead>
-                        <TableHead>Agentes</TableHead>
-                        <TableHead>Situação</TableHead>
+                        <TableHead>Microárea</TableHead>
+                        <TableHead>Famílias Cadastradas</TableHead>
+                        <TableHead>Visitas Pendentes</TableHead>
+                        <TableHead>Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {mockAreas.map((area) => (
-                        <TableRow key={area.area}>
-                          <TableCell className="font-medium">{area.area}</TableCell>
-                          <TableCell>{area.name}</TableCell>
-                          <TableCell>{area.totalFamilies}</TableCell>
-                          <TableCell>{area.visitedFamilies}</TableCell>
-                          <TableCell>
-                            <div className="space-y-1">
-                              <div className="flex justify-between text-xs">
-                                <span>{area.coverage}%</span>
-                              </div>
-                              <Progress value={area.coverage} className={area.coverage < 50 ? "bg-red-500" : area.coverage < 70 ? "bg-amber-500" : "bg-green-500"} />
+                      {mockAgents.map((agent, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">
+                            <div className="flex items-center">
+                              <User className="mr-2 h-4 w-4" />
+                              {agent.name}
                             </div>
                           </TableCell>
+                          <TableCell>{agent.area}</TableCell>
+                          <TableCell>{agent.micro}</TableCell>
+                          <TableCell>{agent.familiesCount}</TableCell>
                           <TableCell>
-                            {mockAgents.filter(agent => agent.area === area.area).length}
+                            <Badge variant={agent.pendingVisits > 0 ? "destructive" : "default"}>
+                              {agent.pendingVisits}
+                            </Badge>
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline" className={
-                              area.coverage < 50 
-                                ? "bg-red-100 text-red-800" 
-                                : area.coverage < 70 
-                                ? "bg-amber-100 text-amber-800" 
-                                : "bg-green-100 text-green-800"
-                            }>
-                              {area.coverage < 50 
-                                ? "Baixa" 
-                                : area.coverage < 70 
-                                ? "Regular" 
-                                : "Boa"}
-                            </Badge>
+                            <div className="flex space-x-2">
+                              <Button variant="outline" size="sm">Detalhes</Button>
+                              <Button variant="outline" size="sm">Produção</Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
                 </div>
-                
-                <div className="mt-6">
-                  <h3 className="text-lg font-medium mb-4">Situações de Risco Identificadas</h3>
-                  
-                  <div className="space-y-4">
-                    <Card>
-                      <CardHeader className="bg-red-50 dark:bg-red-900/20 py-3">
-                        <div className="flex justify-between items-center">
-                          <CardTitle className="text-base">Área 03 - Micro 001</CardTitle>
-                          <Badge variant="destructive">Alta Prioridade</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="py-3">
-                        <p>Identificadas 3 gestantes sem acompanhamento pré-natal adequado</p>
-                      </CardContent>
-                      <CardFooter className="py-3 flex justify-end">
-                        <Button size="sm">Ver Detalhes</Button>
-                      </CardFooter>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader className="bg-amber-50 dark:bg-amber-900/20 py-3">
-                        <div className="flex justify-between items-center">
-                          <CardTitle className="text-base">Área 01 - Micro 002</CardTitle>
-                          <Badge className="bg-amber-500 text-white">Média Prioridade</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="py-3">
-                        <p>5 idosos hipertensos não compareceram à última consulta agendada</p>
-                      </CardContent>
-                      <CardFooter className="py-3 flex justify-end">
-                        <Button size="sm">Ver Detalhes</Button>
-                      </CardFooter>
-                    </Card>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="mapa">
+          <TabsContent value="microareas">
             <Card>
               <CardHeader>
-                <CardTitle>Mapa de Atuação dos ACS</CardTitle>
+                <CardTitle>Cobertura por Microáreas</CardTitle>
                 <CardDescription>
-                  Visualização geográfica da cobertura dos Agentes Comunitários de Saúde
+                  Mapa de cobertura de agentes por território
                 </CardDescription>
               </CardHeader>
-              <CardContent className="h-[600px] flex items-center justify-center">
-                <p className="text-muted-foreground">
-                  [Aqui será exibido um mapa interativo com a distribuição geográfica das áreas e microáreas]
-                </p>
+              
+              <CardContent>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Área</TableHead>
+                        <TableHead>Microárea</TableHead>
+                        <TableHead>Famílias</TableHead>
+                        <TableHead>Cobertura</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Ações</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {mockMicroareasCoverage.map((micro, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{micro.area}</TableCell>
+                          <TableCell>{micro.micro}</TableCell>
+                          <TableCell>{micro.families}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center space-x-2">
+                              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div 
+                                  className="bg-blue-600 h-2.5 rounded-full" 
+                                  style={{ width: `${micro.coverage}%` }}
+                                ></div>
+                              </div>
+                              <span className="text-sm font-medium">{micro.coverage}%</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {micro.complete ? (
+                              <Badge className="bg-green-500 text-white">Coberta</Badge>
+                            ) : (
+                              <Badge variant="destructive">Descoberta</Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="outline" size="sm">Detalhes</Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
+            
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>Áreas Descobertas</CardTitle>
+                <CardDescription>
+                  Microáreas sem cobertura de ACS
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                {mockMicroareasCoverage.filter(micro => !micro.complete).length > 0 ? (
+                  <div className="space-y-4">
+                    {mockMicroareasCoverage
+                      .filter(micro => !micro.complete)
+                      .map((micro, index) => (
+                        <Card key={index} className="border-red-200 dark:border-red-900/50">
+                          <CardHeader className="bg-red-50 dark:bg-red-900/20 pb-2">
+                            <div className="flex justify-between">
+                              <CardTitle>Área {micro.area} / Microárea {micro.micro}</CardTitle>
+                              <Badge variant="destructive">Sem Cobertura</Badge>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-sm text-muted-foreground">Famílias cadastradas</p>
+                                <p className="text-lg font-semibold">{micro.families}</p>
+                              </div>
+                              <Button className="ml-auto">
+                                <UserCheck className="mr-2 h-4 w-4" />
+                                Atribuir Agente
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))
+                    }
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-2" />
+                    <h3 className="text-lg font-medium">Cobertura Total</h3>
+                    <p className="text-muted-foreground mt-2">
+                      Todas as microáreas possuem cobertura de ACS.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="relatorios">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Produtividade dos Agentes</CardTitle>
+                  <CardDescription>Análise das visitas realizadas por agente</CardDescription>
+                </CardHeader>
+                <CardContent className="h-[300px] flex items-center justify-center">
+                  <div className="text-center">
+                    <ClipboardCheck size={48} className="mx-auto text-blue-500 mb-4" />
+                    <p className="text-muted-foreground">
+                      Aqui serão exibidos gráficos de produtividade dos agentes.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Necessidades Identificadas</CardTitle>
+                  <CardDescription>Demandas encontradas durante as visitas</CardDescription>
+                </CardHeader>
+                <CardContent className="h-[300px] flex items-center justify-center">
+                  <div className="text-center">
+                    <AlertTriangle size={48} className="mx-auto text-amber-500 mb-4" />
+                    <p className="text-muted-foreground">
+                      Aqui serão exibidos gráficos de necessidades identificadas.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="lg:col-span-2">
+                <CardHeader>
+                  <CardTitle>Indicadores Territoriais</CardTitle>
+                  <CardDescription>Análise de indicadores por área e microárea</CardDescription>
+                </CardHeader>
+                <CardContent className="h-[300px] flex items-center justify-center">
+                  <div className="text-center">
+                    <Map size={48} className="mx-auto text-green-500 mb-4" />
+                    <p className="text-muted-foreground">
+                      Aqui serão exibidos mapas e gráficos com indicadores territoriais.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
