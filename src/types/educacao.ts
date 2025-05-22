@@ -2,12 +2,25 @@
 export interface SchoolEvent {
   id: string;
   title: string;
-  start: string;
-  end: string;
   description?: string;
-  type: "holiday" | "exam" | "event" | "meeting" | "break";
+  startDate: string;
+  endDate: string;
   allDay?: boolean;
   location?: string;
+  type: "holiday" | "exam" | "event" | "meeting" | "break" | "cultural" | "pedagogical" | "sport" | "recess";
+  schoolId?: string;
+  schoolName?: string;
+  grades?: string[];
+  classes?: string[];
+  organizer?: {
+    id: string;
+    name: string;
+    role: string;
+  };
+  participants?: {
+    type: string;
+    required: boolean;
+  }[];
   color?: string;
 }
 

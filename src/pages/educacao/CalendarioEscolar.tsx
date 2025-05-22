@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -41,8 +42,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Calendar, ChevronDown, Plus, FileText, Users, School, CalendarDays } from "lucide-react";
+import { 
+  Calendar as CalendarIcon, 
+  ChevronDown, 
+  Plus, 
+  FileText, 
+  Users, 
+  School, 
+  CalendarDays,
+  Search,
+  Filter,
+  Download,
+  Printer,
+  MapPin,
+  BookOpen
+} from "lucide-react";
 import { SchoolEvent } from "@/types/educacao";
+import { Calendar } from "@/components/ui/calendar";
 
 // Mock data for school events
 const mockEvents: SchoolEvent[] = [
@@ -568,7 +584,7 @@ const CalendarioEscolar = () => {
                             </TableCell>
                             <TableCell>{event.schoolName || "Todas"}</TableCell>
                             <TableCell>{event.location || "-"}</TableCell>
-                            <TableCell>{event.organizer.name}</TableCell>
+                            <TableCell>{event.organizer?.name || "-"}</TableCell>
                             <TableCell>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
