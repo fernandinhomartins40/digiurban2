@@ -199,7 +199,7 @@ const weekDays = generateWeekDays();
 const AgendamentosMedicos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<string>(""); // YYYY-MM-DD format
+  const [selectedDate, setSelectedDate] = useState<string>("");
   const [viewMode, setViewMode] = useState<"day" | "week" | "month">("day");
 
   // Filter appointments based on the search term, selected doctor, and date
@@ -245,7 +245,7 @@ const AgendamentosMedicos = () => {
                   <SelectValue placeholder="Médico" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os médicos</SelectItem>
+                  <SelectItem value="all">Todos os médicos</SelectItem>
                   {mockDoctors.map((doctor) => (
                     <SelectItem key={doctor.id} value={doctor.id}>
                       {doctor.name} - {doctor.specialty}
