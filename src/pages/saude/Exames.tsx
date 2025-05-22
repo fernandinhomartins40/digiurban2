@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -281,7 +280,7 @@ const Exames = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="all">Todos os status</SelectItem>
                       {statuses.map((status) => (
                         <SelectItem key={status} value={status}>
                           {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -295,7 +294,7 @@ const Exames = () => {
                       <SelectValue placeholder="Tipo de Exame" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os tipos de exame</SelectItem>
+                      <SelectItem value="all">Todos os tipos de exame</SelectItem>
                       {examTypes.map((type) => (
                         <SelectItem key={type} value={type}>
                           {type}
