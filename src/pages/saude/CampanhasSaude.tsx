@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -33,7 +32,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, FileText, Search, Users, Vaccine, Activity, Heart } from "lucide-react";
+import { Calendar, FileText, Search, Users, Activity, Heart } from "lucide-react";
 import { HealthCampaign } from "@/types/saude";
 
 // Mock data
@@ -422,7 +421,7 @@ const CampanhasSaude = () => {
               </CardHeader>
               <CardContent className="h-[400px] flex flex-col items-center justify-center space-y-4">
                 <div className="flex items-center justify-center space-x-4">
-                  <Vaccine size={48} className="text-blue-500" />
+                  <Calendar size={48} className="text-blue-500" />
                   <Users size={48} className="text-green-500" />
                   <Activity size={48} className="text-amber-500" />
                   <Heart size={48} className="text-red-500" />

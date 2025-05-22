@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -30,12 +29,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Calendar, ChevronDown, Plus, FileText, Users, School, CalendarDays } from "lucide-react";
 import { SchoolEvent } from "@/types/educacao";
-import { Search, ChevronDown, Calendar as CalendarIcon, BookOpen, Clock, MapPin, Users, Plus, Filter, Download, Printer, Share2 } from "lucide-react";
 
 // Mock data for school events
 const mockEvents: SchoolEvent[] = [

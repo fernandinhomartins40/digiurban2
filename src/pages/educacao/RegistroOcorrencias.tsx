@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -30,10 +29,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,8 +41,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Occurrence } from "@/types/educacao";
 import { Search, ChevronDown, AlertTriangle, Calendar, User, File, Bell, Filter, FileText, Plus } from "lucide-react";
+import { Occurrence } from "@/types/educacao";
 
 // Mock data for occurrences
 const mockOccurrences: Occurrence[] = [
