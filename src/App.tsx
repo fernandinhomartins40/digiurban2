@@ -60,55 +60,56 @@ const App = () => (
       <BrowserRouter>
         <Suspense fallback={<div className="flex items-center justify-center h-screen">Carregando...</div>}>
           <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/catalogo-servicos" element={<CatalogoServicos />} />
-          <Route path="/meus-protocolos" element={<MeusProtocolos />} />
-          <Route path="/documentos-pessoais" element={<DocumentosPessoais />} />
-          <Route path="/minhas-avaliacoes" element={<MinhasAvaliacoes />} />
-          <Route path="/gabinete/atendimentos" element={<Atendimentos />} />
-          <Route path="/gabinete/visao-geral" element={<VisaoGeral />} />
-          <Route path="/gabinete/mapa-demandas" element={<MapaDemandas />} />
-          <Route path="/gabinete/relatorios-executivos" element={<RelatoriosExecutivos />} />
-          <Route path="/gabinete/ordens-setores" element={<OrdensSetores />} />
-          <Route path="/gabinete/gerenciar-permissoes" element={<GerenciarPermissoes />} />
-          {/* Correio Interno Routes */}
-          <Route path="/correio/caixa-entrada" element={<CaixaEntrada />} />
-          <Route path="/correio/caixa-saida" element={<CaixaSaida />} />
-          <Route path="/correio/novo-email" element={<NovoEmail />} />
-          <Route path="/correio/rascunhos" element={<Rascunhos />} />
-          <Route path="/correio/lixeira" element={<Lixeira />} />
-          <Route path="/correio/biblioteca-modelos" element={<BibliotecaModelos />} />
-          <Route path="/correio/assinaturas-digitais" element={<AssinaturasDigitais />} />
-          {/* Administração do Sistema Routes */}
-          <Route path="/administracao/gerenciamento-usuarios" element={<GerenciamentoUsuarios />} />
-          <Route path="/administracao/perfis-permissoes" element={<PerfisPermissoes />} />
-          <Route path="/administracao/setores-grupos" element={<SetoresGrupos />} />
-          <Route path="/administracao/configuracoes-gerais" element={<ConfiguracoesGerais />} />
-          <Route path="/administracao/auditoria-acessos" element={<AuditoriaAcessos />} />
-          {/* Relatórios e Indicadores Routes */}
-          <Route path="/relatorios/relatorios" element={<Relatorios />} />
-          <Route path="/relatorios/indicadores-atendimentos" element={<IndicadoresAtendimentos />} />
-          <Route path="/relatorios/estatisticas-uso" element={<EstatisticasUso />} />
-          <Route path="/relatorios/exportacoes" element={<Exportacoes />} />
-          {/* Configurações do Usuário Routes */}
-          <Route path="/configuracoes/meu-perfil" element={<MeuPerfil />} />
-          <Route path="/configuracoes/trocar-senha" element={<TrocarSenha />} />
-          <Route path="/configuracoes/preferencias-notificacao" element={<PreferenciasNotificacao />} />
-          <Route path="/configuracoes/idioma-acessibilidade" element={<IdiomaAcessibilidade />} />
-          {/* Módulo de Saúde Routes */}
-          <Route path="/saude/atendimentos" element={<AtendimentosSaude />} />
-          <Route path="/saude/agendamentos-medicos" element={<AgendamentosMedicos />} />
-          <Route path="/saude/controle-medicamentos" element={<ControleMedicamentos />} />
-          <Route path="/saude/campanhas-saude" element={<CampanhasSaude />} />
-          <Route path="/saude/programas-saude" element={<ProgramasSaude />} />
-          <Route path="/saude/encaminhamentos-tfd" element={<EncaminhamentosTFD />} />
-          <Route path="/saude/exames" element={<Exames />} />
-          <Route path="/saude/acs" element={<ACS />} />
-          <Route path="/saude/transporte-pacientes" element={<TransportePacientes />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/catalogo-servicos" element={<CatalogoServicos />} />
+            <Route path="/meus-protocolos" element={<MeusProtocolos />} />
+            <Route path="/documentos-pessoais" element={<DocumentosPessoais />} />
+            <Route path="/minhas-avaliacoes" element={<MinhasAvaliacoes />} />
+            <Route path="/gabinete/atendimentos" element={<Atendimentos />} />
+            <Route path="/gabinete/visao-geral" element={<VisaoGeral />} />
+            <Route path="/gabinete/mapa-demandas" element={<MapaDemandas />} />
+            <Route path="/gabinete/relatorios-executivos" element={<RelatoriosExecutivos />} />
+            <Route path="/gabinete/ordens-setores" element={<OrdensSetores />} />
+            <Route path="/gabinete/gerenciar-permissoes" element={<GerenciarPermissoes />} />
+            {/* Correio Interno Routes */}
+            <Route path="/correio/caixa-entrada" element={<CaixaEntrada />} />
+            <Route path="/correio/caixa-saida" element={<CaixaSaida />} />
+            <Route path="/correio/novo-email" element={<NovoEmail />} />
+            <Route path="/correio/rascunhos" element={<Rascunhos />} />
+            <Route path="/correio/lixeira" element={<Lixeira />} />
+            <Route path="/correio/biblioteca-modelos" element={<BibliotecaModelos />} />
+            <Route path="/correio/assinaturas-digitais" element={<AssinaturasDigitais />} />
+            {/* Administração do Sistema Routes */}
+            <Route path="/administracao/gerenciamento-usuarios" element={<GerenciamentoUsuarios />} />
+            <Route path="/administracao/perfis-permissoes" element={<PerfisPermissoes />} />
+            <Route path="/administracao/setores-grupos" element={<SetoresGrupos />} />
+            <Route path="/administracao/configuracoes-gerais" element={<ConfiguracoesGerais />} />
+            <Route path="/administracao/auditoria-acessos" element={<AuditoriaAcessos />} />
+            {/* Relatórios e Indicadores Routes */}
+            <Route path="/relatorios/relatorios" element={<Relatorios />} />
+            <Route path="/relatorios/indicadores-atendimentos" element={<IndicadoresAtendimentos />} />
+            <Route path="/relatorios/estatisticas-uso" element={<EstatisticasUso />} />
+            <Route path="/relatorios/exportacoes" element={<Exportacoes />} />
+            {/* Configurações do Usuário Routes */}
+            <Route path="/configuracoes/meu-perfil" element={<MeuPerfil />} />
+            <Route path="/configuracoes/trocar-senha" element={<TrocarSenha />} />
+            <Route path="/configuracoes/preferencias-notificacao" element={<PreferenciasNotificacao />} />
+            <Route path="/configuracoes/idioma-acessibilidade" element={<IdiomaAcessibilidade />} />
+            {/* Módulo de Saúde Routes */}
+            <Route path="/saude/atendimentos" element={<AtendimentosSaude />} />
+            <Route path="/saude/agendamentos-medicos" element={<AgendamentosMedicos />} />
+            <Route path="/saude/controle-medicamentos" element={<ControleMedicamentos />} />
+            <Route path="/saude/campanhas-saude" element={<CampanhasSaude />} />
+            <Route path="/saude/programas-saude" element={<ProgramasSaude />} />
+            <Route path="/saude/encaminhamentos-tfd" element={<EncaminhamentosTFD />} />
+            <Route path="/saude/exames" element={<Exames />} />
+            <Route path="/saude/acs" element={<ACS />} />
+            <Route path="/saude/transporte-pacientes" element={<TransportePacientes />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
