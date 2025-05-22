@@ -58,6 +58,15 @@ import MatriculaAlunos from "./pages/educacao/MatriculaAlunos";
 import MerendaEscolar from "./pages/educacao/MerendaEscolar";
 import TransporteEscolar from "./pages/educacao/TransporteEscolar";
 
+// Assistência Social module imports
+import AtendimentosAssistencia from "./pages/assistencia-social/Atendimentos";
+import FamiliasVulneraveis from "./pages/assistencia-social/FamiliasVulneraveis";
+import CrasECreas from "./pages/assistencia-social/CrasECreas";
+import ProgramasSociais from "./pages/assistencia-social/ProgramasSociais";
+import GerenciamentoBeneficios from "./pages/assistencia-social/GerenciamentoBeneficios";
+import EntregasEmergenciais from "./pages/assistencia-social/EntregasEmergenciais";
+import RegistroVisitas from "./pages/assistencia-social/RegistroVisitas";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -121,6 +130,14 @@ const App = () => (
             <Route path="/educacao/matricula-alunos" element={<MatriculaAlunos />} />
             <Route path="/educacao/merenda-escolar" element={<MerendaEscolar />} />
             <Route path="/educacao/transporte-escolar" element={<TransporteEscolar />} />
+            {/* Módulo de Assistência Social Routes */}
+            <Route path="/assistencia-social/atendimentos" element={<AtendimentosAssistencia />} />
+            <Route path="/assistencia-social/familias-vulneraveis" element={<FamiliasVulneraveis />} />
+            <Route path="/assistencia-social/cras-e-creas" element={<CrasECreas />} />
+            <Route path="/assistencia-social/programas-sociais" element={<ProgramasSociais />} />
+            <Route path="/assistencia-social/gerenciamento-beneficios" element={<GerenciamentoBeneficios />} />
+            <Route path="/assistencia-social/entregas-emergenciais" element={<EntregasEmergenciais />} />
+            <Route path="/assistencia-social/registro-visitas" element={<RegistroVisitas />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
