@@ -50,6 +50,14 @@ import Exames from "./pages/saude/Exames";
 import ACS from "./pages/saude/ACS";
 import TransportePacientes from "./pages/saude/TransportePacientes";
 
+// Educação module imports
+import RegistroOcorrencias from "./pages/educacao/RegistroOcorrencias";
+import CalendarioEscolar from "./pages/educacao/CalendarioEscolar";
+import GestaoEscolar from "./pages/educacao/GestaoEscolar";
+import MatriculaAlunos from "./pages/educacao/MatriculaAlunos";
+import MerendaEscolar from "./pages/educacao/MerendaEscolar";
+import TransporteEscolar from "./pages/educacao/TransporteEscolar";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -106,6 +114,13 @@ const App = () => (
             <Route path="/saude/exames" element={<Exames />} />
             <Route path="/saude/acs" element={<ACS />} />
             <Route path="/saude/transporte-pacientes" element={<TransportePacientes />} />
+            {/* Módulo de Educação Routes */}
+            <Route path="/educacao/registro-ocorrencias" element={<RegistroOcorrencias />} />
+            <Route path="/educacao/calendario-escolar" element={<CalendarioEscolar />} />
+            <Route path="/educacao/gestao-escolar" element={<GestaoEscolar />} />
+            <Route path="/educacao/matricula-alunos" element={<MatriculaAlunos />} />
+            <Route path="/educacao/merenda-escolar" element={<MerendaEscolar />} />
+            <Route path="/educacao/transporte-escolar" element={<TransporteEscolar />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
