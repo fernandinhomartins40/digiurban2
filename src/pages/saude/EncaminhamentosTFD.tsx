@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -277,7 +276,7 @@ const EncaminhamentosTFD = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="todos">Todos os status</SelectItem>
                       <SelectItem value="solicitado">Solicitado</SelectItem>
                       <SelectItem value="aprovado">Aprovado</SelectItem>
                       <SelectItem value="em andamento">Em Andamento</SelectItem>
@@ -291,7 +290,7 @@ const EncaminhamentosTFD = () => {
                       <SelectValue placeholder="Prioridade" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as prioridades</SelectItem>
+                      <SelectItem value="todas">Todas as prioridades</SelectItem>
                       <SelectItem value="normal">Normal</SelectItem>
                       <SelectItem value="urgente">Urgente</SelectItem>
                       <SelectItem value="emergência">Emergência</SelectItem>
