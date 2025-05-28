@@ -1,5 +1,5 @@
-
 import { FC, useState } from "react";
+import { Link } from "react-router-dom";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
@@ -177,7 +177,7 @@ export const MobileSidebar: FC = () => {
         <div className="flex-1 overflow-y-auto py-2">
           <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
             <SidebarMenuItem 
-              href="#" 
+              href="/" 
               active={true}
               icon={
                 <svg
@@ -200,14 +200,14 @@ export const MobileSidebar: FC = () => {
             </SidebarMenuItem>
             
             <SidebarMenuItem 
-              href="#"
+              href="/chat"
               icon={<MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Chat
             </SidebarMenuItem>
 
             <SidebarMenuItem 
-              href="#"
+              href="/catalogo-servicos"
               icon={
                 <svg
                   className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
@@ -229,21 +229,21 @@ export const MobileSidebar: FC = () => {
             </SidebarMenuItem>
             
             <SidebarMenuItem 
-              href="#"
+              href="/meus-protocolos"
               icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Meus Protocolos
             </SidebarMenuItem>
             
             <SidebarMenuItem 
-              href="#"
+              href="/documentos-pessoais"
               icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Documentos Pessoais
             </SidebarMenuItem>
             
             <SidebarMenuItem 
-              href="#"
+              href="/minhas-avaliacoes"
               icon={<Star className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Minhas Avaliações
@@ -259,27 +259,27 @@ export const MobileSidebar: FC = () => {
               title="Gabinete do Prefeito" 
               icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/gabinete/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/gabinete/visao-geral">
                 <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Visão Geral
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/gabinete/mapa-demandas">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Mapa de Demandas
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/gabinete/relatorios-executivos">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Relatórios Executivos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/gabinete/ordens-setores">
                 <FileOutput className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Ordens aos Setores
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/gabinete/gerenciar-permissoes">
                 <Lock className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Gerenciar Permissões
               </SidebarMenuItem>
@@ -289,29 +289,33 @@ export const MobileSidebar: FC = () => {
               title="Correio Interno" 
               icon={<Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/correio/caixa-entrada">
                 <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Chat
+                Caixa de Entrada
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <EnvelopeMail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Email Interno
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/correio/caixa-saida">
                 <Send className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Criador de Ofícios
+                Caixa de Saída
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/correio/novo-email">
+                <EnvelopeMail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Novo Email
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/correio/rascunhos">
+                <FileType2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Rascunhos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/correio/lixeira">
+                <FileArchive className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Lixeira
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/correio/biblioteca-modelos">
                 <FileType2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Biblioteca de Modelos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/correio/assinaturas-digitais">
                 <Signature className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Assinaturas Digitais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <FileArchive className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Protocolos
               </SidebarMenuItem>
             </SidebarSubmenu>
 
@@ -319,23 +323,23 @@ export const MobileSidebar: FC = () => {
               title="Administração do Sistema" 
               icon={<Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/administracao/gerenciamento-usuarios">
                 <UsersRound className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Gerenciamento de Usuários
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/administracao/perfis-permissoes">
                 <ShieldCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Perfis e Permissões
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/administracao/setores-grupos">
                 <Network className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Setores e Grupos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/administracao/configuracoes-gerais">
                 <FolderCog className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Configurações Gerais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/administracao/auditoria-acessos">
                 <ScrollText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Auditoria de Acessos
               </SidebarMenuItem>
@@ -345,19 +349,19 @@ export const MobileSidebar: FC = () => {
               title="Relatórios e Indicadores" 
               icon={<BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/relatorios/relatorios">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Relatórios
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/relatorios/indicadores-atendimentos">
                 <PieChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Indicadores de Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/relatorios/estatisticas-uso">
                 <BarChart3 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Estatísticas de Uso
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/relatorios/exportacoes">
                 <Download className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Exportações (PDF/Excel)
               </SidebarMenuItem>
@@ -367,19 +371,19 @@ export const MobileSidebar: FC = () => {
               title="Configurações do Usuário" 
               icon={<User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/configuracoes/meu-perfil">
                 <UserCircle2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Meu Perfil
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/configuracoes/trocar-senha">
                 <KeyRound className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Trocar Senha
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/configuracoes/preferencias-notificacao">
                 <BellRing className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Preferências de Notificação
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/configuracoes/idioma-acessibilidade">
                 <Languages className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Idioma e Acessibilidade
               </SidebarMenuItem>
@@ -408,39 +412,39 @@ export const MobileSidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/agendamentos-medicos">
                 <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Agendamentos Médicos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/controle-medicamentos">
                 <Pill className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Controle de Medicamentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/campanhas-saude">
                 <Heart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Campanhas de Saúde
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/programas-saude">
                 <Heart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                 Programas de Saúde
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/encaminhamentos-tfd">
                 <ArrowRightToLine className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Encaminhamentos TFD
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/exames">
                 <TestTube className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Exames
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/acs">
                 <User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 ACS - Agentes de Saúde
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/saude/transporte-pacientes">
                 <Truck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Transporte de Pacientes
               </SidebarMenuItem>
@@ -465,29 +469,21 @@ export const MobileSidebar: FC = () => {
                 </svg>
               }
             >
-              <SidebarMenuItem href="/educacao/matriculas-online">
+              <SidebarMenuItem href="/educacao/matricula-alunos">
                 <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Matrículas Online
+                Matrícula de Alunos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/escolas">
+              <SidebarMenuItem href="/educacao/gestao-escolar">
                 <School className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Escolas /CMEI's
+                Gestão Escolar
               </SidebarMenuItem>
               <SidebarMenuItem href="/educacao/transporte-escolar">
                 <Bus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Transporte Escolar
               </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/notas-frequencias">
-                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Notas e Frequências
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/comunicacao-responsaveis">
-                <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Comunicação com Responsáveis
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/cardapios-escolares">
+              <SidebarMenuItem href="/educacao/merenda-escolar">
                 <BookOpenText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Cardápios Escolares
+                Merenda Escolar
               </SidebarMenuItem>
               <SidebarMenuItem href="/educacao/registro-ocorrencias">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -503,33 +499,55 @@ export const MobileSidebar: FC = () => {
               title="Assistência Social" 
               icon={<HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/atendimentos">
                 <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/familias-vulneraveis">
                 <HandCoins className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Famílias Vulneraveis
+                Famílias Vulneráveis
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/cras-e-creas">
                 <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 CRAS e CREAS
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/programas-sociais">
                 <HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                 Programas Sociais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/gerenciamento-beneficios">
                 <HandCoins className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                 Gerenciamento de Benefícios
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/entregas-emergenciais">
                 <Package className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Entregas Emergenciais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/assistencia-social/registro-visitas">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Registro de Visitas
+              </SidebarMenuItem>
+            </SidebarSubmenu>
+
+            <SidebarSubmenu 
+              title="Cultura" 
+              icon={<Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            >
+              <SidebarMenuItem href="/cultura/espacos-culturais">
+                <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Espaços Culturais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/cultura/projetos-culturais">
+                <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
+                Projetos Culturais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/cultura/eventos">
+                <Film className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Eventos Culturais
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/cultura/grupos-artisticos">
+                <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Grupos Artísticos
               </SidebarMenuItem>
             </SidebarSubmenu>
 
@@ -590,44 +608,6 @@ export const MobileSidebar: FC = () => {
               <SidebarMenuItem href="#">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Registro de Resultados
-              </SidebarMenuItem>
-            </SidebarSubmenu>
-
-            <SidebarSubmenu 
-              title="Cultura" 
-              icon={<Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
-            >
-              <SidebarMenuItem href="#">
-                <Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Atendimentos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Cursos e Oficinas
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Espaços Culturais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Solicitação de Espaços
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Grupos Artísticos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Film className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Eventos Culturais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Agenda de Eventos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
-                Programas Culturais
               </SidebarMenuItem>
             </SidebarSubmenu>
 

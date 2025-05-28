@@ -67,6 +67,12 @@ import GerenciamentoBeneficios from "./pages/assistencia-social/GerenciamentoBen
 import EntregasEmergenciais from "./pages/assistencia-social/EntregasEmergenciais";
 import RegistroVisitas from "./pages/assistencia-social/RegistroVisitas";
 
+// Cultura module imports
+import EspacosCulturais from "./pages/cultura/EspacosCulturais";
+import ProjetosCulturais from "./pages/cultura/ProjetosCulturais";
+import Eventos from "./pages/cultura/Eventos";
+import GruposArtisticos from "./pages/cultura/GruposArtisticos";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -138,6 +144,11 @@ const App = () => (
             <Route path="/assistencia-social/gerenciamento-beneficios" element={<GerenciamentoBeneficios />} />
             <Route path="/assistencia-social/entregas-emergenciais" element={<EntregasEmergenciais />} />
             <Route path="/assistencia-social/registro-visitas" element={<RegistroVisitas />} />
+            {/* Módulo de Cultura Routes */}
+            <Route path="/cultura/espacos-culturais" element={<EspacosCulturais />} />
+            <Route path="/cultura/projetos-culturais" element={<ProjetosCulturais />} />
+            <Route path="/cultura/eventos" element={<Eventos />} />
+            <Route path="/cultura/grupos-artisticos" element={<GruposArtisticos />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
