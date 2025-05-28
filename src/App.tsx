@@ -72,6 +72,7 @@ import EspacosCulturais from "./pages/cultura/EspacosCulturais";
 import ProjetosCulturais from "./pages/cultura/ProjetosCulturais";
 import Eventos from "./pages/cultura/Eventos";
 import GruposArtisticos from "./pages/cultura/GruposArtisticos";
+import ManifestacoesCulturais from "./pages/cultura/ManifestacoesCulturais";
 
 const queryClient = new QueryClient();
 
@@ -149,6 +150,7 @@ const App = () => (
             <Route path="/cultura/projetos-culturais" element={<ProjetosCulturais />} />
             <Route path="/cultura/eventos" element={<Eventos />} />
             <Route path="/cultura/grupos-artisticos" element={<GruposArtisticos />} />
+            <Route path="/cultura/manifestacoes-culturais" element={<ManifestacoesCulturais />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

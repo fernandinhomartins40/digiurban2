@@ -100,7 +100,8 @@ import {
   BarChart3,
   Download,
   UserCircle2,
-  Star
+  Star,
+  Palette
 } from "lucide-react";
 
 export const MobileSidebar: FC = () => {
@@ -548,6 +549,10 @@ export const MobileSidebar: FC = () => {
               <SidebarMenuItem href="/cultura/grupos-artisticos">
                 <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Grupos Artísticos
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/cultura/manifestacoes-culturais">
+                <Palette className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Manifestações Culturais
               </SidebarMenuItem>
             </SidebarSubmenu>
 
