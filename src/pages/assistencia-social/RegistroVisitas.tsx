@@ -38,7 +38,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Visita } from "@/types/assistencia-social";
-import { Search, Plus, MapPin, Calendar, FileText, User, CheckCircle2, AlertCircle, Home, Eye } from "lucide-react";
+import { Search, Plus, MapPin, Calendar, FileText, User, CheckCircle2, AlertCircle, Home, Eye, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // Mock data
