@@ -1,163 +1,184 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
-const Index = lazy(() => import("./pages/Index"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const Chat = lazy(() => import("./pages/Chat"));
-import CatalogoServicos from "./pages/CatalogoServicos";
-import MeusProtocolos from "./pages/MeusProtocolos";
-import DocumentosPessoais from "./pages/DocumentosPessoais";
-import MinhasAvaliacoes from "./pages/MinhasAvaliacoes";
-import Atendimentos from "./pages/gabinete/Atendimentos";
-import VisaoGeral from "./pages/gabinete/VisaoGeral";
-import MapaDemandas from "./pages/gabinete/MapaDemandas";
-import RelatoriosExecutivos from "./pages/gabinete/RelatoriosExecutivos";
-import OrdensSetores from "./pages/gabinete/OrdensSetores";
-import GerenciarPermissoes from "./pages/gabinete/GerenciarPermissoes";
-import CaixaEntrada from "./pages/correio/CaixaEntrada";
-import CaixaSaida from "./pages/correio/CaixaSaida";
-import NovoEmail from "./pages/correio/NovoEmail";
-import Rascunhos from "./pages/correio/Rascunhos";
-import Lixeira from "./pages/correio/Lixeira";
-import BibliotecaModelos from "./pages/correio/BibliotecaModelos";
-import AssinaturasDigitais from "./pages/correio/AssinaturasDigitais";
-import GerenciamentoUsuarios from "./pages/administracao/GerenciamentoUsuarios";
-import PerfisPermissoes from "./pages/administracao/PerfisPermissoes";
-import SetoresGrupos from "./pages/administracao/SetoresGrupos";
-import ConfiguracoesGerais from "./pages/administracao/ConfiguracoesGerais";
-import AuditoriaAcessos from "./pages/administracao/AuditoriaAcessos";
-import Relatorios from "./pages/relatorios/Relatorios";
-import IndicadoresAtendimentos from "./pages/relatorios/IndicadoresAtendimentos";
-import EstatisticasUso from "./pages/relatorios/EstatisticasUso";
-import Exportacoes from "./pages/relatorios/Exportacoes";
-import MeuPerfil from "./pages/configuracoes/MeuPerfil";
-import TrocarSenha from "./pages/configuracoes/TrocarSenha";
-import PreferenciasNotificacao from "./pages/configuracoes/PreferenciasNotificacao";
-import IdiomaAcessibilidade from "./pages/configuracoes/IdiomaAcessibilidade";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
 
-// Saúde module imports
-import AtendimentosSaude from "./pages/saude/Atendimentos";
-import AgendamentosMedicos from "./pages/saude/AgendamentosMedicos";
-import ControleMedicamentos from "./pages/saude/ControleMedicamentos";
-import CampanhasSaude from "./pages/saude/CampanhasSaude";
-import ProgramasSaude from "./pages/saude/ProgramasSaude";
-import EncaminhamentosTFD from "./pages/saude/EncaminhamentosTFD";
-import Exames from "./pages/saude/Exames";
-import ACS from "./pages/saude/ACS";
-import TransportePacientes from "./pages/saude/TransportePacientes";
+// Import all pages
+import Index from './pages/Index';
+import Chat from './pages/Chat';
+import CatalogoServicos from './pages/CatalogoServicos';
+import MeusProtocolos from './pages/MeusProtocolos';
+import DocumentosPessoais from './pages/DocumentosPessoais';
+import MinhasAvaliacoes from './pages/MinhasAvaliacoes';
 
-// Educação module imports
-import RegistroOcorrencias from "./pages/educacao/RegistroOcorrencias";
-import CalendarioEscolar from "./pages/educacao/CalendarioEscolar";
-import GestaoEscolar from "./pages/educacao/GestaoEscolar";
-import MatriculaAlunos from "./pages/educacao/MatriculaAlunos";
-import MerendaEscolar from "./pages/educacao/MerendaEscolar";
-import TransporteEscolar from "./pages/educacao/TransporteEscolar";
+// Gabinete
+import GabineteAtendimentos from './pages/gabinete/Atendimentos';
+import GabineteVisaoGeral from './pages/gabinete/VisaoGeral';
+import GabineteMapaDemandas from './pages/gabinete/MapaDemandas';
+import GabineteRelatoriosExecutivos from './pages/gabinete/RelatoriosExecutivos';
+import GabineteOrdensSetores from './pages/gabinete/OrdensSetores';
+import GabineteGerenciarPermissoes from './pages/gabinete/GerenciarPermissoes';
 
-// Assistência Social module imports
-import AtendimentosAssistencia from "./pages/assistencia-social/Atendimentos";
-import FamiliasVulneraveis from "./pages/assistencia-social/FamiliasVulneraveis";
-import CrasECreas from "./pages/assistencia-social/CrasECreas";
-import ProgramasSociais from "./pages/assistencia-social/ProgramasSociais";
-import GerenciamentoBeneficios from "./pages/assistencia-social/GerenciamentoBeneficios";
-import EntregasEmergenciais from "./pages/assistencia-social/EntregasEmergenciais";
-import RegistroVisitas from "./pages/assistencia-social/RegistroVisitas";
+// Correio
+import CorreioCaixaEntrada from './pages/correio/CaixaEntrada';
+import CorreioCaixaSaida from './pages/correio/CaixaSaida';
+import CorreioNovoEmail from './pages/correio/NovoEmail';
+import CorreioRascunhos from './pages/correio/Rascunhos';
+import CorreioLixeira from './pages/correio/Lixeira';
+import CorreioBibliotecaModelos from './pages/correio/BibliotecaModelos';
+import CorreioAssinaturasDigitais from './pages/correio/AssinaturasDigitais';
 
-// Cultura module imports
-import EspacosCulturais from "./pages/cultura/EspacosCulturais";
-import ProjetosCulturais from "./pages/cultura/ProjetosCulturais";
-import Eventos from "./pages/cultura/Eventos";
-import GruposArtisticos from "./pages/cultura/GruposArtisticos";
-import ManifestacoesCulturais from "./pages/cultura/ManifestacoesCulturais";
+// Administração
+import AdministracaoGerenciamentoUsuarios from './pages/administracao/GerenciamentoUsuarios';
+import AdministracaoPerfisPermissoes from './pages/administracao/PerfisPermissoes';
+import AdministracaoSetoresGrupos from './pages/administracao/SetoresGrupos';
+import AdministracaoConfiguracoesGerais from './pages/administracao/ConfiguracoesGerais';
+import AdministracaoAuditoriaAcessos from './pages/administracao/AuditoriaAcessos';
+
+// Relatórios
+import RelatoriosRelatorios from './pages/relatorios/Relatorios';
+import RelatoriosIndicadoresAtendimentos from './pages/relatorios/IndicadoresAtendimentos';
+import RelatoriosEstatisticasUso from './pages/relatorios/EstatisticasUso';
+import RelatoriosExportacoes from './pages/relatorios/Exportacoes';
+
+// Configurações
+import ConfiguracoesMeuPerfil from './pages/configuracoes/MeuPerfil';
+import ConfiguracoesTrocarSenha from './pages/configuracoes/TrocarSenha';
+import ConfiguracoesPreferenciasNotificacao from './pages/configuracoes/PreferenciasNotificacao';
+import ConfiguracoesIdiomaAcessibilidade from './pages/configuracoes/IdiomaAcessibilidade';
+
+// Saúde
+import SaudeAtendimentos from './pages/saude/Atendimentos';
+import SaudeAgendamentosMedicos from './pages/saude/AgendamentosMedicos';
+import SaudeControleMedicamentos from './pages/saude/ControleMedicamentos';
+import SaudeCampanhasSaude from './pages/saude/CampanhasSaude';
+import SaudeProgramasSaude from './pages/saude/ProgramasSaude';
+import SaudeEncaminhamentosTFD from './pages/saude/EncaminhamentosTFD';
+import SaudeExames from './pages/saude/Exames';
+import SaudeACS from './pages/saude/ACS';
+import SaudeTransportePacientes from './pages/saude/TransportePacientes';
+
+// Educação
+import EducacaoMatriculaAlunos from './pages/educacao/MatriculaAlunos';
+import EducacaoGestaoEscolar from './pages/educacao/GestaoEscolar';
+import EducacaoTransporteEscolar from './pages/educacao/TransporteEscolar';
+import EducacaoMerendaEscolar from './pages/educacao/MerendaEscolar';
+import EducacaoRegistroOcorrencias from './pages/educacao/RegistroOcorrencias';
+import EducacaoCalendarioEscolar from './pages/educacao/CalendarioEscolar';
+
+// Assistência Social
+import AssistenciaSocialAtendimentos from './pages/assistencia-social/Atendimentos';
+import AssistenciaSocialFamiliasVulneraveis from './pages/assistencia-social/FamiliasVulneraveis';
+import AssistenciaSocialCrasECreas from './pages/assistencia-social/CrasECreas';
+import AssistenciaSocialProgramasSociais from './pages/assistencia-social/ProgramasSociais';
+import AssistenciaSocialGerenciamentoBeneficios from './pages/assistencia-social/GerenciamentoBeneficios';
+import AssistenciaSocialEntregasEmergenciais from './pages/assistencia-social/EntregasEmergenciais';
+import AssistenciaSocialRegistroVisitas from './pages/assistencia-social/RegistroVisitas';
+
+// Cultura
+import CulturaEspacosCulturais from './pages/cultura/EspacosCulturais';
+import CulturaProjetosCulturais from './pages/cultura/ProjetosCulturais';
+import CulturaEventos from './pages/cultura/Eventos';
+import CulturaGruposArtisticos from './pages/cultura/GruposArtisticos';
+import CulturaManifestacoesCulturais from './pages/cultura/ManifestacoesCulturais';
+import CulturaOficinasCursos from './pages/cultura/OficinasCursos';
+
+import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Suspense fallback={<div className="flex items-center justify-center h-screen">Carregando...</div>}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/catalogo-servicos" element={<CatalogoServicos />} />
-            <Route path="/meus-protocolos" element={<MeusProtocolos />} />
-            <Route path="/documentos-pessoais" element={<DocumentosPessoais />} />
-            <Route path="/minhas-avaliacoes" element={<MinhasAvaliacoes />} />
-            <Route path="/gabinete/atendimentos" element={<Atendimentos />} />
-            <Route path="/gabinete/visao-geral" element={<VisaoGeral />} />
-            <Route path="/gabinete/mapa-demandas" element={<MapaDemandas />} />
-            <Route path="/gabinete/relatorios-executivos" element={<RelatoriosExecutivos />} />
-            <Route path="/gabinete/ordens-setores" element={<OrdensSetores />} />
-            <Route path="/gabinete/gerenciar-permissoes" element={<GerenciarPermissoes />} />
-            {/* Correio Interno Routes */}
-            <Route path="/correio/caixa-entrada" element={<CaixaEntrada />} />
-            <Route path="/correio/caixa-saida" element={<CaixaSaida />} />
-            <Route path="/correio/novo-email" element={<NovoEmail />} />
-            <Route path="/correio/rascunhos" element={<Rascunhos />} />
-            <Route path="/correio/lixeira" element={<Lixeira />} />
-            <Route path="/correio/biblioteca-modelos" element={<BibliotecaModelos />} />
-            <Route path="/correio/assinaturas-digitais" element={<AssinaturasDigitais />} />
-            {/* Administração do Sistema Routes */}
-            <Route path="/administracao/gerenciamento-usuarios" element={<GerenciamentoUsuarios />} />
-            <Route path="/administracao/perfis-permissoes" element={<PerfisPermissoes />} />
-            <Route path="/administracao/setores-grupos" element={<SetoresGrupos />} />
-            <Route path="/administracao/configuracoes-gerais" element={<ConfiguracoesGerais />} />
-            <Route path="/administracao/auditoria-acessos" element={<AuditoriaAcessos />} />
-            {/* Relatórios e Indicadores Routes */}
-            <Route path="/relatorios/relatorios" element={<Relatorios />} />
-            <Route path="/relatorios/indicadores-atendimentos" element={<IndicadoresAtendimentos />} />
-            <Route path="/relatorios/estatisticas-uso" element={<EstatisticasUso />} />
-            <Route path="/relatorios/exportacoes" element={<Exportacoes />} />
-            {/* Configurações do Usuário Routes */}
-            <Route path="/configuracoes/meu-perfil" element={<MeuPerfil />} />
-            <Route path="/configuracoes/trocar-senha" element={<TrocarSenha />} />
-            <Route path="/configuracoes/preferencias-notificacao" element={<PreferenciasNotificacao />} />
-            <Route path="/configuracoes/idioma-acessibilidade" element={<IdiomaAcessibilidade />} />
-            {/* Módulo de Saúde Routes */}
-            <Route path="/saude/atendimentos" element={<AtendimentosSaude />} />
-            <Route path="/saude/agendamentos-medicos" element={<AgendamentosMedicos />} />
-            <Route path="/saude/controle-medicamentos" element={<ControleMedicamentos />} />
-            <Route path="/saude/campanhas-saude" element={<CampanhasSaude />} />
-            <Route path="/saude/programas-saude" element={<ProgramasSaude />} />
-            <Route path="/saude/encaminhamentos-tfd" element={<EncaminhamentosTFD />} />
-            <Route path="/saude/exames" element={<Exames />} />
-            <Route path="/saude/acs" element={<ACS />} />
-            <Route path="/saude/transporte-pacientes" element={<TransportePacientes />} />
-            {/* Módulo de Educação Routes */}
-            <Route path="/educacao/registro-ocorrencias" element={<RegistroOcorrencias />} />
-            <Route path="/educacao/calendario-escolar" element={<CalendarioEscolar />} />
-            <Route path="/educacao/gestao-escolar" element={<GestaoEscolar />} />
-            <Route path="/educacao/matricula-alunos" element={<MatriculaAlunos />} />
-            <Route path="/educacao/merenda-escolar" element={<MerendaEscolar />} />
-            <Route path="/educacao/transporte-escolar" element={<TransporteEscolar />} />
-            {/* Módulo de Assistência Social Routes */}
-            <Route path="/assistencia-social/atendimentos" element={<AtendimentosAssistencia />} />
-            <Route path="/assistencia-social/familias-vulneraveis" element={<FamiliasVulneraveis />} />
-            <Route path="/assistencia-social/cras-e-creas" element={<CrasECreas />} />
-            <Route path="/assistencia-social/programas-sociais" element={<ProgramasSociais />} />
-            <Route path="/assistencia-social/gerenciamento-beneficios" element={<GerenciamentoBeneficios />} />
-            <Route path="/assistencia-social/entregas-emergenciais" element={<EntregasEmergenciais />} />
-            <Route path="/assistencia-social/registro-visitas" element={<RegistroVisitas />} />
-            {/* Módulo de Cultura Routes */}
-            <Route path="/cultura/espacos-culturais" element={<EspacosCulturais />} />
-            <Route path="/cultura/projetos-culturais" element={<ProjetosCulturais />} />
-            <Route path="/cultura/eventos" element={<Eventos />} />
-            <Route path="/cultura/grupos-artisticos" element={<GruposArtisticos />} />
-            <Route path="/cultura/manifestacoes-culturais" element={<ManifestacoesCulturais />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          {/* Main pages */}
+          <Route path="/" element={<Index />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/catalogo-servicos" element={<CatalogoServicos />} />
+          <Route path="/meus-protocolos" element={<MeusProtocolos />} />
+          <Route path="/documentos-pessoais" element={<DocumentosPessoais />} />
+          <Route path="/minhas-avaliacoes" element={<MinhasAvaliacoes />} />
+
+          {/* Gabinete */}
+          <Route path="/gabinete/atendimentos" element={<GabineteAtendimentos />} />
+          <Route path="/gabinete/visao-geral" element={<GabineteVisaoGeral />} />
+          <Route path="/gabinete/mapa-demandas" element={<GabineteMapaDemandas />} />
+          <Route path="/gabinete/relatorios-executivos" element={<GabineteRelatoriosExecutivos />} />
+          <Route path="/gabinete/ordens-setores" element={<GabineteOrdensSetores />} />
+          <Route path="/gabinete/gerenciar-permissoes" element={<GabineteGerenciarPermissoes />} />
+
+          {/* Correio */}
+          <Route path="/correio/caixa-entrada" element={<CorreioCaixaEntrada />} />
+          <Route path="/correio/caixa-saida" element={<CorreioCaixaSaida />} />
+          <Route path="/correio/novo-email" element={<CorreioNovoEmail />} />
+          <Route path="/correio/rascunhos" element={<CorreioRascunhos />} />
+          <Route path="/correio/lixeira" element={<CorreioLixeira />} />
+          <Route path="/correio/biblioteca-modelos" element={<CorreioBibliotecaModelos />} />
+          <Route path="/correio/assinaturas-digitais" element={<CorreioAssinaturasDigitais />} />
+
+          {/* Administração */}
+          <Route path="/administracao/gerenciamento-usuarios" element={<AdministracaoGerenciamentoUsuarios />} />
+          <Route path="/administracao/perfis-permissoes" element={<AdministracaoPerfisPermissoes />} />
+          <Route path="/administracao/setores-grupos" element={<AdministracaoSetoresGrupos />} />
+          <Route path="/administracao/configuracoes-gerais" element={<AdministracaoConfiguracoesGerais />} />
+          <Route path="/administracao/auditoria-acessos" element={<AdministracaoAuditoriaAcessos />} />
+
+          {/* Relatórios */}
+          <Route path="/relatorios/relatorios" element={<RelatoriosRelatorios />} />
+          <Route path="/relatorios/indicadores-atendimentos" element={<RelatoriosIndicadoresAtendimentos />} />
+          <Route path="/relatorios/estatisticas-uso" element={<RelatoriosEstatisticasUso />} />
+          <Route path="/relatorios/exportacoes" element={<RelatoriosExportacoes />} />
+
+          {/* Configurações */}
+          <Route path="/configuracoes/meu-perfil" element={<ConfiguracoesMeuPerfil />} />
+          <Route path="/configuracoes/trocar-senha" element={<ConfiguracoesTrocarSenha />} />
+          <Route path="/configuracoes/preferencias-notificacao" element={<ConfiguracoesPreferenciasNotificacao />} />
+          <Route path="/configuracoes/idioma-acessibilidade" element={<ConfiguracoesIdiomaAcessibilidade />} />
+
+          {/* Saúde */}
+          <Route path="/saude/atendimentos" element={<SaudeAtendimentos />} />
+          <Route path="/saude/agendamentos-medicos" element={<SaudeAgendamentosMedicos />} />
+          <Route path="/saude/controle-medicamentos" element={<SaudeControleMedicamentos />} />
+          <Route path="/saude/campanhas-saude" element={<SaudeCampanhasSaude />} />
+          <Route path="/saude/programas-saude" element={<SaudeProgramasSaude />} />
+          <Route path="/saude/encaminhamentos-tfd" element={<SaudeEncaminhamentosTFD />} />
+          <Route path="/saude/exames" element={<SaudeExames />} />
+          <Route path="/saude/acs" element={<SaudeACS />} />
+          <Route path="/saude/transporte-pacientes" element={<SaudeTransportePacientes />} />
+
+          {/* Educação */}
+          <Route path="/educacao/matricula-alunos" element={<EducacaoMatriculaAlunos />} />
+          <Route path="/educacao/gestao-escolar" element={<EducacaoGestaoEscolar />} />
+          <Route path="/educacao/transporte-escolar" element={<EducacaoTransporteEscolar />} />
+          <Route path="/educacao/merenda-escolar" element={<EducacaoMerendaEscolar />} />
+          <Route path="/educacao/registro-ocorrencias" element={<EducacaoRegistroOcorrencias />} />
+          <Route path="/educacao/calendario-escolar" element={<EducacaoCalendarioEscolar />} />
+
+          {/* Assistência Social */}
+          <Route path="/assistencia-social/atendimentos" element={<AssistenciaSocialAtendimentos />} />
+          <Route path="/assistencia-social/familias-vulneraveis" element={<AssistenciaSocialFamiliasVulneraveis />} />
+          <Route path="/assistencia-social/cras-e-creas" element={<AssistenciaSocialCrasECreas />} />
+          <Route path="/assistencia-social/programas-sociais" element={<AssistenciaSocialProgramasSociais />} />
+          <Route path="/assistencia-social/gerenciamento-beneficios" element={<AssistenciaSocialGerenciamentoBeneficios />} />
+          <Route path="/assistencia-social/entregas-emergenciais" element={<AssistenciaSocialEntregasEmergenciais />} />
+          <Route path="/assistencia-social/registro-visitas" element={<AssistenciaSocialRegistroVisitas />} />
+
+          {/* Cultura */}
+          <Route path="/cultura/espacos-culturais" element={<CulturaEspacosCulturais />} />
+          <Route path="/cultura/projetos-culturais" element={<CulturaProjetosCulturais />} />
+          <Route path="/cultura/eventos" element={<CulturaEventos />} />
+          <Route path="/cultura/grupos-artisticos" element={<CulturaGruposArtisticos />} />
+          <Route path="/cultura/manifestacoes-culturais" element={<CulturaManifestacoesCulturais />} />
+          <Route path="/cultura/oficinas-cursos" element={<CulturaOficinasCursos />} />
+
+          {/* 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Toaster />
+      </Router>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

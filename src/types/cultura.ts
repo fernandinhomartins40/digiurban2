@@ -71,3 +71,41 @@ export interface Oficina {
   status: "planejada" | "aberta" | "em andamento" | "finalizada" | "cancelada";
   inscritos?: string[];
 }
+
+export interface EventoCultural {
+  id: string;
+  nome: string;
+  categoria: string;
+  dataInicio: string;
+  dataFim: string;
+  horarioInicio: string;
+  horarioFim: string;
+  local: string;
+  capacidade: number;
+  inscricoes: number;
+  organizador: string;
+  descricao: string;
+  valor?: number;
+  gratuito: boolean;
+  status: "planejado" | "aberto" | "em_andamento" | "finalizado" | "cancelado";
+  publicoAlvo: string;
+  requisitos?: string;
+  participantes?: string[];
+}
+
+export interface GrupoArtistico {
+  id: string;
+  nome: string;
+  categoria: string;
+  lider: string;
+  telefone?: string;
+  email?: string;
+  membros: number;
+  dataFundacao: string;
+  descricao: string;
+  local: string;
+  status: "ativo" | "inativo" | "suspenso";
+  proximaApresentacao?: string;
+  localApresentacao?: string;
+  historico: string[];
+}

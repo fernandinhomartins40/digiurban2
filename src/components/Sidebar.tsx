@@ -490,6 +490,10 @@ export const Sidebar: FC = () => {
                 <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Grupos Artísticos
               </SidebarMenuItem>
+              <SidebarMenuItem href="/cultura/oficinas-cursos">
+                <GraduationCap className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
+                Oficinas e Cursos
+              </SidebarMenuItem>
               <SidebarMenuItem href="/cultura/manifestacoes-culturais">
                 <Palette className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Manifestações Culturais
