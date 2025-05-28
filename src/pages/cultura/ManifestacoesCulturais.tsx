@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -246,7 +247,7 @@ const ManifestacoesCulturais = () => {
                         <TableCell>
                           <div className="font-medium">{manifestacao.nome}</div>
                           <div className="text-xs text-muted-foreground flex items-center">
-                            <Heritage className="h-3 w-3 mr-1" />
+                            <Building2 className="h-3 w-3 mr-1" />
                             {manifestacao.tipo}
                           </div>
                         </TableCell>
