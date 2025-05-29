@@ -83,6 +83,13 @@ import CulturaGruposArtisticos from './pages/cultura/GruposArtisticos';
 import CulturaManifestacoesCulturais from './pages/cultura/ManifestacoesCulturais';
 import CulturaOficinasCursos from './pages/cultura/OficinasCursos';
 
+// Agricultura
+import AgriculturaAtendimentos from './pages/agricultura/Atendimentos';
+import AgriculturaCadastroProdutores from './pages/agricultura/CadastroProdutores';
+import AgriculturaAssistenciaTecnica from './pages/agricultura/AssistenciaTecnica';
+import AgriculturaProgramasRurais from './pages/agricultura/ProgramasRurais';
+import AgriculturaCursosCapacitacoes from './pages/agricultura/CursosCapacitacoes';
+
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -171,6 +178,13 @@ function App() {
           <Route path="/cultura/grupos-artisticos" element={<CulturaGruposArtisticos />} />
           <Route path="/cultura/manifestacoes-culturais" element={<CulturaManifestacoesCulturais />} />
           <Route path="/cultura/oficinas-cursos" element={<CulturaOficinasCursos />} />
+
+          {/* Agricultura */}
+          <Route path="/agricultura/atendimentos" element={<AgriculturaAtendimentos />} />
+          <Route path="/agricultura/cadastro-produtores" element={<AgriculturaCadastroProdutores />} />
+          <Route path="/agricultura/assistencia-tecnica" element={<AgriculturaAssistenciaTecnica />} />
+          <Route path="/agricultura/programas-rurais" element={<AgriculturaProgramasRurais />} />
+          <Route path="/agricultura/cursos-capacitacoes" element={<AgriculturaCursosCapacitacoes />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
