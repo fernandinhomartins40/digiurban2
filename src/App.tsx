@@ -90,6 +90,15 @@ import AgriculturaAssistenciaTecnica from './pages/agricultura/AssistenciaTecnic
 import AgriculturaProgramasRurais from './pages/agricultura/ProgramasRurais';
 import AgriculturaCursosCapacitacoes from './pages/agricultura/CursosCapacitacoes';
 
+// Esportes
+import EsportesAtendimentos from './pages/esportes/Atendimentos';
+import EsportesEquipesEsportivas from './pages/esportes/EquipesEsportivas';
+import EsportesCompeticoesTorneios from './pages/esportes/CompeticoesTorneios';
+import EsportesAtletasFederados from './pages/esportes/AtletasFederados';
+import EsportesEscolinhasEsportivas from './pages/esportes/EscolinhasEsportivas';
+import EsportesEventosEsportivos from './pages/esportes/EventosEsportivos';
+import EsportesInfraestruturaEsportiva from './pages/esportes/InfraestruturaEsportiva';
+
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -185,6 +194,15 @@ function App() {
           <Route path="/agricultura/assistencia-tecnica" element={<AgriculturaAssistenciaTecnica />} />
           <Route path="/agricultura/programas-rurais" element={<AgriculturaProgramasRurais />} />
           <Route path="/agricultura/cursos-capacitacoes" element={<AgriculturaCursosCapacitacoes />} />
+
+          {/* Esportes */}
+          <Route path="/esportes/atendimentos" element={<EsportesAtendimentos />} />
+          <Route path="/esportes/equipes-esportivas" element={<EsportesEquipesEsportivas />} />
+          <Route path="/esportes/competicoes-torneios" element={<EsportesCompeticoesTorneios />} />
+          <Route path="/esportes/atletas-federados" element={<EsportesAtletasFederados />} />
+          <Route path="/esportes/escolinhas-esportivas" element={<EsportesEscolinhasEsportivas />} />
+          <Route path="/esportes/eventos-esportivos" element={<EsportesEventosEsportivos />} />
+          <Route path="/esportes/infraestrutura-esportiva" element={<EsportesInfraestruturaEsportiva />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
