@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
@@ -98,6 +97,14 @@ import EsportesAtletasFederados from './pages/esportes/AtletasFederados';
 import EsportesEscolinhasEsportivas from './pages/esportes/EscolinhasEsportivas';
 import EsportesEventosEsportivos from './pages/esportes/EventosEsportivos';
 import EsportesInfraestruturaEsportiva from './pages/esportes/InfraestruturaEsportiva';
+
+// Turismo
+import TurismoAtendimentos from './pages/turismo/Atendimentos';
+import TurismoPontosTuristicos from './pages/turismo/PontosTuristicos';
+import TurismoEstabelecimentosLocais from './pages/turismo/EstabelecimentosLocais';
+import TurismoProgramasTuristicos from './pages/turismo/ProgramasTuristicos';
+import TurismoMapaTuristico from './pages/turismo/MapaTuristico';
+import TurismoInformacoesTuristicas from './pages/turismo/InformacoesTuristicas';
 
 import NotFound from './pages/NotFound';
 
@@ -203,6 +210,14 @@ function App() {
           <Route path="/esportes/escolinhas-esportivas" element={<EsportesEscolinhasEsportivas />} />
           <Route path="/esportes/eventos-esportivos" element={<EsportesEventosEsportivos />} />
           <Route path="/esportes/infraestrutura-esportiva" element={<EsportesInfraestruturaEsportiva />} />
+
+          {/* Turismo */}
+          <Route path="/turismo/atendimentos" element={<TurismoAtendimentos />} />
+          <Route path="/turismo/pontos-turisticos" element={<TurismoPontosTuristicos />} />
+          <Route path="/turismo/estabelecimentos-locais" element={<TurismoEstabelecimentosLocais />} />
+          <Route path="/turismo/programas-turisticos" element={<TurismoProgramasTuristicos />} />
+          <Route path="/turismo/mapa-turistico" element={<TurismoMapaTuristico />} />
+          <Route path="/turismo/informacoes-turisticas" element={<TurismoInformacoesTuristicas />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
