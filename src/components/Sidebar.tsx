@@ -659,27 +659,27 @@ export const Sidebar: FC = () => {
               title="Planejamento Urbano" 
               icon={<Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/aprovacao-projetos">
                 <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Aprovação de Projetos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/emissao-alvaras">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Emissão de Alvarás
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/reclamacoes-denuncias">
                 <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Reclamações e Denuncias
+                Reclamações e Denúncias
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/consultas-publicas">
                 <Search className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Consultas Públicas
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/mapa-urbano">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Mapa Urbano
               </SidebarMenuItem>

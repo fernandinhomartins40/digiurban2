@@ -120,6 +120,14 @@ import MeioAmbienteRegistroDenuncias from './pages/meio-ambiente/RegistroDenunci
 import MeioAmbienteAreasProtegidas from './pages/meio-ambiente/AreasProtegidas';
 import MeioAmbienteProgramasAmbientais from './pages/meio-ambiente/ProgramasAmbientais';
 
+// Planejamento Urbano
+import PlanejamentoUrbanoAtendimentos from './pages/planejamento-urbano/Atendimentos';
+import AprovacaoProjetos from './pages/planejamento-urbano/AprovacaoProjetos';
+import EmissaoAlvaras from './pages/planejamento-urbano/EmissaoAlvaras';
+import ReclamacoesDenuncias from './pages/planejamento-urbano/ReclamacoesDenuncias';
+import ConsultasPublicas from './pages/planejamento-urbano/ConsultasPublicas';
+import MapaUrbano from './pages/planejamento-urbano/MapaUrbano';
+
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -246,6 +254,14 @@ function App() {
           <Route path="/meio-ambiente/registro-denuncias" element={<MeioAmbienteRegistroDenuncias />} />
           <Route path="/meio-ambiente/areas-protegidas" element={<MeioAmbienteAreasProtegidas />} />
           <Route path="/meio-ambiente/programas-ambientais" element={<MeioAmbienteProgramasAmbientais />} />
+
+          {/* Planejamento Urbano */}
+          <Route path="/planejamento-urbano/atendimentos" element={<PlanejamentoUrbanoAtendimentos />} />
+          <Route path="/planejamento-urbano/aprovacao-projetos" element={<AprovacaoProjetos />} />
+          <Route path="/planejamento-urbano/emissao-alvaras" element={<EmissaoAlvaras />} />
+          <Route path="/planejamento-urbano/reclamacoes-denuncias" element={<ReclamacoesDenuncias />} />
+          <Route path="/planejamento-urbano/consultas-publicas" element={<ConsultasPublicas />} />
+          <Route path="/planejamento-urbano/mapa-urbano" element={<MapaUrbano />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
