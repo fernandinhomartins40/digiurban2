@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -258,9 +257,9 @@ const CalendarioEscolar = () => {
     
     return (
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (typeFilter === "" || event.type === typeFilter) &&
-      (schoolFilter === "" || event.schoolId === schoolFilter) &&
-      (monthFilter === "" || eventMonth === monthFilter)
+      (typeFilter === "" || typeFilter === "all" || event.type === typeFilter) &&
+      (schoolFilter === "" || schoolFilter === "all" || event.schoolId === schoolFilter) &&
+      (monthFilter === "" || monthFilter === "all" || eventMonth === monthFilter)
     );
   });
 
@@ -332,7 +331,7 @@ const CalendarioEscolar = () => {
                             <SelectValue placeholder="Filtrar por mês" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Todos os meses</SelectItem>
+                            <SelectItem value="all">Todos os meses</SelectItem>
                             <SelectItem value="0">Janeiro</SelectItem>
                             <SelectItem value="1">Fevereiro</SelectItem>
                             <SelectItem value="2">Março</SelectItem>
@@ -354,7 +353,7 @@ const CalendarioEscolar = () => {
                             <SelectValue placeholder="Filtrar por tipo" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Todos os tipos</SelectItem>
+                            <SelectItem value="all">Todos os tipos</SelectItem>
                             <SelectItem value="holiday">Feriados</SelectItem>
                             <SelectItem value="recess">Recessos</SelectItem>
                             <SelectItem value="pedagogical">Pedagógicos</SelectItem>
@@ -371,7 +370,7 @@ const CalendarioEscolar = () => {
                             <SelectValue placeholder="Filtrar por escola" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Todas as escolas</SelectItem>
+                            <SelectItem value="all">Todas as escolas</SelectItem>
                             <SelectItem value="sch1">E.M. João Paulo</SelectItem>
                             <SelectItem value="sch2">E.M. Maria José</SelectItem>
                             <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
@@ -508,7 +507,7 @@ const CalendarioEscolar = () => {
                       <SelectValue placeholder="Tipo de evento" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os tipos</SelectItem>
+                      <SelectItem value="all">Todos os tipos</SelectItem>
                       <SelectItem value="holiday">Feriado</SelectItem>
                       <SelectItem value="recess">Recesso</SelectItem>
                       <SelectItem value="pedagogical">Pedagógico</SelectItem>
@@ -524,7 +523,7 @@ const CalendarioEscolar = () => {
                       <SelectValue placeholder="Filtrar por escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as escolas</SelectItem>
+                      <SelectItem value="all">Todas as escolas</SelectItem>
                       <SelectItem value="sch1">E.M. João Paulo</SelectItem>
                       <SelectItem value="sch2">E.M. Maria José</SelectItem>
                       <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
