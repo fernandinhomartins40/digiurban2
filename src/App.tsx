@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
@@ -105,6 +106,13 @@ import TurismoEstabelecimentosLocais from './pages/turismo/EstabelecimentosLocai
 import TurismoProgramasTuristicos from './pages/turismo/ProgramasTuristicos';
 import TurismoMapaTuristico from './pages/turismo/MapaTuristico';
 import TurismoInformacoesTuristicas from './pages/turismo/InformacoesTuristicas';
+
+// Habitação
+import HabitacaoAtendimentos from './pages/habitacao/Atendimentos';
+import HabitacaoInscricoes from './pages/habitacao/Inscricoes';
+import HabitacaoProgramasHabitacionais from './pages/habitacao/ProgramasHabitacionais';
+import HabitacaoUnidadesHabitacionais from './pages/habitacao/UnidadesHabitacionais';
+import HabitacaoRegularizacaoFundiaria from './pages/habitacao/RegularizacaoFundiaria';
 
 import NotFound from './pages/NotFound';
 
@@ -218,6 +226,13 @@ function App() {
           <Route path="/turismo/programas-turisticos" element={<TurismoProgramasTuristicos />} />
           <Route path="/turismo/mapa-turistico" element={<TurismoMapaTuristico />} />
           <Route path="/turismo/informacoes-turisticas" element={<TurismoInformacoesTuristicas />} />
+
+          {/* Habitação */}
+          <Route path="/habitacao/atendimentos" element={<HabitacaoAtendimentos />} />
+          <Route path="/habitacao/inscricoes" element={<HabitacaoInscricoes />} />
+          <Route path="/habitacao/programas-habitacionais" element={<HabitacaoProgramasHabitacionais />} />
+          <Route path="/habitacao/unidades-habitacionais" element={<HabitacaoUnidadesHabitacionais />} />
+          <Route path="/habitacao/regularizacao-fundiaria" element={<HabitacaoRegularizacaoFundiaria />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
