@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
@@ -113,6 +112,13 @@ import HabitacaoInscricoes from './pages/habitacao/Inscricoes';
 import HabitacaoProgramasHabitacionais from './pages/habitacao/ProgramasHabitacionais';
 import HabitacaoUnidadesHabitacionais from './pages/habitacao/UnidadesHabitacionais';
 import HabitacaoRegularizacaoFundiaria from './pages/habitacao/RegularizacaoFundiaria';
+
+// Meio Ambiente
+import MeioAmbienteAtendimentos from './pages/meio-ambiente/Atendimentos';
+import MeioAmbienteLicencasAmbientais from './pages/meio-ambiente/LicencasAmbientais';
+import MeioAmbienteRegistroDenuncias from './pages/meio-ambiente/RegistroDenuncias';
+import MeioAmbienteAreasProtegidas from './pages/meio-ambiente/AreasProtegidas';
+import MeioAmbienteProgramasAmbientais from './pages/meio-ambiente/ProgramasAmbientais';
 
 import NotFound from './pages/NotFound';
 
@@ -233,6 +239,13 @@ function App() {
           <Route path="/habitacao/programas-habitacionais" element={<HabitacaoProgramasHabitacionais />} />
           <Route path="/habitacao/unidades-habitacionais" element={<HabitacaoUnidadesHabitacionais />} />
           <Route path="/habitacao/regularizacao-fundiaria" element={<HabitacaoRegularizacaoFundiaria />} />
+
+          {/* Meio Ambiente */}
+          <Route path="/meio-ambiente/atendimentos" element={<MeioAmbienteAtendimentos />} />
+          <Route path="/meio-ambiente/licencas-ambientais" element={<MeioAmbienteLicencasAmbientais />} />
+          <Route path="/meio-ambiente/registro-denuncias" element={<MeioAmbienteRegistroDenuncias />} />
+          <Route path="/meio-ambiente/areas-protegidas" element={<MeioAmbienteAreasProtegidas />} />
+          <Route path="/meio-ambiente/programas-ambientais" element={<MeioAmbienteProgramasAmbientais />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
