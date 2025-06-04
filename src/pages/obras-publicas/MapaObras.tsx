@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -220,7 +219,7 @@ const MapaObras: FC = () => {
                           </div>
                         </div>
                         <div className="space-y-1">
-                          <Badge className={getStatusColor(obra.status)} size="sm">
+                          <Badge className={getStatusColor(obra.status)}>
                             {obra.status.replace('_', ' ')}
                           </Badge>
                           <p className="text-xs text-gray-600">{obra.localizacao.endereco}</p>
