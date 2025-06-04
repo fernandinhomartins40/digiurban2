@@ -135,6 +135,14 @@ import ObrasIntervencoes from './pages/obras-publicas/ObrasIntervencoes';
 import ProgressoObras from './pages/obras-publicas/ProgressoObras';
 import MapaObras from './pages/obras-publicas/MapaObras';
 
+// Serviços Públicos
+import ServicosPublicosAtendimentos from './pages/servicos-publicos/Atendimentos';
+import IluminacaoPublica from './pages/servicos-publicos/IluminacaoPublica';
+import LimpezaUrbana from './pages/servicos-publicos/LimpezaUrbana';
+import ColetaEspecial from './pages/servicos-publicos/ColetaEspecial';
+import ProblemasComFoto from './pages/servicos-publicos/ProblemasComFoto';
+import ProgramacaoEquipes from './pages/servicos-publicos/ProgramacaoEquipes';
+
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -275,6 +283,14 @@ function App() {
           <Route path="/obras-publicas/obras-intervencoes" element={<ObrasIntervencoes />} />
           <Route path="/obras-publicas/progresso-obras" element={<ProgressoObras />} />
           <Route path="/obras-publicas/mapa-obras" element={<MapaObras />} />
+          
+          {/* Serviços Públicos */}
+          <Route path="/servicos-publicos/atendimentos" element={<ServicosPublicosAtendimentos />} />
+          <Route path="/servicos-publicos/iluminacao-publica" element={<IluminacaoPublica />} />
+          <Route path="/servicos-publicos/limpeza-urbana" element={<LimpezaUrbana />} />
+          <Route path="/servicos-publicos/coleta-especial" element={<ColetaEspecial />} />
+          <Route path="/servicos-publicos/problemas-com-foto" element={<ProblemasComFoto />} />
+          <Route path="/servicos-publicos/programacao-equipes" element={<ProgramacaoEquipes />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
