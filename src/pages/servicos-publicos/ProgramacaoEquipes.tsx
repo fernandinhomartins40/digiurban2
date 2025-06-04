@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +20,7 @@ import {
   Clock,
   Truck,
   MapPin,
-  Tool,
+  Wrench,
   User
 } from "lucide-react";
 import { EquipeServicos } from "@/types/servicos-publicos";
@@ -381,7 +380,7 @@ const ProgramacaoEquipes: FC = () => {
                       </div>
                       <div>
                         <h4 className="text-sm font-semibold mb-2 flex items-center">
-                          <Tool className="mr-2 h-4 w-4" /> Equipamentos
+                          <Wrench className="mr-2 h-4 w-4" /> Equipamentos
                         </h4>
                         <div className="space-y-1">
                           {equipe.equipamentos.map((equip, index) => (
