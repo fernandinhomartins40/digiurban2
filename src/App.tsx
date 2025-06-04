@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
@@ -127,6 +128,12 @@ import EmissaoAlvaras from './pages/planejamento-urbano/EmissaoAlvaras';
 import ReclamacoesDenuncias from './pages/planejamento-urbano/ReclamacoesDenuncias';
 import ConsultasPublicas from './pages/planejamento-urbano/ConsultasPublicas';
 import MapaUrbano from './pages/planejamento-urbano/MapaUrbano';
+
+// Obras Públicas
+import ObrasPublicasAtendimentos from './pages/obras-publicas/Atendimentos';
+import ObrasIntervencoes from './pages/obras-publicas/ObrasIntervencoes';
+import ProgressoObras from './pages/obras-publicas/ProgressoObras';
+import MapaObras from './pages/obras-publicas/MapaObras';
 
 import NotFound from './pages/NotFound';
 
@@ -262,6 +269,12 @@ function App() {
           <Route path="/planejamento-urbano/reclamacoes-denuncias" element={<ReclamacoesDenuncias />} />
           <Route path="/planejamento-urbano/consultas-publicas" element={<ConsultasPublicas />} />
           <Route path="/planejamento-urbano/mapa-urbano" element={<MapaUrbano />} />
+
+          {/* Obras Públicas */}
+          <Route path="/obras-publicas/atendimentos" element={<ObrasPublicasAtendimentos />} />
+          <Route path="/obras-publicas/obras-intervencoes" element={<ObrasIntervencoes />} />
+          <Route path="/obras-publicas/progresso-obras" element={<ProgressoObras />} />
+          <Route path="/obras-publicas/mapa-obras" element={<MapaObras />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
