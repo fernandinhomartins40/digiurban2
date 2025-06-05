@@ -2,6 +2,15 @@
 import { FC, ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { 
+  Shield, 
+  FileText, 
+  Users, 
+  MapPin, 
+  AlertTriangle, 
+  BarChart3, 
+  Camera 
+} from "lucide-react";
 
 type SidebarMenuItemProps = {
   href: string;
@@ -99,5 +108,63 @@ export const SidebarMenuGroup: FC<SidebarMenuGroupProps> = ({ title, icon, child
         {children}
       </ul>
     </div>
+  );
+};
+
+export const SegurancaPublicaMenu: FC = () => {
+  const pathname = window.location.pathname;
+  
+  return (
+    <SidebarMenuGroup title="Segurança Pública" icon={<Shield className="h-4 w-4" />}>
+      <SidebarMenuItem 
+        href="/seguranca-publica/atendimentos"
+        icon={<Shield className="mr-3 h-5 w-5" />}
+        active={pathname === "/seguranca-publica/atendimentos"}
+      >
+        Atendimentos
+      </SidebarMenuItem>
+      <SidebarMenuItem 
+        href="/seguranca-publica/registro-ocorrencias"
+        icon={<FileText className="mr-3 h-5 w-5" />}
+        active={pathname === "/seguranca-publica/registro-ocorrencias"}
+      >
+        Registro de Ocorrências
+      </SidebarMenuItem>
+      <SidebarMenuItem 
+        href="/seguranca-publica/apoio-guarda"
+        icon={<Users className="mr-3 h-5 w-5" />}
+        active={pathname === "/seguranca-publica/apoio-guarda"}
+      >
+        Apoio da Guarda
+      </SidebarMenuItem>
+      <SidebarMenuItem 
+        href="/seguranca-publica/mapa-pontos-criticos"
+        icon={<MapPin className="mr-3 h-5 w-5" />}
+        active={pathname === "/seguranca-publica/mapa-pontos-criticos"}
+      >
+        Mapa de Pontos Críticos
+      </SidebarMenuItem>
+      <SidebarMenuItem 
+        href="/seguranca-publica/alertas-seguranca"
+        icon={<AlertTriangle className="mr-3 h-5 w-5" />}
+        active={pathname === "/seguranca-publica/alertas-seguranca"}
+      >
+        Alertas de Segurança
+      </SidebarMenuItem>
+      <SidebarMenuItem 
+        href="/seguranca-publica/estatisticas-regionais"
+        icon={<BarChart3 className="mr-3 h-5 w-5" />}
+        active={pathname === "/seguranca-publica/estatisticas-regionais"}
+      >
+        Estatísticas Regionais
+      </SidebarMenuItem>
+      <SidebarMenuItem 
+        href="/seguranca-publica/vigilancia-integrada"
+        icon={<Camera className="mr-3 h-5 w-5" />}
+        active={pathname === "/seguranca-publica/vigilancia-integrada"}
+      >
+        Vigilância Integrada
+      </SidebarMenuItem>
+    </SidebarMenuGroup>
   );
 };

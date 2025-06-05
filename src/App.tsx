@@ -143,6 +143,15 @@ import ColetaEspecial from './pages/servicos-publicos/ColetaEspecial';
 import ProblemasComFoto from './pages/servicos-publicos/ProblemasComFoto';
 import ProgramacaoEquipes from './pages/servicos-publicos/ProgramacaoEquipes';
 
+// Segurança Pública
+import SegurancaPublicaAtendimentos from './pages/seguranca-publica/Atendimentos';
+import RegistroOcorrencias from './pages/seguranca-publica/RegistroOcorrencias';
+import ApoioGuarda from './pages/seguranca-publica/ApoioGuarda';
+import MapaPontosCriticos from './pages/seguranca-publica/MapaPontosCriticos';
+import AlertasSeguranca from './pages/seguranca-publica/AlertasSeguranca';
+import EstatisticasRegionais from './pages/seguranca-publica/EstatisticasRegionais';
+import VigilanciaIntegrada from './pages/seguranca-publica/VigilanciaIntegrada';
+
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -291,6 +300,15 @@ function App() {
           <Route path="/servicos-publicos/coleta-especial" element={<ColetaEspecial />} />
           <Route path="/servicos-publicos/problemas-com-foto" element={<ProblemasComFoto />} />
           <Route path="/servicos-publicos/programacao-equipes" element={<ProgramacaoEquipes />} />
+          
+          {/* Segurança Pública */}
+          <Route path="/seguranca-publica/atendimentos" element={<SegurancaPublicaAtendimentos />} />
+          <Route path="/seguranca-publica/registro-ocorrencias" element={<RegistroOcorrencias />} />
+          <Route path="/seguranca-publica/apoio-guarda" element={<ApoioGuarda />} />
+          <Route path="/seguranca-publica/mapa-pontos-criticos" element={<MapaPontosCriticos />} />
+          <Route path="/seguranca-publica/alertas-seguranca" element={<AlertasSeguranca />} />
+          <Route path="/seguranca-publica/estatisticas-regionais" element={<EstatisticasRegionais />} />
+          <Route path="/seguranca-publica/vigilancia-integrada" element={<VigilanciaIntegrada />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
