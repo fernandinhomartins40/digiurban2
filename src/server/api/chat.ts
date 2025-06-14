@@ -2,13 +2,29 @@
 import express from 'express';
 import pool from '../db';
 import { ChatRoom, ChatMessage, ChatParticipant, SendMessageRequest } from '../../types/chat';
+import { AuthenticatedRequest } from '../types/auth';
 
 const router = express.Router();
 
+// Mock authentication middleware - replace with your actual auth implementation
+const mockAuth = (req: AuthenticatedRequest, res: express.Response, next: express.NextFunction) => {
+  // For now, mock a user - replace this with your actual authentication logic
+  req.user = {
+    id: 1,
+    name: 'Mock User',
+    email: 'user@example.com',
+    role: 'user'
+  };
+  next();
+};
+
+// Apply mock auth to all routes
+router.use(mockAuth);
+
 // Get all chat rooms for current user
-router.get('/rooms', async (req, res) => {
+router.get('/rooms', async (req: AuthenticatedRequest, res) => {
   try {
-    const userId = req.user?.id; // Assuming user is attached to request
+    const userId = req.user?.id;
     
     const query = `
       SELECT 
@@ -101,7 +117,7 @@ router.get('/rooms/:roomId/messages', async (req, res) => {
 });
 
 // Send a new message
-router.post('/rooms/:roomId/messages', async (req, res) => {
+router.post('/rooms/:roomId/messages', async (req: AuthenticatedRequest, res) => {
   try {
     const { roomId } = req.params;
     const userId = req.user?.id;
@@ -211,7 +227,7 @@ router.get('/rooms/:roomId/participants', async (req, res) => {
 });
 
 // Mark messages as read
-router.post('/rooms/:roomId/mark-read', async (req, res) => {
+router.post('/rooms/:roomId/mark-read', async (req: AuthenticatedRequest, res) => {
   try {
     const { roomId } = req.params;
     const userId = req.user?.id;
