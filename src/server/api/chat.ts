@@ -1,4 +1,3 @@
-
 import express from 'express';
 import pool from '../db';
 import { ChatRoom, ChatMessage, ChatParticipant, SendMessageRequest } from '../../types/chat';

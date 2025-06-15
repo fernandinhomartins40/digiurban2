@@ -1,4 +1,3 @@
-
 import express from 'express';
 import pool from '../db';
 import { CitizenAlert, AlertCategory, CreateAlertRequest, AlertFilters } from '../../types/alerts';
