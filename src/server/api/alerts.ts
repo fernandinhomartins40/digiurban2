@@ -19,7 +19,7 @@ const mockAuth = (req: AuthenticatedRequest, res: express.Response, next: expres
 router.use(mockAuth);
 
 // Get all alert categories
-router.get('/categories', async (req: express.Request, res: express.Response) => {
+router.get('/categories', async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT * FROM alert_categories WHERE is_active = true ORDER BY name'
@@ -32,7 +32,7 @@ router.get('/categories', async (req: express.Request, res: express.Response) =>
 });
 
 // Get alerts with filters and pagination
-router.get('/alerts', async (req: express.Request, res: express.Response) => {
+router.get('/alerts', async (req, res) => {
   try {
     const { 
       page = 1, 
@@ -142,7 +142,7 @@ router.get('/alerts', async (req: express.Request, res: express.Response) => {
 });
 
 // Create new alert
-router.post('/alerts', async (req: AuthenticatedRequest, res: express.Response) => {
+router.post('/alerts', async (req: AuthenticatedRequest, res) => {
   try {
     const userId = req.user?.id;
     const alertData: CreateAlertRequest = req.body;
@@ -205,7 +205,7 @@ router.post('/alerts', async (req: AuthenticatedRequest, res: express.Response) 
 });
 
 // Get user's alerts (for citizens)
-router.get('/my-alerts', async (req: AuthenticatedRequest, res: express.Response) => {
+router.get('/my-alerts', async (req: AuthenticatedRequest, res) => {
   try {
     const userId = req.user?.id;
     
@@ -256,7 +256,7 @@ router.get('/my-alerts', async (req: AuthenticatedRequest, res: express.Response
 });
 
 // Mark alert as read
-router.post('/alerts/:alertId/mark-read', async (req: AuthenticatedRequest, res: express.Response) => {
+router.post('/alerts/:alertId/mark-read', async (req: AuthenticatedRequest, res) => {
   try {
     const { alertId } = req.params;
     const userId = req.user?.id;
@@ -289,7 +289,7 @@ router.post('/alerts/:alertId/mark-read', async (req: AuthenticatedRequest, res:
 });
 
 // Get alert statistics
-router.get('/statistics', async (req: express.Request, res: express.Response) => {
+router.get('/statistics', async (req, res) => {
   try {
     const totalAlertsQuery = 'SELECT COUNT(*) FROM citizen_alerts WHERE is_active = true';
     const activeAlertsQuery = `

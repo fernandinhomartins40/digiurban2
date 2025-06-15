@@ -21,7 +21,7 @@ const mockAuth = (req: AuthenticatedRequest, res: express.Response, next: expres
 router.use(mockAuth);
 
 // Get all chat rooms for current user
-router.get('/rooms', async (req: AuthenticatedRequest, res: express.Response) => {
+router.get('/rooms', async (req: AuthenticatedRequest, res) => {
   try {
     const userId = req.user?.id;
     
@@ -58,7 +58,7 @@ router.get('/rooms', async (req: AuthenticatedRequest, res: express.Response) =>
 });
 
 // Get messages for a specific room
-router.get('/rooms/:roomId/messages', async (req: express.Request, res: express.Response) => {
+router.get('/rooms/:roomId/messages', async (req, res) => {
   try {
     const { roomId } = req.params;
     const { page = 1, limit = 50 } = req.query;
@@ -116,7 +116,7 @@ router.get('/rooms/:roomId/messages', async (req: express.Request, res: express.
 });
 
 // Send a new message
-router.post('/rooms/:roomId/messages', async (req: AuthenticatedRequest, res: express.Response) => {
+router.post('/rooms/:roomId/messages', async (req: AuthenticatedRequest, res) => {
   try {
     const { roomId } = req.params;
     const userId = req.user?.id;
@@ -185,7 +185,7 @@ router.post('/rooms/:roomId/messages', async (req: AuthenticatedRequest, res: ex
 });
 
 // Get participants for a room
-router.get('/rooms/:roomId/participants', async (req: express.Request, res: express.Response) => {
+router.get('/rooms/:roomId/participants', async (req, res) => {
   try {
     const { roomId } = req.params;
     
@@ -226,7 +226,7 @@ router.get('/rooms/:roomId/participants', async (req: express.Request, res: expr
 });
 
 // Mark messages as read
-router.post('/rooms/:roomId/mark-read', async (req: AuthenticatedRequest, res: express.Response) => {
+router.post('/rooms/:roomId/mark-read', async (req: AuthenticatedRequest, res) => {
   try {
     const { roomId } = req.params;
     const userId = req.user?.id;
