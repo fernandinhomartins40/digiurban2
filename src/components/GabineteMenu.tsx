@@ -11,7 +11,8 @@ import {
   BarChart3,
   Settings,
   Shield,
-  FileSearch
+  FileSearch,
+  Bell
 } from "lucide-react";
 
 export const GabineteMenu: FC = () => {
@@ -32,6 +33,13 @@ export const GabineteMenu: FC = () => {
         active={pathname === "/gabinete/atendimentos"}
       >
         Atendimentos
+      </SidebarMenuItem>
+      <SidebarMenuItem 
+        href="/gabinete/gerenciar-alertas"
+        icon={<Bell className="mr-3 h-5 w-5" />}
+        active={pathname === "/gabinete/gerenciar-alertas"}
+      >
+        Alertas e Mensagens
       </SidebarMenuItem>
       <SidebarMenuItem 
         href="/gabinete/ordens-setores"
