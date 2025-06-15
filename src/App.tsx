@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
@@ -14,10 +13,17 @@ import MinhasAvaliacoes from './pages/MinhasAvaliacoes';
 // Gabinete
 import GabineteAtendimentos from './pages/gabinete/Atendimentos';
 import GabineteVisaoGeral from './pages/gabinete/VisaoGeral';
+import GabineteGerenciarAlertas from './pages/gabinete/GerenciarAlertas';
 import GabineteMapaDemandas from './pages/gabinete/MapaDemandas';
 import GabineteRelatoriosExecutivos from './pages/gabinete/RelatoriosExecutivos';
 import GabineteOrdensSetores from './pages/gabinete/OrdensSetores';
 import GabineteGerenciarPermissoes from './pages/gabinete/GerenciarPermissoes';
+import GabineteProjetosEstrategicos from './pages/gabinete/ProjetosEstrategicos';
+import GabineteAgendaExecutiva from './pages/gabinete/AgendaExecutiva';
+import GabineteMonitoramentoKPIs from './pages/gabinete/MonitoramentoKPIs';
+import GabineteComunitcacaoOficial from './pages/gabinete/ComunicacaoOficial';
+import GabineteAuditoriaTransparencia from './pages/gabinete/AuditoriaTransparencia';
+import GabineteConfiguracoesSistema from './pages/gabinete/ConfiguracoesSistema';
 
 // Correio
 import CorreioCaixaEntrada from './pages/correio/CaixaEntrada';
@@ -172,10 +178,17 @@ function App() {
           {/* Gabinete */}
           <Route path="/gabinete/atendimentos" element={<GabineteAtendimentos />} />
           <Route path="/gabinete/visao-geral" element={<GabineteVisaoGeral />} />
-          <Route path="/gabinete/mapa-demandas" element={<GabineteMapaDemandas />} />
-          <Route path="/gabinete/relatorios-executivos" element={<GabineteRelatoriosExecutivos />} />
+          <Route path="/gabinete/gerenciar-alertas" element={<GabineteGerenciarAlertas />} />
           <Route path="/gabinete/ordens-setores" element={<GabineteOrdensSetores />} />
+          <Route path="/gabinete/mapa-demandas" element={<GabineteMapaDemandas />} />
+          <Route path="/gabinete/projetos-estrategicos" element={<GabineteProjetosEstrategicos />} />
+          <Route path="/gabinete/agenda-executiva" element={<GabineteAgendaExecutiva />} />
+          <Route path="/gabinete/relatorios-executivos" element={<GabineteRelatoriosExecutivos />} />
+          <Route path="/gabinete/monitoramento-kpis" element={<GabineteMonitoramentoKPIs />} />
+          <Route path="/gabinete/comunicacao-oficial" element={<GabineteComunitcacaoOficial />} />
+          <Route path="/gabinete/auditoria-transparencia" element={<GabineteAuditoriaTransparencia />} />
           <Route path="/gabinete/gerenciar-permissoes" element={<GabineteGerenciarPermissoes />} />
+          <Route path="/gabinete/configuracoes-sistema" element={<GabineteConfiguracoesSistema />} />
 
           {/* Correio */}
           <Route path="/correio/caixa-entrada" element={<CorreioCaixaEntrada />} />
