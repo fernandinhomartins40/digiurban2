@@ -9,8 +9,8 @@ import {
   BarChart3, 
   Camera 
 } from "lucide-react";
-import { SidebarMenuItem } from "./SidebarMenuItem";
-import { SidebarMenuGroup } from "./SidebarMenuGroup";
+import { SidebarMenuItem } from "./SidebarMenu/SidebarMenuItem";
+import { SidebarMenuGroup } from "./SidebarMenu/SidebarMenuGroup";
 
 export const SegurancaPublicaMenu: FC = () => {
   return (
@@ -60,3 +60,8 @@ export const SegurancaPublicaMenu: FC = () => {
     </SidebarMenuGroup>
   );
 };
+
+// Export the individual components for backward compatibility
+export { SidebarMenuItem } from "./SidebarMenu/SidebarMenuItem";
+export { SidebarMenuGroup } from "./SidebarMenu/SidebarMenuGroup";
+export { SidebarSubmenu } from "./SidebarMenu/SidebarSubmenu";
