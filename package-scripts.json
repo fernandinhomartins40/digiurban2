@@ -1,0 +1,11 @@
+
+{
+  "scripts": {
+    "dev:server": "nodemon --exec ts-node src/server/index.ts",
+    "dev:frontend": "vite",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:frontend\"",
+    "build:server": "tsc src/server/index.ts --outDir dist/server --target es2020 --module commonjs --esModuleInterop --resolveJsonModule",
+    "init-db": "ts-node src/server/init-db.ts",
+    "setup": "node scripts/dev-setup.js && npm run init-db"
+  }
+}

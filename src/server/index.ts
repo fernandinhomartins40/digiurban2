@@ -8,6 +8,7 @@
 
 import express from 'express';
 import cors from 'cors';
+import pool from './db';
 import usersRouter from './api/users';
 import chatRoutes from './api/chat';
 import alertRoutes from './api/alerts';
@@ -18,11 +19,42 @@ const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
 app.use(cors());
 app.use(express.json());
 
+// Test database connection on startup
+async function testDatabaseConnection() {
+  try {
+    const client = await pool.connect();
+    console.log('✅ Database connected successfully');
+    client.release();
+  } catch (error) {
+    console.error('❌ Database connection failed:', error);
+    console.error('Please check your DATABASE_URL in .env file');
+    process.exit(1);
+  }
+}
+
 // API Routes
 app.use('/api/users', usersRouter);
 app.use('/api/chat', chatRoutes);
 app.use('/api/alerts', alertRoutes);
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// Start server
+async function startServer() {
+  try {
+    await testDatabaseConnection();
+    
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`🚀 Server running on port ${port}`);
+      console.log(`🔗 Health check: http://localhost:${port}/api/health`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
