@@ -1,9 +1,9 @@
-
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { useSidebarScroll } from "../hooks/useSidebarScroll";
 import { 
   Activity, 
   Calendar, 
@@ -107,6 +107,7 @@ import {
 
 export const MobileSidebar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { sidebarRef, setMenuItemRef } = useSidebarScroll();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -176,10 +177,11 @@ export const MobileSidebar: FC = () => {
         </div>
         
         {/* Meio com scroll - Menus */}
-        <div className="flex-1 overflow-y-auto py-2">
+        <div ref={sidebarRef} className="flex-1 overflow-y-auto py-2">
           <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
             <SidebarMenuItem 
               href="/" 
+              onSetRef={setMenuItemRef}
               icon={
                 <svg
                   className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400"
@@ -202,6 +204,7 @@ export const MobileSidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/chat"
+              onSetRef={setMenuItemRef}
               icon={<MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Chat
@@ -209,6 +212,7 @@ export const MobileSidebar: FC = () => {
 
             <SidebarMenuItem 
               href="/catalogo-servicos"
+              onSetRef={setMenuItemRef}
               icon={
                 <svg
                   className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
@@ -231,6 +235,7 @@ export const MobileSidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/meus-protocolos"
+              onSetRef={setMenuItemRef}
               icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Meus Protocolos
@@ -238,6 +243,7 @@ export const MobileSidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/documentos-pessoais"
+              onSetRef={setMenuItemRef}
               icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Documentos Pessoais
@@ -245,6 +251,7 @@ export const MobileSidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/minhas-avaliacoes"
+              onSetRef={setMenuItemRef}
               icon={<Star className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Minhas Avaliações

@@ -1,5 +1,5 @@
 
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -8,21 +8,37 @@ type SidebarMenuItemProps = {
   icon?: ReactNode;
   children: ReactNode;
   exactMatch?: boolean;
+  onSetRef?: (href: string, element: HTMLElement | null) => void;
 };
 
 export const SidebarMenuItem: FC<SidebarMenuItemProps> = ({ 
   href, 
   icon, 
   children,
-  exactMatch = false
+  exactMatch = false,
+  onSetRef
 }) => {
   const location = useLocation();
+  const itemRef = useRef<HTMLLIElement>(null);
+  
   const isActive = exactMatch 
     ? location.pathname === href 
     : location.pathname.startsWith(href);
 
+  useEffect(() => {
+    if (onSetRef && itemRef.current) {
+      onSetRef(href, itemRef.current);
+    }
+    
+    return () => {
+      if (onSetRef) {
+        onSetRef(href, null);
+      }
+    };
+  }, [href, onSetRef]);
+
   return (
-    <li>
+    <li ref={itemRef}>
       <Link
         to={href}
         className={cn(

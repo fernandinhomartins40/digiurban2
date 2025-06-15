@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { useSidebarScroll } from "../hooks/useSidebarScroll";
 import { 
   Activity, 
   Calendar, 
@@ -106,6 +107,8 @@ import {
 } from "lucide-react";
 
 export const Sidebar: FC = () => {
+  const { sidebarRef, setMenuItemRef } = useSidebarScroll();
+
   return (
     <div className="hidden md:flex md:w-64 md:flex-col">
       <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
@@ -115,11 +118,12 @@ export const Sidebar: FC = () => {
         </div>
         
         {/* Meio com scroll - Menus */}
-        <div className="mt-5 flex-1 flex flex-col overflow-y-auto">
+        <div ref={sidebarRef} className="mt-5 flex-1 flex flex-col overflow-y-auto">
           <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
             <SidebarMenuItem 
               href="/" 
               exactMatch={true}
+              onSetRef={setMenuItemRef}
               icon={
                 <svg
                   className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400"
@@ -142,13 +146,16 @@ export const Sidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/chat"
+              onSetRef={setMenuItemRef}
               icon={<MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Chat
             </SidebarMenuItem>
 
+            
             <SidebarMenuItem 
               href="/catalogo-servicos"
+              onSetRef={setMenuItemRef}
               icon={
                 <svg
                   className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400"
@@ -171,6 +178,7 @@ export const Sidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/meus-protocolos"
+              onSetRef={setMenuItemRef}
               icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Meus Protocolos
@@ -178,6 +186,7 @@ export const Sidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/documentos-pessoais"
+              onSetRef={setMenuItemRef}
               icon={<FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Documentos Pessoais
@@ -185,12 +194,14 @@ export const Sidebar: FC = () => {
             
             <SidebarMenuItem 
               href="/minhas-avaliacoes"
+              onSetRef={setMenuItemRef}
               icon={<Star className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
             >
               Minhas Avaliações
             </SidebarMenuItem>
           </SidebarMenuGroup>
 
+          
           <div className="px-3 py-2 mt-3">
             <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
               Área Administrativa
@@ -201,50 +212,51 @@ export const Sidebar: FC = () => {
               icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/gabinete"
             >
-              <SidebarMenuItem href="/gabinete/atendimentos">
+              <SidebarMenuItem href="/gabinete/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/visao-geral">
+              <SidebarMenuItem href="/gabinete/visao-geral" onSetRef={setMenuItemRef}>
                 Visão Geral
               </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/mapa-demandas">
+              <SidebarMenuItem href="/gabinete/mapa-demandas" onSetRef={setMenuItemRef}>
                 Mapa de Demandas
               </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/relatorios-executivos">
+              <SidebarMenuItem href="/gabinete/relatorios-executivos" onSetRef={setMenuItemRef}>
                 Relatórios Executivos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/ordens-setores">
+              <SidebarMenuItem href="/gabinete/ordens-setores" onSetRef={setMenuItemRef}>
                 Ordens aos Setores
               </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/gerenciar-permissoes">
+              <SidebarMenuItem href="/gabinete/gerenciar-permissoes" onSetRef={setMenuItemRef}>
                 Gerenciar Permissões
               </SidebarMenuItem>
             </SidebarSubmenu>
 
+            
             <SidebarSubmenu 
               title="Correio Interno" 
               icon={<Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/correio"
             >
-              <SidebarMenuItem href="/correio/caixa-entrada">
+              <SidebarMenuItem href="/correio/caixa-entrada" onSetRef={setMenuItemRef}>
                 Caixa de Entrada
               </SidebarMenuItem>
-              <SidebarMenuItem href="/correio/caixa-saida">
+              <SidebarMenuItem href="/correio/caixa-saida" onSetRef={setMenuItemRef}>
                 Caixa de Saída
               </SidebarMenuItem>
-              <SidebarMenuItem href="/correio/novo-email">
+              <SidebarMenuItem href="/correio/novo-email" onSetRef={setMenuItemRef}>
                 Novo Email
               </SidebarMenuItem>
-              <SidebarMenuItem href="/correio/rascunhos">
+              <SidebarMenuItem href="/correio/rascunhos" onSetRef={setMenuItemRef}>
                 Rascunhos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/correio/lixeira">
+              <SidebarMenuItem href="/correio/lixeira" onSetRef={setMenuItemRef}>
                 Lixeira
               </SidebarMenuItem>
-              <SidebarMenuItem href="/correio/biblioteca-modelos">
+              <SidebarMenuItem href="/correio/biblioteca-modelos" onSetRef={setMenuItemRef}>
                 Biblioteca de Modelos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/correio/assinaturas-digitais">
+              <SidebarMenuItem href="/correio/assinaturas-digitais" onSetRef={setMenuItemRef}>
                 Assinaturas Digitais
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -254,19 +266,19 @@ export const Sidebar: FC = () => {
               icon={<Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/administracao"
             >
-              <SidebarMenuItem href="/administracao/gerenciamento-usuarios">
+              <SidebarMenuItem href="/administracao/gerenciamento-usuarios" onSetRef={setMenuItemRef}>
                 Gerenciamento de Usuários
               </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/perfis-permissoes">
+              <SidebarMenuItem href="/administracao/perfis-permissoes" onSetRef={setMenuItemRef}>
                 Perfis e Permissões
               </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/setores-grupos">
+              <SidebarMenuItem href="/administracao/setores-grupos" onSetRef={setMenuItemRef}>
                 Setores e Grupos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/configuracoes-gerais">
+              <SidebarMenuItem href="/administracao/configuracoes-gerais" onSetRef={setMenuItemRef}>
                 Configurações Gerais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/auditoria-acessos">
+              <SidebarMenuItem href="/administracao/auditoria-acessos" onSetRef={setMenuItemRef}>
                 Auditoria de Acessos
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -276,16 +288,16 @@ export const Sidebar: FC = () => {
               icon={<BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/relatorios"
             >
-              <SidebarMenuItem href="/relatorios/relatorios">
+              <SidebarMenuItem href="/relatorios/relatorios" onSetRef={setMenuItemRef}>
                 Relatórios
               </SidebarMenuItem>
-              <SidebarMenuItem href="/relatorios/indicadores-atendimentos">
+              <SidebarMenuItem href="/relatorios/indicadores-atendimentos" onSetRef={setMenuItemRef}>
                 Indicadores de Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/relatorios/estatisticas-uso">
+              <SidebarMenuItem href="/relatorios/estatisticas-uso" onSetRef={setMenuItemRef}>
                 Estatísticas de Uso
               </SidebarMenuItem>
-              <SidebarMenuItem href="/relatorios/exportacoes">
+              <SidebarMenuItem href="/relatorios/exportacoes" onSetRef={setMenuItemRef}>
                 Exportações (PDF/Excel)
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -295,16 +307,16 @@ export const Sidebar: FC = () => {
               icon={<User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/configuracoes"
             >
-              <SidebarMenuItem href="/configuracoes/meu-perfil">
+              <SidebarMenuItem href="/configuracoes/meu-perfil" onSetRef={setMenuItemRef}>
                 Meu Perfil
               </SidebarMenuItem>
-              <SidebarMenuItem href="/configuracoes/trocar-senha">
+              <SidebarMenuItem href="/configuracoes/trocar-senha" onSetRef={setMenuItemRef}>
                 Trocar Senha
               </SidebarMenuItem>
-              <SidebarMenuItem href="/configuracoes/preferencias-notificacao">
+              <SidebarMenuItem href="/configuracoes/preferencias-notificacao" onSetRef={setMenuItemRef}>
                 Preferências de Notificação
               </SidebarMenuItem>
-              <SidebarMenuItem href="/configuracoes/idioma-acessibilidade">
+              <SidebarMenuItem href="/configuracoes/idioma-acessibilidade" onSetRef={setMenuItemRef}>
                 Idioma e Acessibilidade
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -318,137 +330,141 @@ export const Sidebar: FC = () => {
               icon={<Heart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/saude"
             >
-              <SidebarMenuItem href="/saude/atendimentos">
+              <SidebarMenuItem href="/saude/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/agendamentos-medicos">
+              <SidebarMenuItem href="/saude/agendamentos-medicos" onSetRef={setMenuItemRef}>
                 Agendamentos Médicos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/controle-medicamentos">
+              <SidebarMenuItem href="/saude/controle-medicamentos" onSetRef={setMenuItemRef}>
                 Controle de Medicamentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/campanhas-saude">
+              <SidebarMenuItem href="/saude/campanhas-saude" onSetRef={setMenuItemRef}>
                 Campanhas de Saúde
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/programas-saude">
+              <SidebarMenuItem href="/saude/programas-saude" onSetRef={setMenuItemRef}>
                 Programas de Saúde
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/encaminhamentos-tfd">
+              <SidebarMenuItem href="/saude/encaminhamentos-tfd" onSetRef={setMenuItemRef}>
                 Encaminhamentos TFD
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/exames">
+              <SidebarMenuItem href="/saude/exames" onSetRef={setMenuItemRef}>
                 Exames
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/acs">
+              <SidebarMenuItem href="/saude/acs" onSetRef={setMenuItemRef}>
                 ACS - Agentes de Saúde
               </SidebarMenuItem>
-              <SidebarMenuItem href="/saude/transporte-pacientes">
+              <SidebarMenuItem href="/saude/transporte-pacientes" onSetRef={setMenuItemRef}>
                 Transporte de Pacientes
               </SidebarMenuItem>
             </SidebarSubmenu>
 
+            
             <SidebarSubmenu 
               title="Educação" 
               icon={<Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/educacao"
             >
-              <SidebarMenuItem href="/educacao/matricula-alunos">
+              <SidebarMenuItem href="/educacao/matricula-alunos" onSetRef={setMenuItemRef}>
                 Matrícula de Alunos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/gestao-escolar">
+              <SidebarMenuItem href="/educacao/gestao-escolar" onSetRef={setMenuItemRef}>
                 Gestão Escolar
               </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/transporte-escolar">
+              <SidebarMenuItem href="/educacao/transporte-escolar" onSetRef={setMenuItemRef}>
                 Transporte Escolar
               </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/merenda-escolar">
+              <SidebarMenuItem href="/educacao/merenda-escolar" onSetRef={setMenuItemRef}>
                 Merenda Escolar
               </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/registro-ocorrencias">
+              <SidebarMenuItem href="/educacao/registro-ocorrencias" onSetRef={setMenuItemRef}>
                 Registro de Ocorrências
               </SidebarMenuItem>
-              <SidebarMenuItem href="/educacao/calendario-escolar">
+              <SidebarMenuItem href="/educacao/calendario-escolar" onSetRef={setMenuItemRef}>
                 Calendário Escolar
               </SidebarMenuItem>
             </SidebarSubmenu>
 
+            
             <SidebarSubmenu 
               title="Assistência Social" 
               icon={<HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/assistencia-social"
             >
-              <SidebarMenuItem href="/assistencia-social/atendimentos">
+              <SidebarMenuItem href="/assistencia-social/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/assistencia-social/familias-vulneraveis">
+              <SidebarMenuItem href="/assistencia-social/familias-vulneraveis" onSetRef={setMenuItemRef}>
                 Famílias Vulneráveis
               </SidebarMenuItem>
-              <SidebarMenuItem href="/assistencia-social/cras-e-creas">
+              <SidebarMenuItem href="/assistencia-social/cras-e-creas" onSetRef={setMenuItemRef}>
                 CRAS e CREAS
               </SidebarMenuItem>
-              <SidebarMenuItem href="/assistencia-social/programas-sociais">
+              <SidebarMenuItem href="/assistencia-social/programas-sociais" onSetRef={setMenuItemRef}>
                 Programas Sociais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/assistencia-social/gerenciamento-beneficios">
+              <SidebarMenuItem href="/assistencia-social/gerenciamento-beneficios" onSetRef={setMenuItemRef}>
                 Gerenciamento de Benefícios
               </SidebarMenuItem>
-              <SidebarMenuItem href="/assistencia-social/entregas-emergenciais">
+              <SidebarMenuItem href="/assistencia-social/entregas-emergenciais" onSetRef={setMenuItemRef}>
                 Entregas Emergenciais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/assistencia-social/registro-visitas">
+              <SidebarMenuItem href="/assistencia-social/registro-visitas" onSetRef={setMenuItemRef}>
                 Registro de Visitas
               </SidebarMenuItem>
             </SidebarSubmenu>
 
+            
             <SidebarSubmenu 
               title="Cultura" 
               icon={<Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/cultura"
             >
-              <SidebarMenuItem href="/cultura/espacos-culturais">
+              <SidebarMenuItem href="/cultura/espacos-culturais" onSetRef={setMenuItemRef}>
                 Espaços Culturais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/cultura/projetos-culturais">
+              <SidebarMenuItem href="/cultura/projetos-culturais" onSetRef={setMenuItemRef}>
                 Projetos Culturais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/cultura/eventos">
-                Eventos Culturais
+              <SidebarMenuItem href="/cultura/eventos" onSetRef={setMenuItemRef}>
+                Eventos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/cultura/grupos-artisticos">
+              <SidebarMenuItem href="/cultura/grupos-artisticos" onSetRef={setMenuItemRef}>
                 Grupos Artísticos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/cultura/oficinas-cursos">
+              <SidebarMenuItem href="/cultura/oficinas-cursos" onSetRef={setMenuItemRef}>
                 Oficinas e Cursos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/cultura/manifestacoes-culturais">
+              <SidebarMenuItem href="/cultura/manifestacoes-culturais" onSetRef={setMenuItemRef}>
                 Manifestações Culturais
               </SidebarMenuItem>
             </SidebarSubmenu>
 
+            
             <SidebarSubmenu 
               title="Segurança Pública" 
               icon={<Shield className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/seguranca-publica"
             >
-              <SidebarMenuItem href="/seguranca-publica/atendimentos">
+              <SidebarMenuItem href="/seguranca-publica/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/seguranca-publica/registro-ocorrencias">
+              <SidebarMenuItem href="/seguranca-publica/registro-ocorrencias" onSetRef={setMenuItemRef}>
                 Registro de Ocorrências
               </SidebarMenuItem>
-              <SidebarMenuItem href="/seguranca-publica/apoio-guarda">
+              <SidebarMenuItem href="/seguranca-publica/apoio-guarda" onSetRef={setMenuItemRef}>
                 Apoio da Guarda
               </SidebarMenuItem>
-              <SidebarMenuItem href="/seguranca-publica/mapa-pontos-criticos">
+              <SidebarMenuItem href="/seguranca-publica/mapa-pontos-criticos" onSetRef={setMenuItemRef}>
                 Mapa de Pontos Críticos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/seguranca-publica/alertas-seguranca">
+              <SidebarMenuItem href="/seguranca-publica/alertas-seguranca" onSetRef={setMenuItemRef}>
                 Alertas de Segurança
               </SidebarMenuItem>
-              <SidebarMenuItem href="/seguranca-publica/estatisticas-regionais">
+              <SidebarMenuItem href="/seguranca-publica/estatisticas-regionais" onSetRef={setMenuItemRef}>
                 Estatísticas Regionais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/seguranca-publica/vigilancia-integrada">
+              <SidebarMenuItem href="/seguranca-publica/vigilancia-integrada" onSetRef={setMenuItemRef}>
                 Vigilância Integrada
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -459,22 +475,22 @@ export const Sidebar: FC = () => {
               icon={<Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/planejamento-urbano"
             >
-              <SidebarMenuItem href="/planejamento-urbano/atendimentos">
+              <SidebarMenuItem href="/planejamento-urbano/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/planejamento-urbano/aprovacao-projetos">
+              <SidebarMenuItem href="/planejamento-urbano/aprovacao-projetos" onSetRef={setMenuItemRef}>
                 Aprovação de Projetos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/planejamento-urbano/emissao-alvaras">
+              <SidebarMenuItem href="/planejamento-urbano/emissao-alvaras" onSetRef={setMenuItemRef}>
                 Emissão de Alvarás
               </SidebarMenuItem>
-              <SidebarMenuItem href="/planejamento-urbano/reclamacoes-denuncias">
+              <SidebarMenuItem href="/planejamento-urbano/reclamacoes-denuncias" onSetRef={setMenuItemRef}>
                 Reclamações e Denúncias
               </SidebarMenuItem>
-              <SidebarMenuItem href="/planejamento-urbano/consultas-publicas">
+              <SidebarMenuItem href="/planejamento-urbano/consultas-publicas" onSetRef={setMenuItemRef}>
                 Consultas Públicas
               </SidebarMenuItem>
-              <SidebarMenuItem href="/planejamento-urbano/mapa-urbano">
+              <SidebarMenuItem href="/planejamento-urbano/mapa-urbano" onSetRef={setMenuItemRef}>
                 Mapa Urbano
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -485,19 +501,19 @@ export const Sidebar: FC = () => {
               icon={<Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/agricultura"
             >
-              <SidebarMenuItem href="/agricultura/atendimentos">
+              <SidebarMenuItem href="/agricultura/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/agricultura/cadastro-produtores">
+              <SidebarMenuItem href="/agricultura/cadastro-produtores" onSetRef={setMenuItemRef}>
                 Cadastro de Produtores
               </SidebarMenuItem>
-              <SidebarMenuItem href="/agricultura/assistencia-tecnica">
+              <SidebarMenuItem href="/agricultura/assistencia-tecnica" onSetRef={setMenuItemRef}>
                 Assistência Técnica
               </SidebarMenuItem>
-              <SidebarMenuItem href="/agricultura/programas-rurais">
+              <SidebarMenuItem href="/agricultura/programas-rurais" onSetRef={setMenuItemRef}>
                 Programas Rurais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/agricultura/cursos-capacitacoes">
+              <SidebarMenuItem href="/agricultura/cursos-capacitacoes" onSetRef={setMenuItemRef}>
                 Cursos e Capacitações
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -507,25 +523,25 @@ export const Sidebar: FC = () => {
               icon={<Trophy className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/esportes"
             >
-              <SidebarMenuItem href="/esportes/atendimentos">
+              <SidebarMenuItem href="/esportes/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/esportes/equipes-esportivas">
+              <SidebarMenuItem href="/esportes/equipes-esportivas" onSetRef={setMenuItemRef}>
                 Equipes Esportivas
               </SidebarMenuItem>
-              <SidebarMenuItem href="/esportes/competicoes-torneios">
+              <SidebarMenuItem href="/esportes/competicoes-torneios" onSetRef={setMenuItemRef}>
                 Competições e Torneios
               </SidebarMenuItem>
-              <SidebarMenuItem href="/esportes/atletas-federados">
+              <SidebarMenuItem href="/esportes/atletas-federados" onSetRef={setMenuItemRef}>
                 Atletas Federados
               </SidebarMenuItem>
-              <SidebarMenuItem href="/esportes/escolinhas-esportivas">
+              <SidebarMenuItem href="/esportes/escolinhas-esportivas" onSetRef={setMenuItemRef}>
                 Escolinhas Esportivas
               </SidebarMenuItem>
-              <SidebarMenuItem href="/esportes/eventos-esportivos">
+              <SidebarMenuItem href="/esportes/eventos-esportivos" onSetRef={setMenuItemRef}>
                 Eventos Esportivos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/esportes/infraestrutura-esportiva">
+              <SidebarMenuItem href="/esportes/infraestrutura-esportiva" onSetRef={setMenuItemRef}>
                 Infraestrutura Esportiva
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -535,22 +551,22 @@ export const Sidebar: FC = () => {
               icon={<Compass className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/turismo"
             >
-              <SidebarMenuItem href="/turismo/atendimentos">
+              <SidebarMenuItem href="/turismo/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/turismo/pontos-turisticos">
+              <SidebarMenuItem href="/turismo/pontos-turisticos" onSetRef={setMenuItemRef}>
                 Pontos Turísticos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/turismo/estabelecimentos-locais">
+              <SidebarMenuItem href="/turismo/estabelecimentos-locais" onSetRef={setMenuItemRef}>
                 Estabelecimentos Locais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/turismo/programas-turisticos">
+              <SidebarMenuItem href="/turismo/programas-turisticos" onSetRef={setMenuItemRef}>
                 Programas Turísticos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/turismo/mapa-turistico">
+              <SidebarMenuItem href="/turismo/mapa-turistico" onSetRef={setMenuItemRef}>
                 Mapa Turístico
               </SidebarMenuItem>
-              <SidebarMenuItem href="/turismo/informacoes-turisticas">
+              <SidebarMenuItem href="/turismo/informacoes-turisticas" onSetRef={setMenuItemRef}>
                 Informações Turísticas
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -560,19 +576,19 @@ export const Sidebar: FC = () => {
               icon={<Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/habitacao"
             >
-              <SidebarMenuItem href="/habitacao/atendimentos">
+              <SidebarMenuItem href="/habitacao/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/habitacao/inscricoes">
+              <SidebarMenuItem href="/habitacao/inscricoes" onSetRef={setMenuItemRef}>
                 Inscrições
               </SidebarMenuItem>
-              <SidebarMenuItem href="/habitacao/programas-habitacionais">
+              <SidebarMenuItem href="/habitacao/programas-habitacionais" onSetRef={setMenuItemRef}>
                 Programas Habitacionais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/habitacao/unidades-habitacionais">
+              <SidebarMenuItem href="/habitacao/unidades-habitacionais" onSetRef={setMenuItemRef}>
                 Unidades Habitacionais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/habitacao/regularizacao-fundiaria">
+              <SidebarMenuItem href="/habitacao/regularizacao-fundiaria" onSetRef={setMenuItemRef}>
                 Regularização Fundiária
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -582,19 +598,19 @@ export const Sidebar: FC = () => {
               icon={<TreeDeciduous className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/meio-ambiente"
             >
-              <SidebarMenuItem href="/meio-ambiente/atendimentos">
+              <SidebarMenuItem href="/meio-ambiente/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/meio-ambiente/licencas-ambientais">
+              <SidebarMenuItem href="/meio-ambiente/licencas-ambientais" onSetRef={setMenuItemRef}>
                 Licenças Ambientais
               </SidebarMenuItem>
-              <SidebarMenuItem href="/meio-ambiente/registro-denuncias">
+              <SidebarMenuItem href="/meio-ambiente/registro-denuncias" onSetRef={setMenuItemRef}>
                 Registro de Denúncias
               </SidebarMenuItem>
-              <SidebarMenuItem href="/meio-ambiente/areas-protegidas">
+              <SidebarMenuItem href="/meio-ambiente/areas-protegidas" onSetRef={setMenuItemRef}>
                 Áreas Protegidas
               </SidebarMenuItem>
-              <SidebarMenuItem href="/meio-ambiente/programas-ambientais">
+              <SidebarMenuItem href="/meio-ambiente/programas-ambientais" onSetRef={setMenuItemRef}>
                 Programas Ambientais
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -604,16 +620,16 @@ export const Sidebar: FC = () => {
               icon={<Construction className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/obras-publicas"
             >
-              <SidebarMenuItem href="/obras-publicas/atendimentos">
+              <SidebarMenuItem href="/obras-publicas/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/obras-publicas/obras-intervencoes">
+              <SidebarMenuItem href="/obras-publicas/obras-intervencoes" onSetRef={setMenuItemRef}>
                 Obras e Intervenções
               </SidebarMenuItem>
-              <SidebarMenuItem href="/obras-publicas/progresso-obras">
+              <SidebarMenuItem href="/obras-publicas/progresso-obras" onSetRef={setMenuItemRef}>
                 Progresso de Obras
               </SidebarMenuItem>
-              <SidebarMenuItem href="/obras-publicas/mapa-obras">
+              <SidebarMenuItem href="/obras-publicas/mapa-obras" onSetRef={setMenuItemRef}>
                 Mapa de Obras
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -623,22 +639,22 @@ export const Sidebar: FC = () => {
               icon={<Wrench className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/servicos-publicos"
             >
-              <SidebarMenuItem href="/servicos-publicos/atendimentos">
+              <SidebarMenuItem href="/servicos-publicos/atendimentos" onSetRef={setMenuItemRef}>
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="/servicos-publicos/iluminacao-publica">
+              <SidebarMenuItem href="/servicos-publicos/iluminacao-publica" onSetRef={setMenuItemRef}>
                 Iluminação Pública
               </SidebarMenuItem>
-              <SidebarMenuItem href="/servicos-publicos/limpeza-urbana">
+              <SidebarMenuItem href="/servicos-publicos/limpeza-urbana" onSetRef={setMenuItemRef}>
                 Limpeza Urbana
               </SidebarMenuItem>
-              <SidebarMenuItem href="/servicos-publicos/coleta-especial">
+              <SidebarMenuItem href="/servicos-publicos/coleta-especial" onSetRef={setMenuItemRef}>
                 Coleta Especial
               </SidebarMenuItem>
-              <SidebarMenuItem href="/servicos-publicos/problemas-com-foto">
+              <SidebarMenuItem href="/servicos-publicos/problemas-com-foto" onSetRef={setMenuItemRef}>
                 Problemas com Foto
               </SidebarMenuItem>
-              <SidebarMenuItem href="/servicos-publicos/programacao-equipes">
+              <SidebarMenuItem href="/servicos-publicos/programacao-equipes" onSetRef={setMenuItemRef}>
                 Programação de Equipes
               </SidebarMenuItem>
             </SidebarSubmenu>
