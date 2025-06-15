@@ -1,3 +1,4 @@
+
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { SidebarLogo } from "./SidebarLogo";
@@ -179,7 +180,6 @@ export const MobileSidebar: FC = () => {
           <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
             <SidebarMenuItem 
               href="/" 
-              active={true}
               icon={
                 <svg
                   className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400"
@@ -259,6 +259,7 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Gabinete do Prefeito" 
               icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/gabinete"
             >
               <SidebarMenuItem href="/gabinete/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -289,6 +290,7 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Correio Interno" 
               icon={<Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/correio"
             >
               <SidebarMenuItem href="/correio/caixa-entrada">
                 <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -323,6 +325,7 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Administração do Sistema" 
               icon={<Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/administracao"
             >
               <SidebarMenuItem href="/administracao/gerenciamento-usuarios">
                 <UsersRound className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -349,6 +352,7 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Relatórios e Indicadores" 
               icon={<BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/relatorios"
             >
               <SidebarMenuItem href="/relatorios/relatorios">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -371,6 +375,7 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Configurações do Usuário" 
               icon={<User className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/configuracoes"
             >
               <SidebarMenuItem href="/configuracoes/meu-perfil">
                 <UserCircle2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -412,6 +417,7 @@ export const MobileSidebar: FC = () => {
                   ></path>
                 </svg>
               }
+              basePath="/saude"
             >
               <SidebarMenuItem href="/saude/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -469,6 +475,7 @@ export const MobileSidebar: FC = () => {
                   ></path>
                 </svg>
               }
+              basePath="/educacao"
             >
               <SidebarMenuItem href="/educacao/matricula-alunos">
                 <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -499,6 +506,7 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Assistência Social" 
               icon={<HandHeart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/assistencia-social"
             >
               <SidebarMenuItem href="/assistencia-social/atendimentos">
                 <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -533,6 +541,7 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Cultura" 
               icon={<Headphones className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/cultura"
             >
               <SidebarMenuItem href="/cultura/espacos-culturais">
                 <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -559,24 +568,25 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Agricultura" 
               icon={<Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/agricultura"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/agricultura/atendimentos">
                 <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/agricultura/cadastro-produtores">
                 <Tractor className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Cadastro de Produtores
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/agricultura/assistencia-tecnica">
                 <Handshake className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Assistência Técnica
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/agricultura/programas-rurais">
                 <Wheat className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Programas Rurais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/agricultura/cursos-capacitacoes">
                 <Book className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Cursos e Capacitações
               </SidebarMenuItem>
@@ -585,32 +595,33 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Esportes" 
               icon={<Trophy className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/esportes"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/esportes/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/esportes/atletas-professores">
                 <UserCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atletas e Professores
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/esportes/aulas-treinamentos">
                 <School className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Aulas e Treinamentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/esportes/campeonatos-competicoes">
                 <Trophy className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
-                Campeonatoes e Competições
+                Campeonatos e Competições
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/esportes/espacos-esportivos">
                 <MapPin className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Espaços Esportivos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/esportes/agendamento-espacos">
                 <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Agendamento de Espaços
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/esportes/registro-resultados">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Registro de Resultados
               </SidebarMenuItem>
@@ -619,54 +630,56 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Turismo" 
               icon={<Compass className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/turismo"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/turismo/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/turismo/pontos-turisticos">
                 <Landmark className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Pontos Turísticos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/turismo/estabelecimentos-locais">
                 <Store className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Estabelecimentos Locais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/turismo/programas-turisticos">
                 <Compass className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
-                Programas Turisticos
+                Programas Turísticos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/turismo/mapa-turistico">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Mapa Turistico
+                Mapa Turístico
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/turismo/informacoes-turisticas">
                 <Info className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Informações Turisticas
+                Informações Turísticas
               </SidebarMenuItem>
             </SidebarSubmenu>
 
             <SidebarSubmenu 
               title="Habitação" 
               icon={<Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/habitacao"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/habitacao/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/habitacao/inscricoes">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Inscrições
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/habitacao/programas-habitacionais">
                 <Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Programas Habitacionais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/habitacao/unidades-habitacionais">
                 <Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                 Unidades Habitacionais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/habitacao/regularizacao-fundiaria">
                 <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Regularização Fundiária
               </SidebarMenuItem>
@@ -675,36 +688,37 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Meio Ambiente" 
               icon={<Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/meio-ambiente"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/licencas-ambientais">
                 <FileBadge className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Licenças
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/registro-denuncias">
                 <AlertTriangle className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Registro de Denúncias
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/areas-protegidas">
                 <TreeDeciduous className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Cadastro de Áreas Protegidas
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/programas-ambientais">
                 <Leaf className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" strokeWidth={3} />
                 Programas Ambientais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/campanhas-ambientais">
                 <Award className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Campanhas Ambientais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/indicadores-ambientais">
                 <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Indicadores Ambientais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/meio-ambiente/mapa-ocorrencias">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Mapa de Ocorrências
               </SidebarMenuItem>
@@ -713,28 +727,29 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Planejamento Urbano" 
               icon={<Building className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/planejamento-urbano"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/aprovacao-projetos">
                 <FileSearch className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Aprovação de Projetos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/emissao-alvaras">
                 <FileText className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Emissão de Alvarás
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/reclamacoes-denuncias">
                 <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Reclamações e Denuncias
+                Reclamações e Denúncias
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/consultas-publicas">
                 <Search className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Consultas Públicas
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/planejamento-urbano/mapa-urbano">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Mapa Urbano
               </SidebarMenuItem>
@@ -743,24 +758,25 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Obras Públicas" 
               icon={<Construction className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/obras-publicas"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/obras-publicas/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/obras-publicas/obras-intervencoes">
                 <Hammer className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Obras e Pequenas Intervenções
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/obras-publicas/progresso-obras">
                 <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Progresso de Obras
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/obras-publicas/mapa-obras">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Mapa de Obras
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/obras-publicas/feedback-cidadaos">
                 <MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Feedback dos Cidadãos
               </SidebarMenuItem>
@@ -769,28 +785,29 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Serviços Públicos" 
               icon={<Construction className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/servicos-publicos"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/servicos-publicos/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/servicos-publicos/iluminacao-publica">
                 <Lightbulb className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Iluminação Pública
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/servicos-publicos/limpeza-urbana">
                 <Trash2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Limpeza Urbana
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/servicos-publicos/coleta-especial">
                 <Box className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Coleta Especial
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/servicos-publicos/problemas-com-foto">
                 <Image className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Problemas com Foto
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/servicos-publicos/programacao-equipes">
                 <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Programação de Equipes
               </SidebarMenuItem>
@@ -799,68 +816,35 @@ export const MobileSidebar: FC = () => {
             <SidebarSubmenu 
               title="Segurança Pública" 
               icon={<Shield className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/seguranca-publica"
             >
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/seguranca-publica/atendimentos">
                 <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Atendimentos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/seguranca-publica/registro-ocorrencias">
                 <FileCheck className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Registro de Ocorrências
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/seguranca-publica/apoio-guarda">
                 <BadgeHelp className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Apoio da Guarda
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/seguranca-publica/mapa-pontos-criticos">
                 <Map className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Mapa de Pontos Críticos
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/seguranca-publica/alertas-seguranca">
                 <Bell className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Alertas de Segurança
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/seguranca-publica/estatisticas-regionais">
                 <BarChart className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Estatísticas Regionais
               </SidebarMenuItem>
-              <SidebarMenuItem href="#">
+              <SidebarMenuItem href="/seguranca-publica/vigilancia-integrada">
                 <Radio className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
                 Vigilância Integrada
-              </SidebarMenuItem>
-            </SidebarSubmenu>
-
-            <SidebarSubmenu 
-              title="Gabinete do Prefeito" 
-              icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
-            >
-              <SidebarMenuItem href="#">
-                <Activity className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Atendimentos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Calendar className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Agenda do Prefeito
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <UserPlus className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Solicitação de Audiências
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <ListChecks className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Acompanhamento de Projetos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Mail className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Comunicações Oficiais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <Presentation className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Eventos Institucionais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="#">
-                <GraduationCap className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                Projetos Especiais
               </SidebarMenuItem>
             </SidebarSubmenu>
           </div>
