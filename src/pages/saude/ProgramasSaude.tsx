@@ -189,14 +189,14 @@ const statusColors: Record<string, string> = {
 
 const ProgramasSaude = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState<string>("");
+  const [filterStatus, setFilterStatus] = useState<string>("todos");
   const [selectedProgram, setSelectedProgram] = useState<string>("");
   
   // Filter programs based on the search term and status
   const filteredPrograms = mockPrograms.filter((program) => {
     const matchesSearch = program.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       program.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus ? program.status === filterStatus : true;
+    const matchesStatus = filterStatus === "todos" ? true : program.status === filterStatus;
     
     return matchesSearch && matchesStatus;
   });
@@ -291,7 +291,7 @@ const ProgramasSaude = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="todos">Todos os status</SelectItem>
                       {statuses.map((status) => (
                         <SelectItem key={status} value={status}>
                           {status.charAt(0).toUpperCase() + status.slice(1)}
