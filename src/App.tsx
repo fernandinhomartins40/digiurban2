@@ -2,6 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 
+// Landing Page
+import LandingPage from './pages/LandingPage';
+
 // Import all pages
 import Index from './pages/Index';
 import Chat from './pages/Chat';
@@ -167,8 +170,12 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          {/* Main pages */}
-          <Route path="/" element={<Index />} />
+          {/* Landing page */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/landing" element={<LandingPage />} />
+          
+          {/* Admin panel - main pages */}
+          <Route path="/admin" element={<Index />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/catalogo-servicos" element={<CatalogoServicos />} />
           <Route path="/meus-protocolos" element={<MeusProtocolos />} />
