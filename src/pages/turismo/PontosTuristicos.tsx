@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,7 +31,7 @@ import { PontoTuristico } from '@/types/turismo';
 
 const TurismoPontosTuristicos = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [tipoFilter, setTipoFilter] = useState('');
+  const [tipoFilter, setTipoFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<PontoTuristico | null>(null);
 
@@ -92,7 +91,7 @@ const TurismoPontosTuristicos = () => {
   const filteredPontos = pontosTuristicos.filter(ponto => 
     (ponto.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
      ponto.endereco.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (tipoFilter === '' || ponto.tipo === tipoFilter)
+    (tipoFilter === 'all' || ponto.tipo === tipoFilter)
   );
 
   const PontoTuristicoForm = () => (
@@ -230,7 +229,7 @@ const TurismoPontosTuristicos = () => {
                   <SelectValue placeholder="Filtrar por tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   <SelectItem value="Histórico">Histórico</SelectItem>
                   <SelectItem value="Natural">Natural</SelectItem>
                   <SelectItem value="Cultural">Cultural</SelectItem>
