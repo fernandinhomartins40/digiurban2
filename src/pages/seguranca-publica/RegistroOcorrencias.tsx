@@ -28,8 +28,8 @@ import { Ocorrencia } from "@/types/seguranca-publica";
 
 const RegistroOcorrencias: FC = () => {
   const [formData, setFormData] = useState({
-    tipo: "",
-    prioridade: "media",
+    tipo: undefined as string | undefined,
+    prioridade: "media" as string,
     local: "",
     descricao: "",
     solicitanteNome: "",
@@ -53,7 +53,7 @@ const RegistroOcorrencias: FC = () => {
       setTimeout(() => {
         setSubmitSuccess(false);
         setFormData({
-          tipo: "",
+          tipo: undefined,
           prioridade: "media",
           local: "",
           descricao: "",
@@ -66,7 +66,7 @@ const RegistroOcorrencias: FC = () => {
     }, 1500);
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | undefined) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -124,7 +124,7 @@ const RegistroOcorrencias: FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="tipo">Tipo de Ocorrência *</Label>
-                      <Select value={formData.tipo} onValueChange={(value) => handleInputChange('tipo', value)}>
+                      <Select value={formData.tipo || ""} onValueChange={(value) => handleInputChange('tipo', value)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o tipo" />
                         </SelectTrigger>
