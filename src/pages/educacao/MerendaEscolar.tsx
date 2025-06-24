@@ -181,8 +181,8 @@ const getWeekDayLabel = (weekDay: string) => {
 
 const MerendaEscolar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [schoolFilter, setSchoolFilter] = useState("");
-  const [weekDayFilter, setWeekDayFilter] = useState("");
+  const [schoolFilter, setSchoolFilter] = useState("todos");
+  const [weekDayFilter, setWeekDayFilter] = useState("todos");
   const [activeTab, setActiveTab] = useState("cardapios");
 
   // Filter meal plans based on search and filters
@@ -190,8 +190,8 @@ const MerendaEscolar = () => {
     return (
       (mealPlan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
        mealPlan.lunch.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (schoolFilter === "" || mealPlan.schoolId === schoolFilter) &&
-      (weekDayFilter === "" || mealPlan.weekDay === weekDayFilter)
+      (schoolFilter === "todos" || mealPlan.schoolId === schoolFilter) &&
+      (weekDayFilter === "todos" || mealPlan.weekDay === weekDayFilter)
     );
   });
 
@@ -236,7 +236,7 @@ const MerendaEscolar = () => {
                       <SelectValue placeholder="Escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as escolas</SelectItem>
+                      <SelectItem value="todos">Todas as escolas</SelectItem>
                       <SelectItem value="sch1">E.M. João Paulo</SelectItem>
                       <SelectItem value="sch2">E.M. Maria José</SelectItem>
                       <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
@@ -248,7 +248,7 @@ const MerendaEscolar = () => {
                       <SelectValue placeholder="Dia da semana" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os dias</SelectItem>
+                      <SelectItem value="todos">Todos os dias</SelectItem>
                       <SelectItem value="monday">Segunda-feira</SelectItem>
                       <SelectItem value="tuesday">Terça-feira</SelectItem>
                       <SelectItem value="wednesday">Quarta-feira</SelectItem>
