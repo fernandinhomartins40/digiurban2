@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -83,8 +82,8 @@ const mockOcorrencias: Ocorrencia[] = [
 
 const AtendimentosSegurancaPublica: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [tipoFilter, setTipoFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [tipoFilter, setTipoFilter] = useState("all");
   const [selectedOcorrencia, setSelectedOcorrencia] = useState<Ocorrencia | null>(null);
 
   const getStatusColor = (status: string) => {
@@ -126,8 +125,8 @@ const AtendimentosSegurancaPublica: FC = () => {
       ocorrencia.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
       ocorrencia.local.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesStatus = statusFilter === "" || ocorrencia.status === statusFilter;
-    const matchesTipo = tipoFilter === "" || ocorrencia.tipo === tipoFilter;
+    const matchesStatus = statusFilter === "all" || ocorrencia.status === statusFilter;
+    const matchesTipo = tipoFilter === "all" || ocorrencia.tipo === tipoFilter;
     
     return matchesSearch && matchesStatus && matchesTipo;
   });
@@ -277,7 +276,7 @@ const AtendimentosSegurancaPublica: FC = () => {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos os status</SelectItem>
                   <SelectItem value="aberta">Aberta</SelectItem>
                   <SelectItem value="em_andamento">Em Andamento</SelectItem>
                   <SelectItem value="resolvida">Resolvida</SelectItem>
@@ -289,7 +288,7 @@ const AtendimentosSegurancaPublica: FC = () => {
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   <SelectItem value="furto">Furto</SelectItem>
                   <SelectItem value="roubo">Roubo</SelectItem>
                   <SelectItem value="vandalismo">Vandalismo</SelectItem>
