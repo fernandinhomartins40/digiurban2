@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -226,9 +225,9 @@ const getEnrollmentStatusLabel = (status: string) => {
 
 const MatriculaAlunos = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [gradeFilter, setGradeFilter] = useState("");
-  const [schoolFilter, setSchoolFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [gradeFilter, setGradeFilter] = useState("todos");
+  const [schoolFilter, setSchoolFilter] = useState("todos");
+  const [statusFilter, setStatusFilter] = useState("todos");
   const [activeTab, setActiveTab] = useState("alunos");
 
   // Filter students based on search and filters
@@ -243,13 +242,13 @@ const MatriculaAlunos = () => {
     const currentEnrollment = student.enrollments[0];
     
     // Filter by school
-    const matchesSchool = schoolFilter === "" || currentEnrollment.schoolId === schoolFilter;
+    const matchesSchool = schoolFilter === "todos" || currentEnrollment.schoolId === schoolFilter;
     
     // Filter by grade
-    const matchesGrade = gradeFilter === "" || currentEnrollment.grade === gradeFilter;
+    const matchesGrade = gradeFilter === "todos" || currentEnrollment.grade === gradeFilter;
     
     // Filter by status
-    const matchesStatus = statusFilter === "" || currentEnrollment.status === statusFilter;
+    const matchesStatus = statusFilter === "todos" || currentEnrollment.status === statusFilter;
     
     return matchesSearch && matchesSchool && matchesGrade && matchesStatus;
   });
@@ -295,7 +294,7 @@ const MatriculaAlunos = () => {
                       <SelectValue placeholder="Escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as escolas</SelectItem>
+                      <SelectItem value="todos">Todas as escolas</SelectItem>
                       <SelectItem value="sch1">E.M. João Paulo</SelectItem>
                       <SelectItem value="sch2">E.M. Maria José</SelectItem>
                       <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
@@ -307,7 +306,7 @@ const MatriculaAlunos = () => {
                       <SelectValue placeholder="Série/Ano" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as séries</SelectItem>
+                      <SelectItem value="todos">Todas as séries</SelectItem>
                       <SelectItem value="Pré I">Pré I</SelectItem>
                       <SelectItem value="Pré II">Pré II</SelectItem>
                       <SelectItem value="1º Ano">1º Ano</SelectItem>
@@ -327,7 +326,7 @@ const MatriculaAlunos = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="todos">Todos os status</SelectItem>
                       <SelectItem value="active">Ativo</SelectItem>
                       <SelectItem value="transferred">Transferido</SelectItem>
                       <SelectItem value="withdrawn">Evadido</SelectItem>
