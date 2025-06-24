@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ChatRoom, ChatMessage, ChatParticipant, ChatState, SendMessageRequest } from '@/types/chat';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 export const useChat = () => {
   const [state, setState] = useState<ChatState>({
@@ -19,16 +19,29 @@ export const useChat = () => {
     
     try {
       console.log('🔄 Fetching chat rooms...');
-      const response = await fetch('/api/chat/rooms');
+      const response = await fetch('/api/chat/rooms', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
+        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
       
       const rooms: ChatRoom[] = await response.json();
       console.log('✅ Chat rooms fetched:', rooms.length, 'rooms');
-      setState(prev => ({ ...prev, rooms, isLoading: false }));
+      
+      setState(prev => ({ 
+        ...prev, 
+        rooms, 
+        isLoading: false,
+        error: null 
+      }));
+      
+      return rooms;
     } catch (error) {
       console.error('❌ Failed to fetch rooms:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to fetch rooms';
@@ -44,6 +57,8 @@ export const useChat = () => {
         title: "Erro de Conexão",
         description: "Não foi possível carregar as salas de chat. Verifique se o backend está executando."
       });
+      
+      throw error;
     }
   }, []);
 
@@ -53,22 +68,46 @@ export const useChat = () => {
     
     try {
       console.log(`🔄 Fetching messages for room ${roomId}...`);
-      const response = await fetch(`/api/chat/rooms/${roomId}/messages?page=${page}&limit=50`);
+      const response = await fetch(`/api/chat/rooms/${roomId}/messages?page=${page}&limit=50`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
       if (!response.ok) {
-        throw new Error(`Failed to fetch messages: ${response.status}`);
+        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
       
       const messages: ChatMessage[] = await response.json();
       console.log('✅ Messages fetched:', messages.length, 'messages');
-      setState(prev => ({ ...prev, messages, isLoading: false }));
-    } catch (error) {
-      console.error('❌ Failed to fetch messages:', error);
+      
       setState(prev => ({ 
         ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to fetch messages',
+        messages, 
+        isLoading: false,
+        error: null 
+      }));
+      
+      return messages;
+    } catch (error) {
+      console.error('❌ Failed to fetch messages:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch messages';
+      
+      setState(prev => ({ 
+        ...prev, 
+        error: errorMessage,
         isLoading: false 
       }));
+      
+      toast({
+        variant: "destructive",
+        title: "Erro ao Carregar Mensagens",
+        description: errorMessage
+      });
+      
+      throw error;
     }
   }, []);
 
@@ -76,21 +115,39 @@ export const useChat = () => {
   const fetchParticipants = useCallback(async (roomId: number) => {
     try {
       console.log(`🔄 Fetching participants for room ${roomId}...`);
-      const response = await fetch(`/api/chat/rooms/${roomId}/participants`);
+      const response = await fetch(`/api/chat/rooms/${roomId}/participants`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
       if (!response.ok) {
-        throw new Error(`Failed to fetch participants: ${response.status}`);
+        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
       
       const participants: ChatParticipant[] = await response.json();
       console.log('✅ Participants fetched:', participants.length, 'participants');
-      setState(prev => ({ ...prev, participants }));
-    } catch (error) {
-      console.error('❌ Failed to fetch participants:', error);
+      
       setState(prev => ({ 
         ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to fetch participants'
+        participants,
+        error: null 
       }));
+      
+      return participants;
+    } catch (error) {
+      console.error('❌ Failed to fetch participants:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch participants';
+      
+      setState(prev => ({ 
+        ...prev, 
+        error: errorMessage
+      }));
+      
+      // Don't show toast for participants error as it's not critical
+      throw error;
     }
   }, []);
 
@@ -107,7 +164,8 @@ export const useChat = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to send message: ${response.status}`);
+        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
       
       const newMessage: ChatMessage = await response.json();
@@ -116,16 +174,26 @@ export const useChat = () => {
       // Add the new message to the current messages
       setState(prev => ({
         ...prev,
-        messages: [...prev.messages, newMessage]
+        messages: [...prev.messages, newMessage],
+        error: null
       }));
 
       return newMessage;
     } catch (error) {
       console.error('❌ Failed to send message:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send message';
+      
       setState(prev => ({ 
         ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to send message'
+        error: errorMessage
       }));
+      
+      toast({
+        variant: "destructive",
+        title: "Erro ao Enviar Mensagem",
+        description: errorMessage
+      });
+      
       throw error;
     }
   }, []);
@@ -133,31 +201,50 @@ export const useChat = () => {
   // Set active room
   const setActiveRoom = useCallback((room: ChatRoom | null) => {
     console.log('🔄 Setting active room:', room?.name || 'none');
-    setState(prev => ({ ...prev, activeRoom: room }));
+    setState(prev => ({ 
+      ...prev, 
+      activeRoom: room,
+      messages: [], // Clear messages when switching rooms
+      participants: [], // Clear participants when switching rooms
+      error: null // Clear any previous errors
+    }));
     
     if (room) {
-      fetchMessages(room.id);
-      fetchParticipants(room.id);
-      markAsRead(room.id);
+      // Fetch data for the new room
+      Promise.all([
+        fetchMessages(room.id).catch(console.error),
+        fetchParticipants(room.id).catch(console.error),
+        markAsRead(room.id).catch(console.error)
+      ]);
     }
   }, [fetchMessages, fetchParticipants]);
 
   // Mark messages as read
   const markAsRead = useCallback(async (roomId: number) => {
     try {
-      await fetch(`/api/chat/rooms/${roomId}/mark-read`, {
-        method: 'POST'
+      const response = await fetch(`/api/chat/rooms/${roomId}/mark-read`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
+      
+      if (!response.ok) {
+        console.warn('Failed to mark messages as read:', response.status);
+        return;
+      }
+      
       console.log('✅ Messages marked as read for room', roomId);
     } catch (error) {
-      console.error('❌ Failed to mark messages as read:', error);
+      console.warn('❌ Failed to mark messages as read:', error);
+      // Don't throw or show toast for this non-critical operation
     }
   }, []);
 
   // Initialize chat
   useEffect(() => {
     console.log('🔄 Initializing chat...');
-    fetchRooms();
+    fetchRooms().catch(console.error);
   }, [fetchRooms]);
 
   return {
