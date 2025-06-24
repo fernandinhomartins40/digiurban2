@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -116,8 +115,8 @@ const mockSistemas: SistemaVigilancia[] = [
 
 const VigilanciaIntegrada: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [tipoFilter, setTipoFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [tipoFilter, setTipoFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedSistema, setSelectedSistema] = useState<SistemaVigilancia | null>(null);
 
   const getStatusColor = (status: string) => {
@@ -162,8 +161,8 @@ const VigilanciaIntegrada: FC = () => {
       sistema.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sistema.localizacao.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesTipo = tipoFilter === "" || sistema.tipo === tipoFilter;
-    const matchesStatus = statusFilter === "" || sistema.status === statusFilter;
+    const matchesTipo = tipoFilter === "all" || sistema.tipo === tipoFilter;
+    const matchesStatus = statusFilter === "all" || sistema.status === statusFilter;
     
     return matchesSearch && matchesTipo && matchesStatus;
   });
@@ -204,6 +203,7 @@ const VigilanciaIntegrada: FC = () => {
                       <SelectValue placeholder="Selecione o tipo" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="all">Todos os tipos</SelectItem>
                       <SelectItem value="camera_fixa">Câmera Fixa</SelectItem>
                       <SelectItem value="camera_movel">Câmera Móvel</SelectItem>
                       <SelectItem value="sensor_movimento">Sensor de Movimento</SelectItem>
@@ -310,7 +310,7 @@ const VigilanciaIntegrada: FC = () => {
                   <SelectValue placeholder="Tipo de Sistema" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   <SelectItem value="camera_fixa">Câmera Fixa</SelectItem>
                   <SelectItem value="camera_movel">Câmera Móvel</SelectItem>
                   <SelectItem value="sensor_movimento">Sensor de Movimento</SelectItem>
@@ -323,7 +323,7 @@ const VigilanciaIntegrada: FC = () => {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos os status</SelectItem>
                   <SelectItem value="online">Online</SelectItem>
                   <SelectItem value="offline">Offline</SelectItem>
                   <SelectItem value="manutencao">Manutenção</SelectItem>
