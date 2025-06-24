@@ -84,9 +84,9 @@ const mockAlertas: AlertaSeguranca[] = [
 
 const AlertasSeguranca: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [tipoFilter, setTipoFilter] = useState("");
-  const [nivelFilter, setNivelFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [tipoFilter, setTipoFilter] = useState("all");
+  const [nivelFilter, setNivelFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedAlerta, setSelectedAlerta] = useState<AlertaSeguranca | null>(null);
 
   const getTipoColor = (tipo: string) => {
@@ -134,9 +134,9 @@ const AlertasSeguranca: FC = () => {
       alerta.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       alerta.descricao.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesTipo = tipoFilter === "" || alerta.tipo === tipoFilter;
-    const matchesNivel = nivelFilter === "" || alerta.nivel === nivelFilter;
-    const matchesStatus = statusFilter === "" || alerta.status === statusFilter;
+    const matchesTipo = tipoFilter === "all" || alerta.tipo === tipoFilter;
+    const matchesNivel = nivelFilter === "all" || alerta.nivel === nivelFilter;
+    const matchesStatus = statusFilter === "all" || alerta.status === statusFilter;
     
     return matchesSearch && matchesTipo && matchesNivel && matchesStatus;
   });
@@ -194,308 +194,115 @@ const AlertasSeguranca: FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="col-span-2 space-y-2">
-                  <Label htmlFor="titulo">Título do Alerta</Label>
-                  <Input id="titulo" placeholder="Título claro e objetivo" />
-                </div>
-                <div className="col-span-2 space-y-2">
-                  <Label htmlFor="descricao">Descrição</Label>
-                  <textarea
-                    id="descricao"
-                    className="w-full p-2 border rounded-md"
-                    rows={3}
-                    placeholder="Descreva a situação detalhadamente..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="local">Local (opcional)</Label>
-                  <Input id="local" placeholder="Local específico" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="responsavel">Responsável</Label>
-                  <Input id="responsavel" placeholder="Nome do responsável" />
-                </div>
-              </div>
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline">Cancelar</Button>
-                <Button className="bg-orange-600 hover:bg-orange-700">Criar Alerta</Button>
               </div>
             </DialogContent>
           </Dialog>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <AlertTriangle className="h-8 w-8 text-red-500" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Críticos</p>
-                  <p className="text-2xl font-bold">2</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Bell className="h-8 w-8 text-orange-500" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Ativos</p>
-                  <p className="text-2xl font-bold">5</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Clock className="h-8 w-8 text-green-500" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Resolvidos</p>
-                  <p className="text-2xl font-bold">28</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Users className="h-8 w-8 text-blue-500" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Total</p>
-                  <p className="text-2xl font-bold">35</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="flex gap-4 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+            <Input
+              placeholder="Buscar alertas..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <Select value={tipoFilter} onValueChange={setTipoFilter}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Filtrar por tipo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os tipos</SelectItem>
+              <SelectItem value="emergencia">Emergência</SelectItem>
+              <SelectItem value="atencao">Atenção</SelectItem>
+              <SelectItem value="informativo">Informativo</SelectItem>
+              <SelectItem value="preventivo">Preventivo</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={nivelFilter} onValueChange={setNivelFilter}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Filtrar por nível" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os níveis</SelectItem>
+              <SelectItem value="baixo">Baixo</SelectItem>
+              <SelectItem value="medio">Médio</SelectItem>
+              <SelectItem value="alto">Alto</SelectItem>
+              <SelectItem value="critico">Crítico</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Filtrar por status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os status</SelectItem>
+              <SelectItem value="ativo">Ativo</SelectItem>
+              <SelectItem value="resolvido">Resolvido</SelectItem>
+              <SelectItem value="expirado">Expirado</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Filtros e Busca</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar alertas..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <Select value={tipoFilter} onValueChange={setTipoFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
-                  <SelectItem value="emergencia">Emergência</SelectItem>
-                  <SelectItem value="atencao">Atenção</SelectItem>
-                  <SelectItem value="informativo">Informativo</SelectItem>
-                  <SelectItem value="preventivo">Preventivo</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={nivelFilter} onValueChange={setNivelFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Nível" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Todos os níveis</SelectItem>
-                  <SelectItem value="baixo">Baixo</SelectItem>
-                  <SelectItem value="medio">Médio</SelectItem>
-                  <SelectItem value="alto">Alto</SelectItem>
-                  <SelectItem value="critico">Crítico</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
-                  <SelectItem value="ativo">Ativo</SelectItem>
-                  <SelectItem value="resolvido">Resolvido</SelectItem>
-                  <SelectItem value="expirado">Expirado</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button variant="outline" className="w-full">
-                <Bell className="mr-2 h-4 w-4" />
-                Enviar Alerta
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Lista de Alertas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {filteredAlertas.map((alerta) => (
-                <div
-                  key={alerta.id}
-                  className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer"
-                  onClick={() => setSelectedAlerta(alerta)}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold">{alerta.titulo}</h3>
-                        <Badge className={getTipoColor(alerta.tipo)}>
-                          {getTipoLabel(alerta.tipo)}
-                        </Badge>
-                        <Badge className={getNivelColor(alerta.nivel)}>
-                          {getNivelLabel(alerta.nivel)}
-                        </Badge>
-                        <Badge 
-                          className={alerta.status === 'ativo' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-gray-100 text-gray-800'
-                          }
-                        >
-                          {alerta.status}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">{alerta.descricao}</p>
+        <div className="grid gap-4">
+          {filteredAlertas.map((alerta) => (
+            <Card key={alerta.id} className="border-l-4 border-l-orange-500">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-semibold text-lg">{alerta.titulo}</h3>
+                      <Badge className={getTipoColor(alerta.tipo)}>
+                        {getTipoLabel(alerta.tipo)}
+                      </Badge>
+                      <Badge className={getNivelColor(alerta.nivel)}>
+                        {getNivelLabel(alerta.nivel)}
+                      </Badge>
+                    </div>
+                    <p className="text-gray-700 mb-3">{alerta.descricao}</p>
+                    <div className="flex items-center gap-4 text-sm text-gray-600">
                       {alerta.local && (
-                        <p className="text-sm text-muted-foreground mb-2">
-                          <MapPin className="inline h-3 w-3 mr-1" />
-                          {alerta.local}
-                        </p>
+                        <div className="flex items-center gap-1">
+                          <MapPin size={14} />
+                          <span>{alerta.local}</span>
+                        </div>
                       )}
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span>
-                          <Clock className="inline h-3 w-3 mr-1" />
-                          {new Date(alerta.dataInicio).toLocaleString()}
-                        </span>
-                        <span>Responsável: {alerta.responsavel}</span>
-                        <span>Canais: {alerta.canais.length}</span>
+                      <div className="flex items-center gap-1">
+                        <Clock size={14} />
+                        <span>{new Date(alerta.dataInicio).toLocaleDateString('pt-BR')}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Users size={14} />
+                        <span>{alerta.populacaoAlvo.length} grupos alvo</span>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-3 w-3" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-3 w-3" />
-                      </Button>
-                      <Button variant="outline" size="sm" className="text-red-600">
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm">
+                      <Eye size={14} className="mr-1" />
+                      Ver
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Edit size={14} className="mr-1" />
+                      Editar
+                    </Button>
+                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                      <Trash2 size={14} />
+                    </Button>
                   </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-        {selectedAlerta && (
-          <Dialog open={!!selectedAlerta} onOpenChange={() => setSelectedAlerta(null)}>
-            <DialogContent className="max-w-4xl">
-              <DialogHeader>
-                <DialogTitle>Detalhes do Alerta - {selectedAlerta.titulo}</DialogTitle>
-              </DialogHeader>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <Label>Tipo e Nível</Label>
-                    <div className="flex gap-2 mt-1">
-                      <Badge className={getTipoColor(selectedAlerta.tipo)}>
-                        {getTipoLabel(selectedAlerta.tipo)}
-                      </Badge>
-                      <Badge className={getNivelColor(selectedAlerta.nivel)}>
-                        {getNivelLabel(selectedAlerta.nivel)}
-                      </Badge>
-                    </div>
-                  </div>
-                  <div>
-                    <Label>Descrição</Label>
-                    <p className="text-sm bg-gray-50 p-3 rounded">{selectedAlerta.descricao}</p>
-                  </div>
-                  {selectedAlerta.local && (
-                    <div>
-                      <Label>Local</Label>
-                      <p className="text-sm">{selectedAlerta.local}</p>
-                    </div>
-                  )}
-                  <div>
-                    <Label>Período</Label>
-                    <p className="text-sm">
-                      Início: {new Date(selectedAlerta.dataInicio).toLocaleString()}
-                    </p>
-                    {selectedAlerta.dataFim && (
-                      <p className="text-sm">
-                        Fim: {new Date(selectedAlerta.dataFim).toLocaleString()}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>Canais de Comunicação</Label>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {selectedAlerta.canais.map((canal, index) => (
-                        <Badge key={index} variant="outline">{canal.toUpperCase()}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <Label>População Alvo</Label>
-                    <ul className="text-sm bg-gray-50 p-3 rounded">
-                      {selectedAlerta.populacaoAlvo.map((grupo, index) => (
-                        <li key={index}>• {grupo}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  {selectedAlerta.instrucoesSeguranca && (
-                    <div>
-                      <Label>Instruções de Segurança</Label>
-                      <ul className="text-sm bg-yellow-50 p-3 rounded border border-yellow-200">
-                        {selectedAlerta.instrucoesSeguranca.map((instrucao, index) => (
-                          <li key={index}>• {instrucao}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {selectedAlerta.contatosEmergencia && (
-                    <div>
-                      <Label>Contatos de Emergência</Label>
-                      <div className="text-sm bg-red-50 p-3 rounded border border-red-200">
-                        {selectedAlerta.contatosEmergencia.map((contato, index) => (
-                          <div key={index} className="flex justify-between">
-                            <span>{contato.nome} ({contato.funcao})</span>
-                            <span className="font-medium">{contato.telefone}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  <div>
-                    <Label>Responsável</Label>
-                    <p className="text-sm">{selectedAlerta.responsavel}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-end space-x-2 mt-6">
-                <Button variant="outline" onClick={() => setSelectedAlerta(null)}>
-                  Fechar
-                </Button>
-                {selectedAlerta.status === 'ativo' && (
-                  <Button className="bg-red-600 hover:bg-red-700">
-                    Resolver Alerta
-                  </Button>
-                )}
-                <Button className="bg-orange-600 hover:bg-orange-700">
-                  Editar
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+        {filteredAlertas.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            <AlertTriangle size={48} className="mx-auto mb-4 text-gray-300" />
+            <p>Nenhum alerta encontrado</p>
+          </div>
         )}
       </div>
     </Layout>
