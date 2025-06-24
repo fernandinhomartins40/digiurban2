@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -94,8 +93,8 @@ const mockPontosCriticos: PontoCritico[] = [
 
 const MapaPontosCriticos: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [tipoFilter, setTipoFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [tipoFilter, setTipoFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedPonto, setSelectedPonto] = useState<PontoCritico | null>(null);
 
   const getTipoColor = (tipo: string) => {
@@ -133,8 +132,8 @@ const MapaPontosCriticos: FC = () => {
       ponto.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
       ponto.endereco.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesTipo = tipoFilter === "" || ponto.tipo === tipoFilter;
-    const matchesStatus = statusFilter === "" || ponto.statusMonitoramento === statusFilter;
+    const matchesTipo = tipoFilter === "all" || ponto.tipo === tipoFilter;
+    const matchesStatus = statusFilter === "all" || ponto.statusMonitoramento === statusFilter;
     
     return matchesSearch && matchesTipo && matchesStatus;
   });
@@ -289,7 +288,7 @@ const MapaPontosCriticos: FC = () => {
                   <SelectValue placeholder="Tipo de Risco" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   <SelectItem value="alto_risco">Alto Risco</SelectItem>
                   <SelectItem value="medio_risco">Médio Risco</SelectItem>
                   <SelectItem value="baixo_risco">Baixo Risco</SelectItem>
@@ -301,7 +300,7 @@ const MapaPontosCriticos: FC = () => {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos os status</SelectItem>
                   <SelectItem value="ativo">Ativo</SelectItem>
                   <SelectItem value="inativo">Inativo</SelectItem>
                   <SelectItem value="em_analise">Em Análise</SelectItem>
