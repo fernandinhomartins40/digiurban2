@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,6 +70,21 @@ const RegistroOcorrencias: FC = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const getPrioridadeBadge = (prioridade: string) => {
+    switch (prioridade) {
+      case "baixa":
+        return <Badge className="bg-green-500 text-white">Baixa</Badge>;
+      case "media":
+        return <Badge className="bg-yellow-500 text-white">Média</Badge>;
+      case "alta":
+        return <Badge className="bg-orange-500 text-white">Alta</Badge>;
+      case "critica":
+        return <Badge className="bg-red-500 text-white">Crítica</Badge>;
+      default:
+        return <Badge className="bg-gray-500 text-white">Média</Badge>;
+    }
+  };
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -115,18 +129,8 @@ const RegistroOcorrencias: FC = () => {
                           <SelectValue placeholder="Selecione o tipo" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="furto">
-                            <div className="flex items-center">
-                              <AlertTriangle className="mr-2 h-4 w-4 text-orange-500" />
-                              Furto
-                            </div>
-                          </SelectItem>
-                          <SelectItem value="roubo">
-                            <div className="flex items-center">
-                              <AlertTriangle className="mr-2 h-4 w-4 text-red-500" />
-                              Roubo
-                            </div>
-                          </SelectItem>
+                          <SelectItem value="furto">Furto</SelectItem>
+                          <SelectItem value="roubo">Roubo</SelectItem>
                           <SelectItem value="vandalismo">Vandalismo</SelectItem>
                           <SelectItem value="perturbacao">Perturbação da Ordem</SelectItem>
                           <SelectItem value="acidente">Acidente de Trânsito</SelectItem>
@@ -143,18 +147,10 @@ const RegistroOcorrencias: FC = () => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="baixa">
-                            <Badge className="bg-green-500 text-white">Baixa</Badge>
-                          </SelectItem>
-                          <SelectItem value="media">
-                            <Badge className="bg-yellow-500 text-white">Média</Badge>
-                          </SelectItem>
-                          <SelectItem value="alta">
-                            <Badge className="bg-orange-500 text-white">Alta</Badge>
-                          </SelectItem>
-                          <SelectItem value="critica">
-                            <Badge className="bg-red-500 text-white">Crítica</Badge>
-                          </SelectItem>
+                          <SelectItem value="baixa">Baixa</SelectItem>
+                          <SelectItem value="media">Média</SelectItem>
+                          <SelectItem value="alta">Alta</SelectItem>
+                          <SelectItem value="critica">Crítica</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
