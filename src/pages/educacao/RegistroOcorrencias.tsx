@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -201,10 +202,10 @@ const getTypeColor = (type: string) => {
 
 const RegistroOcorrencias = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
-  const [severityFilter, setSeverityFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [schoolFilter, setSchoolFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [severityFilter, setSeverityFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [schoolFilter, setSchoolFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("lista");
   
   // Filter occurrences based on search and filters
@@ -212,12 +213,12 @@ const RegistroOcorrencias = () => {
     return (
       (occurrence.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
        occurrence.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (typeFilter === "" || occurrence.type === typeFilter) &&
-      (severityFilter === "" || occurrence.severity === severityFilter) &&
-      (statusFilter === "" || 
+      (typeFilter === "all" || occurrence.type === typeFilter) &&
+      (severityFilter === "all" || occurrence.severity === severityFilter) &&
+      (statusFilter === "all" || 
        (statusFilter === "resolved" && occurrence.resolved) ||
        (statusFilter === "unresolved" && !occurrence.resolved)) &&
-      (schoolFilter === "" || occurrence.schoolId === schoolFilter)
+      (schoolFilter === "all" || occurrence.schoolId === schoolFilter)
     );
   });
 
@@ -261,7 +262,7 @@ const RegistroOcorrencias = () => {
                       <SelectValue placeholder="Tipo de ocorrência" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os tipos</SelectItem>
+                      <SelectItem value="all">Todos os tipos</SelectItem>
                       <SelectItem value="disciplinary">Disciplinar</SelectItem>
                       <SelectItem value="accident">Acidente</SelectItem>
                       <SelectItem value="health">Saúde</SelectItem>
@@ -275,7 +276,7 @@ const RegistroOcorrencias = () => {
                       <SelectValue placeholder="Gravidade" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as gravidades</SelectItem>
+                      <SelectItem value="all">Todas as gravidades</SelectItem>
                       <SelectItem value="low">Baixa</SelectItem>
                       <SelectItem value="medium">Média</SelectItem>
                       <SelectItem value="high">Alta</SelectItem>
@@ -288,7 +289,7 @@ const RegistroOcorrencias = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="all">Todos os status</SelectItem>
                       <SelectItem value="resolved">Resolvida</SelectItem>
                       <SelectItem value="unresolved">Pendente</SelectItem>
                     </SelectContent>
@@ -299,7 +300,7 @@ const RegistroOcorrencias = () => {
                       <SelectValue placeholder="Escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as escolas</SelectItem>
+                      <SelectItem value="all">Todas as escolas</SelectItem>
                       <SelectItem value="sch1">E.M. João Paulo</SelectItem>
                       <SelectItem value="sch2">E.M. Maria José</SelectItem>
                       <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
