@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,7 +27,7 @@ import { AtendimentoTuristico } from '@/types/turismo';
 
 const TurismoAtendimentos = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<AtendimentoTuristico | null>(null);
 
@@ -89,7 +88,7 @@ const TurismoAtendimentos = () => {
   const filteredAtendimentos = atendimentos.filter(atendimento => 
     (atendimento.cidadao.toLowerCase().includes(searchTerm.toLowerCase()) ||
      atendimento.assunto.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (statusFilter === '' || atendimento.status === statusFilter)
+    (statusFilter === 'all' || atendimento.status === statusFilter)
   );
 
   const AtendimentoForm = () => (
@@ -222,7 +221,7 @@ const TurismoAtendimentos = () => {
                   <SelectValue placeholder="Filtrar por status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos os status</SelectItem>
                   <SelectItem value="Pendente">Pendente</SelectItem>
                   <SelectItem value="Em Andamento">Em Andamento</SelectItem>
                   <SelectItem value="Resolvido">Resolvido</SelectItem>
