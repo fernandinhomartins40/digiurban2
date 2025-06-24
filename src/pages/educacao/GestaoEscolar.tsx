@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -159,8 +158,8 @@ const getSchoolTypeColor = (type: string) => {
 
 const GestaoEscolar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("todos");
+  const [statusFilter, setStatusFilter] = useState("todos");
   const [activeTab, setActiveTab] = useState("escolas");
   
   // Filter schools based on search and filters
@@ -169,8 +168,8 @@ const GestaoEscolar = () => {
       (school.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
        school.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
        school.principal.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (typeFilter === "" || school.type === typeFilter) &&
-      (statusFilter === "" || 
+      (typeFilter === "todos" || school.type === typeFilter) &&
+      (statusFilter === "todos" || 
        (statusFilter === "active" && school.active) ||
        (statusFilter === "inactive" && !school.active))
     );
@@ -217,7 +216,7 @@ const GestaoEscolar = () => {
                       <SelectValue placeholder="Tipo de escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os tipos</SelectItem>
+                      <SelectItem value="todos">Todos os tipos</SelectItem>
                       <SelectItem value="municipal">Municipal</SelectItem>
                       <SelectItem value="state">Estadual</SelectItem>
                       <SelectItem value="federal">Federal</SelectItem>
@@ -230,7 +229,7 @@ const GestaoEscolar = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="todos">Todos os status</SelectItem>
                       <SelectItem value="active">Ativas</SelectItem>
                       <SelectItem value="inactive">Inativas</SelectItem>
                     </SelectContent>
@@ -358,7 +357,7 @@ const GestaoEscolar = () => {
                       <SelectValue placeholder="Tipo de funcionário" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todos os tipos</SelectItem>
+                      <SelectItem value="todos">Todos os tipos</SelectItem>
                       <SelectItem value="teacher">Professor</SelectItem>
                       <SelectItem value="administrator">Administrador</SelectItem>
                       <SelectItem value="support">Apoio</SelectItem>
@@ -371,7 +370,7 @@ const GestaoEscolar = () => {
                       <SelectValue placeholder="Escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas as escolas</SelectItem>
+                      <SelectItem value="todos">Todas as escolas</SelectItem>
                       {mockSchools.map((school) => (
                         <SelectItem key={school.id} value={school.id}>
                           {school.name}
@@ -423,7 +422,7 @@ const GestaoEscolar = () => {
                       <SelectValue placeholder="Escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas as escolas</SelectItem>
+                      <SelectItem value="todos">Todas as escolas</SelectItem>
                       {mockSchools.map((school) => (
                         <SelectItem key={school.id} value={school.id}>
                           {school.name}
@@ -437,7 +436,7 @@ const GestaoEscolar = () => {
                       <SelectValue placeholder="Ano/Série" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todos os anos</SelectItem>
+                      <SelectItem value="todos">Todos os anos</SelectItem>
                       <SelectItem value="1">1º Ano</SelectItem>
                       <SelectItem value="2">2º Ano</SelectItem>
                       <SelectItem value="3">3º Ano</SelectItem>
