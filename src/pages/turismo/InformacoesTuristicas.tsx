@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,8 +32,8 @@ import { InformacaoTuristica } from '@/types/turismo';
 
 const TurismoInformacoesTuristicas = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [tipoFilter, setTipoFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [tipoFilter, setTipoFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<InformacaoTuristica | null>(null);
 
@@ -128,8 +127,8 @@ const TurismoInformacoesTuristicas = () => {
   const filteredInformacoes = informacoes.filter(info => 
     (info.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
      info.conteudo.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (tipoFilter === '' || info.tipo === tipoFilter) &&
-    (statusFilter === '' || info.status === statusFilter)
+    (tipoFilter === 'all' || info.tipo === tipoFilter) &&
+    (statusFilter === 'all' || info.status === statusFilter)
   );
 
   const InformacaoForm = () => (
@@ -332,7 +331,7 @@ const TurismoInformacoesTuristicas = () => {
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
+                  <SelectItem value="all">Todos</SelectItem>
                   <SelectItem value="Evento">Evento</SelectItem>
                   <SelectItem value="Notícia">Notícia</SelectItem>
                   <SelectItem value="Dica">Dica</SelectItem>
@@ -346,7 +345,7 @@ const TurismoInformacoesTuristicas = () => {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
+                  <SelectItem value="all">Todos</SelectItem>
                   <SelectItem value="Publicado">Publicado</SelectItem>
                   <SelectItem value="Rascunho">Rascunho</SelectItem>
                   <SelectItem value="Arquivado">Arquivado</SelectItem>
