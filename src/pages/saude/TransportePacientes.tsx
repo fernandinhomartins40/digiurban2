@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -219,8 +218,8 @@ const vehicleStatusColors: Record<string, string> = {
 const TransportePacientes = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [vehicleFilter, setVehicleFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todos");
+  const [vehicleFilter, setVehicleFilter] = useState("todos");
 
   // Filter transports based on search term, date, status, and vehicle type
   const filteredTransports = mockTransports.filter((transport) => {
@@ -229,8 +228,8 @@ const TransportePacientes = () => {
       transport.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
       transport.reason.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDate = dateFilter ? transport.date === dateFilter : true;
-    const matchesStatus = statusFilter ? transport.status === statusFilter : true;
-    const matchesVehicle = vehicleFilter ? transport.vehicleType === vehicleFilter : true;
+    const matchesStatus = statusFilter === "todos" ? true : transport.status === statusFilter;
+    const matchesVehicle = vehicleFilter === "todos" ? true : transport.vehicleType === vehicleFilter;
     
     return matchesSearch && matchesDate && matchesStatus && matchesVehicle;
   });
@@ -326,7 +325,7 @@ const TransportePacientes = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os status</SelectItem>
+                      <SelectItem value="todos">Todos os status</SelectItem>
                       <SelectItem value="agendado">Agendado</SelectItem>
                       <SelectItem value="em andamento">Em Andamento</SelectItem>
                       <SelectItem value="concluído">Concluído</SelectItem>
@@ -339,7 +338,7 @@ const TransportePacientes = () => {
                       <SelectValue placeholder="Veículo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os veículos</SelectItem>
+                      <SelectItem value="todos">Todos os veículos</SelectItem>
                       <SelectItem value="ambulância">Ambulância</SelectItem>
                       <SelectItem value="van">Van</SelectItem>
                       <SelectItem value="carro">Carro</SelectItem>
