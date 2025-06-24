@@ -41,19 +41,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Textarea } from "@/components/ui/textarea";
 import { 
   Search, 
   ChevronDown, 
   Plus, 
   Bus, 
-  User, 
   Users, 
-  Map, 
-  FileText, 
-  Clock,
-  Calendar,
-  AlertTriangle
+  Clock, 
+  MapPin,
+  Route,
+  AlertTriangle,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
 import { TransportRoute } from "@/types/educacao";
 
@@ -61,203 +60,172 @@ import { TransportRoute } from "@/types/educacao";
 const mockRoutes: TransportRoute[] = [
   {
     id: "route1",
-    name: "Rota 01 - Centro / Vila Nova",
-    description: "Atende as escolas do centro e bairro Vila Nova",
+    name: "Rota Norte - Zona Rural",
+    description: "Atende comunidades rurais da região norte",
     vehicle: {
-      id: "veh1",
-      type: "bus",
+      id: "bus1",
+      type: "Ônibus Escolar",
       plate: "ABC-1234",
-      capacity: 44,
-      driver: "João Silva"
+      capacity: 45,
+      driver: "João Silva",
+      helper: "Maria Santos"
     },
     schools: [
       {
         id: "sch1",
         name: "Escola Municipal João Paulo",
-        arrivalTime: "06:45",
-        departureTime: "12:15"
+        arrivalTime: "07:30",
+        departureTime: "17:00"
       },
       {
         id: "sch2",
         name: "Escola Municipal Maria José",
-        arrivalTime: "07:00",
-        departureTime: "12:30"
+        arrivalTime: "08:00",
+        departureTime: "16:30"
       }
     ],
     stops: [
       {
         id: "stop1",
-        name: "Terminal Central",
-        time: "06:15",
-        location: "Av. Central, s/n",
-        studentsCount: 12
-      },
-      {
-        id: "stop2",
-        name: "Praça Vila Nova",
-        time: "06:30",
-        location: "Rua das Flores, 123",
+        name: "Fazenda Boa Vista",
+        time: "06:45",
+        location: "Estrada Rural, Km 15",
         studentsCount: 8
       },
       {
+        id: "stop2",
+        name: "Sítio São João",
+        time: "07:00",
+        location: "Estrada da Cachoeira, s/n",
+        studentsCount: 12
+      },
+      {
         id: "stop3",
-        name: "Mercado Municipal",
-        time: "06:40",
-        location: "Av. do Comércio, 500",
-        studentsCount: 10
+        name: "Vila Rural",
+        time: "07:15",
+        location: "Rua Principal, 100",
+        studentsCount: 15
       }
     ],
-    distance: 15.5,
+    distance: 25.5,
     estimatedTime: 45,
     active: true
   },
   {
     id: "route2",
-    name: "Rota 02 - Zona Rural",
-    description: "Atende alunos da zona rural para as escolas do centro",
+    name: "Rota Sul - Bairros Periféricos",
+    description: "Conecta bairros periféricos ao centro educacional",
     vehicle: {
-      id: "veh2",
-      type: "van",
+      id: "bus2",
+      type: "Micro-ônibus",
       plate: "DEF-5678",
-      capacity: 16,
-      driver: "Maria Oliveira"
+      capacity: 25,
+      driver: "Carlos Oliveira"
     },
     schools: [
       {
-        id: "sch1",
-        name: "Escola Municipal João Paulo",
-        arrivalTime: "07:00",
-        departureTime: "12:15"
+        id: "sch3",
+        name: "CMEI Pequeno Príncipe",
+        arrivalTime: "07:45",
+        departureTime: "16:45"
       }
     ],
     stops: [
       {
         id: "stop4",
-        name: "Fazenda São João",
-        time: "05:45",
-        location: "Estrada Rural, km 5",
-        studentsCount: 4
-      },
-      {
-        id: "stop5",
-        name: "Vila dos Agricultores",
-        time: "06:00",
-        location: "Estrada Rural, km 8",
+        name: "Jardim América",
+        time: "07:00",
+        location: "Av. das Flores, 200",
         studentsCount: 6
       },
       {
+        id: "stop5",
+        name: "Vila Nova",
+        time: "07:15",
+        location: "Rua das Crianças, 45",
+        studentsCount: 8
+      },
+      {
         id: "stop6",
-        name: "Ponte do Rio Claro",
-        time: "06:20",
-        location: "Estrada Rural, km 12",
-        studentsCount: 5
+        name: "Conjunto Habitacional",
+        time: "07:30",
+        location: "Rua Central, 300",
+        studentsCount: 11
       }
     ],
-    distance: 28.3,
-    estimatedTime: 75,
+    distance: 12.8,
+    estimatedTime: 30,
     active: true
   },
   {
     id: "route3",
-    name: "Rota 03 - Jardim América",
-    description: "Atende o bairro Jardim América e adjacências",
+    name: "Rota Centro - Escolas Urbanas",
+    description: "Atende estudantes da área central",
     vehicle: {
-      id: "veh3",
-      type: "microbus",
+      id: "bus3",
+      type: "Van Escolar",
       plate: "GHI-9012",
-      capacity: 28,
-      driver: "Carlos Santos",
-      helper: "Ana Lima"
+      capacity: 15,
+      driver: "Ana Paula",
+      helper: "Pedro Costa"
     },
     schools: [
       {
-        id: "sch2",
-        name: "Escola Municipal Maria José",
-        arrivalTime: "06:50",
-        departureTime: "12:30"
-      },
-      {
-        id: "sch3",
-        name: "CMEI Pequeno Príncipe",
-        arrivalTime: "07:10",
-        departureTime: "17:00"
+        id: "sch4",
+        name: "Escola Municipal Paulo Freire",
+        arrivalTime: "07:50",
+        departureTime: "17:10"
       }
     ],
     stops: [
       {
         id: "stop7",
-        name: "Praça Jardim América",
-        time: "06:15",
-        location: "Rua das Acácias, 50",
-        studentsCount: 9
+        name: "Centro Comercial",
+        time: "07:20",
+        location: "Praça Central, s/n",
+        studentsCount: 5
       },
       {
         id: "stop8",
-        name: "Mercado Bom Preço",
-        time: "06:25",
-        location: "Av. das Palmeiras, 300",
-        studentsCount: 11
-      },
-      {
-        id: "stop9",
-        name: "Posto de Saúde",
-        time: "06:35",
-        location: "Rua da Saúde, 75",
-        studentsCount: 8
+        name: "Residencial dos Professores",
+        time: "07:35",
+        location: "Rua dos Educadores, 150",
+        studentsCount: 7
       }
     ],
-    distance: 12.8,
-    estimatedTime: 55,
+    distance: 8.2,
+    estimatedTime: 20,
     active: false
   }
 ];
 
-// Helper function for vehicle type badge
-const getVehicleTypeBadge = (type: string) => {
+const getVehicleTypeColor = (type: string) => {
   switch (type) {
-    case "bus":
-      return {
-        label: "Ônibus",
-        class: "bg-blue-100 text-blue-800"
-      };
-    case "van":
-      return {
-        label: "Van",
-        class: "bg-green-100 text-green-800"
-      };
-    case "microbus":
-      return {
-        label: "Micro-ônibus",
-        class: "bg-purple-100 text-purple-800"
-      };
-    case "car":
-      return {
-        label: "Carro",
-        class: "bg-amber-100 text-amber-800"
-      };
+    case "Ônibus Escolar":
+      return "bg-blue-100 text-blue-800";
+    case "Micro-ônibus":
+      return "bg-green-100 text-green-800";
+    case "Van Escolar":
+      return "bg-purple-100 text-purple-800";
     default:
-      return {
-        label: type,
-        class: "bg-gray-100 text-gray-800"
-      };
+      return "bg-gray-100 text-gray-800";
   }
 };
 
 const TransporteEscolar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [vehicleFilter, setVehicleFilter] = useState("");
-  const [schoolFilter, setSchoolFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [routeFilter, setRouteFilter] = useState("todos");
+  const [statusFilter, setStatusFilter] = useState("todos");
   const [activeTab, setActiveTab] = useState("rotas");
-
+  
   // Filter routes based on search and filters
   const filteredRoutes = mockRoutes.filter((route) => {
     return (
       (route.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       route.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (vehicleFilter === "" || route.vehicle.type === vehicleFilter) &&
-      (schoolFilter === "" || route.schools.some(school => school.id === schoolFilter)) &&
-      (statusFilter === "" || 
+       route.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       route.vehicle.driver.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (routeFilter === "todos" || route.vehicle.type === routeFilter) &&
+      (statusFilter === "todos" || 
        (statusFilter === "active" && route.active) ||
        (statusFilter === "inactive" && !route.active))
     );
@@ -270,10 +238,11 @@ const TransporteEscolar = () => {
         
         <Tabs defaultValue="rotas" value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6">
-            <TabsTrigger value="rotas">Rotas</TabsTrigger>
+            <TabsTrigger value="rotas">Rotas de Transporte</TabsTrigger>
             <TabsTrigger value="veiculos">Veículos</TabsTrigger>
-            <TabsTrigger value="motoristas">Motoristas</TabsTrigger>
-            <TabsTrigger value="alunos">Alunos</TabsTrigger>
+            <TabsTrigger value="motoristas">Motoristas e Monitores</TabsTrigger>
+            <TabsTrigger value="estudantes">Estudantes Transportados</TabsTrigger>
+            <TabsTrigger value="relatorios">Relatórios</TabsTrigger>
           </TabsList>
 
           <TabsContent value="rotas">
@@ -281,7 +250,7 @@ const TransporteEscolar = () => {
               <CardHeader>
                 <CardTitle>Rotas de Transporte Escolar</CardTitle>
                 <CardDescription>
-                  Gerenciamento das rotas de transporte para os alunos da rede
+                  Gerenciamento das rotas, paradas e horários do transporte escolar
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -291,7 +260,7 @@ const TransporteEscolar = () => {
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                       <Input
                         type="search"
-                        placeholder="Buscar por nome ou descrição..."
+                        placeholder="Buscar por rota, motorista ou descrição..."
                         className="pl-8"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -299,43 +268,30 @@ const TransporteEscolar = () => {
                     </div>
                   </div>
 
-                  <Select value={vehicleFilter} onValueChange={setVehicleFilter}>
+                  <Select value={routeFilter} onValueChange={setRouteFilter}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Tipo de veículo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os tipos</SelectItem>
-                      <SelectItem value="bus">Ônibus</SelectItem>
-                      <SelectItem value="van">Van</SelectItem>
-                      <SelectItem value="microbus">Micro-ônibus</SelectItem>
-                      <SelectItem value="car">Carro</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={schoolFilter} onValueChange={setSchoolFilter}>
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Escola" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="">Todas as escolas</SelectItem>
-                      <SelectItem value="sch1">E.M. João Paulo</SelectItem>
-                      <SelectItem value="sch2">E.M. Maria José</SelectItem>
-                      <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
+                      <SelectItem value="todos">Todos os tipos</SelectItem>
+                      <SelectItem value="Ônibus Escolar">Ônibus Escolar</SelectItem>
+                      <SelectItem value="Micro-ônibus">Micro-ônibus</SelectItem>
+                      <SelectItem value="Van Escolar">Van Escolar</SelectItem>
                     </SelectContent>
                   </Select>
 
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-[150px]">
+                    <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos</SelectItem>
+                      <SelectItem value="todos">Todos os status</SelectItem>
                       <SelectItem value="active">Ativas</SelectItem>
                       <SelectItem value="inactive">Inativas</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Button onClick={() => setActiveTab("nova-rota")}>
+                  <Button onClick={() => setActiveTab("nova-rota")} className="whitespace-nowrap">
                     <Plus className="h-4 w-4 mr-2" />
                     Nova Rota
                   </Button>
@@ -345,12 +301,11 @@ const TransporteEscolar = () => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Nome da Rota</TableHead>
+                        <TableHead>Rota</TableHead>
                         <TableHead>Veículo</TableHead>
                         <TableHead>Motorista</TableHead>
-                        <TableHead>Escolas</TableHead>
-                        <TableHead>Distância</TableHead>
-                        <TableHead>Alunos</TableHead>
+                        <TableHead>Paradas</TableHead>
+                        <TableHead>Estudantes</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Ações</TableHead>
                       </TableRow>
@@ -358,84 +313,77 @@ const TransporteEscolar = () => {
                     <TableBody>
                       {filteredRoutes.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={8} className="text-center py-4">
+                          <TableCell colSpan={7} className="text-center py-4">
                             Nenhuma rota encontrada com os filtros selecionados.
                           </TableCell>
                         </TableRow>
                       ) : (
-                        filteredRoutes.map((route) => {
-                          const vehicleBadge = getVehicleTypeBadge(route.vehicle.type);
-                          const totalStudents = route.stops.reduce((sum, stop) => sum + stop.studentsCount, 0);
-                          
-                          return (
-                            <TableRow key={route.id}>
-                              <TableCell className="font-medium">
-                                <div>
-                                  {route.name}
-                                  <div className="text-xs text-gray-500 mt-1">
-                                    {route.description}
-                                  </div>
-                                </div>
-                              </TableCell>
-                              <TableCell>
+                        filteredRoutes.map((route) => (
+                          <TableRow key={route.id}>
+                            <TableCell className="font-medium">
+                              <div>
+                                {route.name}
+                                <div className="text-xs text-gray-500 mt-1">{route.description}</div>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div>
                                 <Badge
                                   variant="outline"
-                                  className={vehicleBadge.class}
+                                  className={getVehicleTypeColor(route.vehicle.type)}
                                 >
-                                  {vehicleBadge.label} ({route.vehicle.plate})
+                                  {route.vehicle.type}
                                 </Badge>
-                              </TableCell>
-                              <TableCell>{route.vehicle.driver}</TableCell>
-                              <TableCell>
-                                <div className="flex flex-col gap-1">
-                                  {route.schools.map((school) => (
-                                    <div key={school.id} className="text-sm">
-                                      {school.name.length > 20 
-                                        ? school.name.substring(0, 20) + "..." 
-                                        : school.name}
-                                    </div>
-                                  ))}
-                                </div>
-                              </TableCell>
-                              <TableCell>{route.distance} km</TableCell>
-                              <TableCell>{totalStudents}</TableCell>
-                              <TableCell>
-                                {route.active ? (
-                                  <Badge variant="outline" className="bg-green-100 text-green-800">
-                                    Ativa
-                                  </Badge>
-                                ) : (
-                                  <Badge variant="outline" className="bg-red-100 text-red-800">
-                                    Inativa
-                                  </Badge>
+                                <div className="text-xs text-gray-500 mt-1">{route.vehicle.plate}</div>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div>
+                                {route.vehicle.driver}
+                                {route.vehicle.helper && (
+                                  <div className="text-xs text-gray-500 mt-1">
+                                    Monitor: {route.vehicle.helper}
+                                  </div>
                                 )}
-                              </TableCell>
-                              <TableCell>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon">
-                                      <ChevronDown className="h-4 w-4" />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>Ver Detalhes</DropdownMenuItem>
-                                    <DropdownMenuItem>Editar Rota</DropdownMenuItem>
-                                    <DropdownMenuItem>Ver Mapa</DropdownMenuItem>
-                                    <DropdownMenuItem>Lista de Alunos</DropdownMenuItem>
-                                    <DropdownMenuItem>Imprimir Rota</DropdownMenuItem>
-                                    {route.active ? (
-                                      <DropdownMenuItem>Desativar Rota</DropdownMenuItem>
-                                    ) : (
-                                      <DropdownMenuItem>Ativar Rota</DropdownMenuItem>
-                                    )}
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })
+                              </div>
+                            </TableCell>
+                            <TableCell>{route.stops.length}</TableCell>
+                            <TableCell>
+                              {route.stops.reduce((sum, stop) => sum + stop.studentsCount, 0)}
+                            </TableCell>
+                            <TableCell>
+                              {route.active ? (
+                                <Badge variant="outline" className="bg-green-100 text-green-800">
+                                  <CheckCircle className="h-3 w-3 mr-1" />
+                                  Ativa
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline" className="bg-red-100 text-red-800">
+                                  <XCircle className="h-3 w-3 mr-1" />
+                                  Inativa
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon">
+                                    <ChevronDown className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem>Ver Detalhes</DropdownMenuItem>
+                                  <DropdownMenuItem>Editar Rota</DropdownMenuItem>
+                                  <DropdownMenuItem>Gerenciar Paradas</DropdownMenuItem>
+                                  <DropdownMenuItem>Ver no Mapa</DropdownMenuItem>
+                                  <DropdownMenuItem>{route.active ? 'Desativar' : 'Ativar'}</DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))
                       )}
                     </TableBody>
                   </Table>
@@ -448,8 +396,8 @@ const TransporteEscolar = () => {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline">Exportar Lista</Button>
-                  <Button variant="outline">Imprimir Mapa de Rotas</Button>
+                  <Button variant="outline">Exportar Relatório</Button>
+                  <Button variant="outline">Ver no Mapa</Button>
                 </div>
               </CardFooter>
             </Card>
@@ -458,9 +406,9 @@ const TransporteEscolar = () => {
           <TabsContent value="veiculos">
             <Card>
               <CardHeader>
-                <CardTitle>Veículos de Transporte Escolar</CardTitle>
+                <CardTitle>Frota de Veículos</CardTitle>
                 <CardDescription>
-                  Gerenciamento e manutenção da frota de veículos
+                  Gerenciamento da frota de transporte escolar
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -470,7 +418,7 @@ const TransporteEscolar = () => {
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                       <Input
                         type="search"
-                        placeholder="Buscar por placa ou motorista..."
+                        placeholder="Buscar por placa, tipo ou motorista..."
                         className="pl-8"
                       />
                     </div>
@@ -481,11 +429,10 @@ const TransporteEscolar = () => {
                       <SelectValue placeholder="Tipo de veículo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todos os tipos</SelectItem>
-                      <SelectItem value="bus">Ônibus</SelectItem>
-                      <SelectItem value="van">Van</SelectItem>
-                      <SelectItem value="microbus">Micro-ônibus</SelectItem>
-                      <SelectItem value="car">Carro</SelectItem>
+                      <SelectItem value="todos">Todos os tipos</SelectItem>
+                      <SelectItem value="onibus">Ônibus Escolar</SelectItem>
+                      <SelectItem value="micro">Micro-ônibus</SelectItem>
+                      <SelectItem value="van">Van Escolar</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -494,147 +441,71 @@ const TransporteEscolar = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todos os status</SelectItem>
-                      <SelectItem value="active">Em operação</SelectItem>
-                      <SelectItem value="maintenance">Em manutenção</SelectItem>
-                      <SelectItem value="inactive">Inativo</SelectItem>
+                      <SelectItem value="todos">Todos os status</SelectItem>
+                      <SelectItem value="ativo">Em operação</SelectItem>
+                      <SelectItem value="manutencao">Em manutenção</SelectItem>
+                      <SelectItem value="inativo">Inativo</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Button>
+                  <Button className="whitespace-nowrap">
                     <Plus className="h-4 w-4 mr-2" />
                     Novo Veículo
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {/* Vehicle Card */}
-                  <Card className="relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-2">
-                      <Badge variant="outline" className="bg-green-100 text-green-800">
-                        Em operação
-                      </Badge>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Bus className="h-5 w-5 text-blue-500" />
-                        <div>
-                          <span>Ônibus - ABC-1234</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {mockRoutes.map((route) => (
+                    <Card key={route.vehicle.id} className="p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center">
+                          <Bus className="h-8 w-8 text-blue-500 mr-3" />
+                          <div>
+                            <h4 className="font-medium">{route.vehicle.plate}</h4>
+                            <p className="text-sm text-gray-500">{route.vehicle.type}</p>
+                          </div>
                         </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <div className="grid grid-cols-2 gap-1 text-sm">
-                        <div className="text-gray-500">Capacidade:</div>
-                        <div>44 alunos</div>
-                        
-                        <div className="text-gray-500">Motorista:</div>
-                        <div>João Silva</div>
-                        
-                        <div className="text-gray-500">Ano/Modelo:</div>
-                        <div>2020</div>
-                        
-                        <div className="text-gray-500">Última Revisão:</div>
-                        <div>10/03/2023</div>
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" size="sm" className="w-full">
-                        Detalhes do Veículo
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                  
-                  {/* Vehicle Card */}
-                  <Card className="relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-2">
-                      <Badge variant="outline" className="bg-green-100 text-green-800">
-                        Em operação
-                      </Badge>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Bus className="h-5 w-5 text-green-500" />
-                        <div>
-                          <span>Van - DEF-5678</span>
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <div className="grid grid-cols-2 gap-1 text-sm">
-                        <div className="text-gray-500">Capacidade:</div>
-                        <div>16 alunos</div>
-                        
-                        <div className="text-gray-500">Motorista:</div>
-                        <div>Maria Oliveira</div>
-                        
-                        <div className="text-gray-500">Ano/Modelo:</div>
-                        <div>2021</div>
-                        
-                        <div className="text-gray-500">Última Revisão:</div>
-                        <div>05/04/2023</div>
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" size="sm" className="w-full">
-                        Detalhes do Veículo
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                  
-                  {/* Vehicle Card - Maintenance */}
-                  <Card className="relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-2">
-                      <Badge variant="outline" className="bg-amber-100 text-amber-800">
-                        Em manutenção
-                      </Badge>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Bus className="h-5 w-5 text-purple-500" />
-                        <div>
-                          <span>Micro-ônibus - GHI-9012</span>
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <div className="grid grid-cols-2 gap-1 text-sm">
-                        <div className="text-gray-500">Capacidade:</div>
-                        <div>28 alunos</div>
-                        
-                        <div className="text-gray-500">Motorista:</div>
-                        <div>Carlos Santos</div>
-                        
-                        <div className="text-gray-500">Ano/Modelo:</div>
-                        <div>2019</div>
-                        
-                        <div className="text-gray-500">Retorno previsto:</div>
-                        <div className="text-amber-600">15/05/2023</div>
+                        <Badge
+                          variant="outline"
+                          className={route.active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
+                        >
+                          {route.active ? "Ativo" : "Inativo"}
+                        </Badge>
                       </div>
                       
-                      <div className="bg-amber-50 p-2 rounded-md border border-amber-200 mt-2">
-                        <div className="flex items-start">
-                          <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5 mr-2 flex-shrink-0" />
-                          <p className="text-xs text-amber-700">
-                            Em manutenção corretiva do sistema de freios. Previsão de retorno em 15/05/2023.
-                          </p>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-500">Capacidade:</span>
+                          <span>{route.vehicle.capacity} lugares</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500">Motorista:</span>
+                          <span>{route.vehicle.driver}</span>
+                        </div>
+                        {route.vehicle.helper && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Monitor:</span>
+                            <span>{route.vehicle.helper}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between">
+                          <span className="text-gray-500">Rota:</span>
+                          <span className="text-right">{route.name}</span>
                         </div>
                       </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" size="sm" className="w-full">
-                        Detalhes do Veículo
-                      </Button>
-                    </CardFooter>
-                  </Card>
+                      
+                      <div className="mt-4 flex gap-2">
+                        <Button size="sm" variant="outline" className="flex-1">
+                          Ver Detalhes
+                        </Button>
+                        <Button size="sm" variant="outline" className="flex-1">
+                          Editar
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Novo Veículo
-                </Button>
-              </CardFooter>
             </Card>
           </TabsContent>
 
@@ -643,17 +514,17 @@ const TransporteEscolar = () => {
               <CardHeader>
                 <CardTitle>Motoristas e Monitores</CardTitle>
                 <CardDescription>
-                  Gestão dos profissionais de transporte escolar
+                  Gerenciamento da equipe responsável pelo transporte escolar
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-6">
                 <div className="flex flex-wrap gap-4 mb-6">
                   <div className="flex-1 min-w-[300px]">
                     <div className="relative">
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                       <Input
                         type="search"
-                        placeholder="Buscar por nome, documento ou função..."
+                        placeholder="Buscar por nome ou função..."
                         className="pl-8"
                       />
                     </div>
@@ -664,157 +535,35 @@ const TransporteEscolar = () => {
                       <SelectValue placeholder="Função" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas as funções</SelectItem>
-                      <SelectItem value="driver">Motorista</SelectItem>
+                      <SelectItem value="todos">Todas as funções</SelectItem>
+                      <SelectItem value="motorista">Motorista</SelectItem>
                       <SelectItem value="monitor">Monitor</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Select>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Veículo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todos os veículos</SelectItem>
-                      <SelectItem value="veh1">Ônibus - ABC-1234</SelectItem>
-                      <SelectItem value="veh2">Van - DEF-5678</SelectItem>
-                      <SelectItem value="veh3">Micro-ônibus - GHI-9012</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Button>
+                  <Button className="whitespace-nowrap">
                     <Plus className="h-4 w-4 mr-2" />
-                    Novo Profissional
+                    Novo Funcionário
                   </Button>
                 </div>
 
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Nome</TableHead>
-                        <TableHead>Função</TableHead>
-                        <TableHead>Documento</TableHead>
-                        <TableHead>Veículo</TableHead>
-                        <TableHead>Rotas</TableHead>
-                        <TableHead>Contato</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Ações</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium">João Silva</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-blue-100 text-blue-800">
-                            Motorista
-                          </Badge>
-                        </TableCell>
-                        <TableCell>123.456.789-00</TableCell>
-                        <TableCell>Ônibus - ABC-1234</TableCell>
-                        <TableCell>Rota 01 - Centro / Vila Nova</TableCell>
-                        <TableCell>(11) 99999-8888</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-green-100 text-green-800">
-                            Ativo
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">Maria Oliveira</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-blue-100 text-blue-800">
-                            Motorista
-                          </Badge>
-                        </TableCell>
-                        <TableCell>987.654.321-00</TableCell>
-                        <TableCell>Van - DEF-5678</TableCell>
-                        <TableCell>Rota 02 - Zona Rural</TableCell>
-                        <TableCell>(11) 98888-7777</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-green-100 text-green-800">
-                            Ativo
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">Carlos Santos</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-blue-100 text-blue-800">
-                            Motorista
-                          </Badge>
-                        </TableCell>
-                        <TableCell>111.222.333-44</TableCell>
-                        <TableCell>Micro-ônibus - GHI-9012</TableCell>
-                        <TableCell>Rota 03 - Jardim América</TableCell>
-                        <TableCell>(11) 97777-6666</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-green-100 text-green-800">
-                            Ativo
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">Ana Lima</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-purple-100 text-purple-800">
-                            Monitora
-                          </Badge>
-                        </TableCell>
-                        <TableCell>444.555.666-77</TableCell>
-                        <TableCell>Micro-ônibus - GHI-9012</TableCell>
-                        <TableCell>Rota 03 - Jardim América</TableCell>
-                        <TableCell>(11) 96666-5555</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-green-100 text-green-800">
-                            Ativo
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-              <CardFooter className="justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Exibindo 4 profissionais
+                <div className="p-8 text-center border rounded-md">
+                  <Users className="mx-auto h-12 w-12 text-gray-300 mb-2" />
+                  <h4 className="text-lg font-medium text-gray-500">Nenhum funcionário cadastrado</h4>
+                  <p className="text-gray-400 mt-2">
+                    Clique no botão "Novo Funcionário" para adicionar o primeiro registro
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="outline">Exportar Lista</Button>
-                  <Button variant="outline">Escala de Trabalho</Button>
-                </div>
-              </CardFooter>
+              </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="alunos">
+          <TabsContent value="estudantes">
             <Card>
               <CardHeader>
-                <CardTitle>Alunos Transportados</CardTitle>
+                <CardTitle>Estudantes Transportados</CardTitle>
                 <CardDescription>
-                  Gerenciamento dos alunos que utilizam o transporte escolar
+                  Lista de alunos que utilizam o transporte escolar
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -824,375 +573,204 @@ const TransporteEscolar = () => {
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                       <Input
                         type="search"
-                        placeholder="Buscar por nome ou endereço..."
+                        placeholder="Buscar por nome do aluno..."
                         className="pl-8"
                       />
                     </div>
                   </div>
 
                   <Select>
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Escola" />
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Rota" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas as escolas</SelectItem>
-                      <SelectItem value="sch1">E.M. João Paulo</SelectItem>
-                      <SelectItem value="sch2">E.M. Maria José</SelectItem>
-                      <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
+                      <SelectItem value="todos">Todas as rotas</SelectItem>
+                      {mockRoutes.map((route) => (
+                        <SelectItem key={route.id} value={route.id}>
+                          {route.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
 
                   <Select>
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Rota" />
+                      <SelectValue placeholder="Escola" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas as rotas</SelectItem>
-                      <SelectItem value="route1">Rota 01 - Centro / Vila Nova</SelectItem>
-                      <SelectItem value="route2">Rota 02 - Zona Rural</SelectItem>
-                      <SelectItem value="route3">Rota 03 - Jardim América</SelectItem>
+                      <SelectItem value="todos">Todas as escolas</SelectItem>
+                      <SelectItem value="sch1">Escola Municipal João Paulo</SelectItem>
+                      <SelectItem value="sch2">Escola Municipal Maria José</SelectItem>
+                      <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
+                      <SelectItem value="sch4">Escola Municipal Paulo Freire</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Button>
+                  <Button className="whitespace-nowrap">
                     <Plus className="h-4 w-4 mr-2" />
-                    Adicionar Aluno
+                    Adicionar Estudante
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium">Total de Alunos</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center">
-                        <Users className="h-8 w-8 text-blue-500 mr-3" />
-                        <div>
-                          <p className="text-2xl font-bold">78</p>
-                          <p className="text-xs text-gray-500">transportados</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium">Distância Total</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center">
-                        <Map className="h-8 w-8 text-green-500 mr-3" />
-                        <div>
-                          <p className="text-2xl font-bold">56,6 km</p>
-                          <p className="text-xs text-gray-500">diariamente</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium">Veículos Ativos</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center">
-                        <Bus className="h-8 w-8 text-purple-500 mr-3" />
-                        <div>
-                          <p className="text-2xl font-bold">3</p>
-                          <p className="text-xs text-gray-500">em operação</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium">Tempo Médio</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center">
-                        <Clock className="h-8 w-8 text-amber-500 mr-3" />
-                        <div>
-                          <p className="text-2xl font-bold">42 min</p>
-                          <p className="text-xs text-gray-500">por rota</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Aluno</TableHead>
-                        <TableHead>Escola</TableHead>
-                        <TableHead>Série/Turma</TableHead>
-                        <TableHead>Rota</TableHead>
-                        <TableHead>Ponto de Embarque</TableHead>
-                        <TableHead>Turno</TableHead>
-                        <TableHead>Ações</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium">Ana Silva</TableCell>
-                        <TableCell>E.M. João Paulo</TableCell>
-                        <TableCell>5º ano A</TableCell>
-                        <TableCell>Rota 01 - Centro / Vila Nova</TableCell>
-                        <TableCell>Terminal Central</TableCell>
-                        <TableCell>Manhã</TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">Pedro Santos</TableCell>
-                        <TableCell>E.M. João Paulo</TableCell>
-                        <TableCell>5º ano A</TableCell>
-                        <TableCell>Rota 01 - Centro / Vila Nova</TableCell>
-                        <TableCell>Praça Vila Nova</TableCell>
-                        <TableCell>Manhã</TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">Maria Oliveira</TableCell>
-                        <TableCell>E.M. Maria José</TableCell>
-                        <TableCell>8º ano B</TableCell>
-                        <TableCell>Rota 03 - Jardim América</TableCell>
-                        <TableCell>Posto de Saúde</TableCell>
-                        <TableCell>Manhã</TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">João Pereira</TableCell>
-                        <TableCell>E.M. Maria José</TableCell>
-                        <TableCell>5º ano C</TableCell>
-                        <TableCell>Rota 02 - Zona Rural</TableCell>
-                        <TableCell>Fazenda São João</TableCell>
-                        <TableCell>Manhã</TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-              <CardFooter className="justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Exibindo 4 de 78 alunos
+                <div className="p-8 text-center border rounded-md">
+                  <Users className="mx-auto h-12 w-12 text-gray-300 mb-2" />
+                  <h4 className="text-lg font-medium text-gray-500">Nenhum estudante cadastrado</h4>
+                  <p className="text-gray-400 mt-2">
+                    Clique no botão "Adicionar Estudante" para começar o cadastro
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="outline">Exportar Lista</Button>
-                  <Button variant="outline">Imprimir Carteirinhas</Button>
-                </div>
-              </CardFooter>
+              </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="nova-rota">
+          <TabsContent value="relatorios">
             <Card>
               <CardHeader>
-                <CardTitle>Cadastrar Nova Rota</CardTitle>
+                <CardTitle>Relatórios e Estatísticas</CardTitle>
                 <CardDescription>
-                  Defina uma nova rota para o transporte escolar
+                  Dados sobre utilização e eficiência do transporte escolar
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Informações da Rota</h3>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">Total de Rotas</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center">
+                        <Route className="h-10 w-10 text-blue-500 mr-4" />
+                        <div>
+                          <p className="text-3xl font-bold">{mockRoutes.length}</p>
+                          <p className="text-sm text-gray-500">
+                            Ativas: {mockRoutes.filter(r => r.active).length}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Nome da Rota</label>
-                      <Input placeholder="Ex: Rota 04 - Jardim Primavera" />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Descrição</label>
-                      <Input placeholder="Descreva brevemente a rota" />
-                    </div>
-                  </div>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">Estudantes Transportados</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center">
+                        <Users className="h-10 w-10 text-green-500 mr-4" />
+                        <div>
+                          <p className="text-3xl font-bold">
+                            {mockRoutes.reduce((sum, route) => 
+                              sum + route.stops.reduce((stopSum, stop) => stopSum + stop.studentsCount, 0), 0
+                            )}
+                          </p>
+                          <p className="text-sm text-gray-500">Alunos ativos</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Veículo</label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione um veículo" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="veh1">Ônibus - ABC-1234</SelectItem>
-                          <SelectItem value="veh2">Van - DEF-5678</SelectItem>
-                          <SelectItem value="veh3">Micro-ônibus - GHI-9012</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Motorista</label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione um motorista" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="driver1">João Silva</SelectItem>
-                          <SelectItem value="driver2">Maria Oliveira</SelectItem>
-                          <SelectItem value="driver3">Carlos Santos</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Monitor</label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione um monitor (opcional)" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="monitor1">Ana Lima</SelectItem>
-                          <SelectItem value="monitor2">Paulo Ferreira</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Turno</label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o turno" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="morning">Manhã</SelectItem>
-                          <SelectItem value="afternoon">Tarde</SelectItem>
-                          <SelectItem value="evening">Noite</SelectItem>
-                          <SelectItem value="all">Todos</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">Veículos em Operação</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center">
+                        <Bus className="h-10 w-10 text-purple-500 mr-4" />
+                        <div>
+                          <p className="text-3xl font-bold">
+                            {mockRoutes.filter(r => r.active).length}
+                          </p>
+                          <p className="text-sm text-gray-500">De {mockRoutes.length} total</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">Distância Total</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center">
+                        <MapPin className="h-10 w-10 text-amber-500 mr-4" />
+                        <div>
+                          <p className="text-3xl font-bold">
+                            {mockRoutes.reduce((sum, route) => sum + route.distance, 0).toFixed(1)}
+                          </p>
+                          <p className="text-sm text-gray-500">Km por dia</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
                 
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Escolas Atendidas</h3>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-3 gap-4 items-end">
-                      <div className="col-span-3 md:col-span-1 space-y-2">
-                        <label className="text-sm font-medium">Escola</label>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione uma escola" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="sch1">Escola Municipal João Paulo</SelectItem>
-                            <SelectItem value="sch2">Escola Municipal Maria José</SelectItem>
-                            <SelectItem value="sch3">CMEI Pequeno Príncipe</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Horário de Chegada</label>
-                        <Input type="time" />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Horário de Saída</label>
-                        <Input type="time" />
-                      </div>
-                    </div>
-                    
-                    <Button variant="outline" size="sm" className="mt-2">
-                      <Plus className="h-4 w-4 mr-1" />
-                      Adicionar Outra Escola
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Pontos de Parada</h3>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-8 gap-4 items-end">
-                      <div className="col-span-8 md:col-span-2 space-y-2">
-                        <label className="text-sm font-medium">Nome do Ponto</label>
-                        <Input placeholder="Ex: Terminal Central" />
-                      </div>
-                      
-                      <div className="col-span-8 md:col-span-3 space-y-2">
-                        <label className="text-sm font-medium">Endereço</label>
-                        <Input placeholder="Rua, número, bairro" />
-                      </div>
-                      
-                      <div className="col-span-4 md:col-span-1 space-y-2">
-                        <label className="text-sm font-medium">Horário</label>
-                        <Input type="time" />
-                      </div>
-                      
-                      <div className="col-span-4 md:col-span-1 space-y-2">
-                        <label className="text-sm font-medium">Nº Alunos</label>
-                        <Input type="number" placeholder="0" />
-                      </div>
-                      
-                      <div className="col-span-8 md:col-span-1 self-end">
-                        <Button variant="ghost" size="icon">
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <Button variant="outline" size="sm" className="mt-2">
-                      <Plus className="h-4 w-4 mr-1" />
-                      Adicionar Outro Ponto
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Informações Adicionais</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Distância Total (km)</label>
-                      <Input type="number" step="0.1" placeholder="0.0" />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Tempo Estimado (minutos)</label>
-                      <Input type="number" placeholder="0" />
-                    </div>
-                  </div>
+                <div className="space-y-6">
+                  <h3 className="text-lg font-medium">Relatórios Disponíveis</h3>
                   
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Observações</label>
-                    <Textarea placeholder="Informações adicionais sobre a rota" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <Card className="cursor-pointer hover:bg-gray-50 transition-colors">
+                      <CardHeader>
+                        <CardTitle className="flex items-center text-lg">
+                          <Clock className="h-5 w-5 mr-2 text-blue-500" />
+                          Pontualidade das Rotas
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-500">
+                          Relatório de cumprimento de horários e atrasos por rota.
+                        </p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:bg-gray-50 transition-colors">
+                      <CardHeader>
+                        <CardTitle className="flex items-center text-lg">
+                          <Users className="h-5 w-5 mr-2 text-green-500" />
+                          Frequência de Estudantes
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-500">
+                          Análise da utilização do transporte por estudante e período.
+                        </p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:bg-gray-50 transition-colors">
+                      <CardHeader>
+                        <CardTitle className="flex items-center text-lg">
+                          <Bus className="h-5 w-5 mr-2 text-purple-500" />
+                          Manutenção de Veículos
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-500">
+                          Histórico de manutenções e custos operacionais da frota.
+                        </p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:bg-gray-50 transition-colors">
+                      <CardHeader>
+                        <CardTitle className="flex items-center text-lg">
+                          <MapPin className="h-5 w-5 mr-2 text-amber-500" />
+                          Otimização de Rotas
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-500">
+                          Sugestões para otimização de percursos e redução de custos.
+                        </p>
+                      </CardContent>
+                    </Card>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="outline" onClick={() => setActiveTab("rotas")}>
-                  Cancelar
+              <CardFooter>
+                <Button>
+                  <Route className="h-4 w-4 mr-2" />
+                  Gerar Novo Relatório
                 </Button>
-                <div className="flex gap-2">
-                  <Button variant="outline">Visualizar no Mapa</Button>
-                  <Button onClick={() => setActiveTab("rotas")}>
-                    Salvar Rota
-                  </Button>
-                </div>
               </CardFooter>
             </Card>
           </TabsContent>
