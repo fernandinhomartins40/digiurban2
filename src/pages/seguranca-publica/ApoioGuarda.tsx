@@ -1,4 +1,3 @@
-
 import { FC, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -92,8 +91,8 @@ const mockApoios: ApoioGuarda[] = [
 
 const ApoioGuardaMunicipal: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [tipoFilter, setTipoFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [tipoFilter, setTipoFilter] = useState("all");
   const [selectedApoio, setSelectedApoio] = useState<ApoioGuarda | null>(null);
 
   const getStatusColor = (status: string) => {
@@ -134,8 +133,8 @@ const ApoioGuardaMunicipal: FC = () => {
       apoio.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
       apoio.solicitante.nome.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesStatus = statusFilter === "" || apoio.status === statusFilter;
-    const matchesTipo = tipoFilter === "" || apoio.tipo === tipoFilter;
+    const matchesStatus = statusFilter === "all" || apoio.status === statusFilter;
+    const matchesTipo = tipoFilter === "all" || apoio.tipo === tipoFilter;
     
     return matchesSearch && matchesStatus && matchesTipo;
   });
@@ -370,7 +369,7 @@ const ApoioGuardaMunicipal: FC = () => {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos os status</SelectItem>
                   <SelectItem value="solicitado">Solicitado</SelectItem>
                   <SelectItem value="aprovado">Aprovado</SelectItem>
                   <SelectItem value="em_execucao">Em Execução</SelectItem>
@@ -383,7 +382,7 @@ const ApoioGuardaMunicipal: FC = () => {
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   <SelectItem value="escolta">Escolta</SelectItem>
                   <SelectItem value="patrulhamento">Patrulhamento</SelectItem>
                   <SelectItem value="evento">Evento</SelectItem>
