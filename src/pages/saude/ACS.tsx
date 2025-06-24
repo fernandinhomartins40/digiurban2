@@ -180,8 +180,8 @@ const visitTypeColors: Record<string, string> = {
 
 const ACS = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedArea, setSelectedArea] = useState<string>("");
-  const [selectedAgent, setSelectedAgent] = useState<string>("");
+  const [selectedArea, setSelectedArea] = useState<string>("todas");
+  const [selectedAgent, setSelectedAgent] = useState<string>("todos");
   const [dateFilter, setDateFilter] = useState<string>("");
   
   // Filter visits based on search term, area, agent, and date
@@ -190,8 +190,8 @@ const ACS = () => {
       visit.familyId.toLowerCase().includes(searchTerm.toLowerCase()) ||
       visit.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
       visit.agentName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesArea = selectedArea ? visit.area === selectedArea : true;
-    const matchesAgent = selectedAgent ? visit.agentName === selectedAgent : true;
+    const matchesArea = selectedArea === "todas" ? true : visit.area === selectedArea;
+    const matchesAgent = selectedAgent === "todos" ? true : visit.agentName === selectedAgent;
     const matchesDate = dateFilter ? visit.visitDate === dateFilter : true;
     
     return matchesSearch && matchesArea && matchesAgent && matchesDate;
@@ -297,7 +297,7 @@ const ACS = () => {
                       <SelectValue placeholder="Área" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas as áreas</SelectItem>
+                      <SelectItem value="todas">Todas as áreas</SelectItem>
                       {areas.map((area) => (
                         <SelectItem key={area} value={area}>
                           Área {area}
@@ -311,7 +311,7 @@ const ACS = () => {
                       <SelectValue placeholder="Agente" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos os agentes</SelectItem>
+                      <SelectItem value="todos">Todos os agentes</SelectItem>
                       {agents.map((agent) => (
                         <SelectItem key={agent} value={agent}>
                           {agent}
