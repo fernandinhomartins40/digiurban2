@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,7 +31,7 @@ import { ProgramaTuristico } from '@/types/turismo';
 
 const TurismoProgramasTuristicos = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [tipoFilter, setTipoFilter] = useState('');
+  const [tipoFilter, setTipoFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ProgramaTuristico | null>(null);
 
@@ -113,7 +112,7 @@ const TurismoProgramasTuristicos = () => {
   const filteredProgramas = programas.filter(programa => 
     (programa.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
      programa.descricao.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (tipoFilter === '' || programa.tipo === tipoFilter)
+    (tipoFilter === 'all' || programa.tipo === tipoFilter)
   );
 
   const ProgramaForm = () => (
@@ -279,7 +278,7 @@ const TurismoProgramasTuristicos = () => {
                   <SelectValue placeholder="Filtrar por tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   <SelectItem value="City Tour">City Tour</SelectItem>
                   <SelectItem value="Trilha Ecológica">Trilha Ecológica</SelectItem>
                   <SelectItem value="Tour Cultural">Tour Cultural</SelectItem>
