@@ -119,6 +119,7 @@ export const Sidebar: FC = () => {
         
         {/* Meio com scroll - Menus */}
         <div ref={sidebarRef} className="mt-5 flex-1 flex flex-col overflow-y-auto">
+          {/* Portal do Cidadão */}
           <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
             <SidebarMenuItem 
               href="/" 
@@ -227,7 +228,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="/gabinete/ordens-setores" onSetRef={setMenuItemRef}>
                 Ordens aos Setores
               </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/gerenciar-permissoes" onSetMenuItemRef={setMenuItemRef}>
+              <SidebarMenuItem href="/gabinete/gerenciar-permissoes" onSetRef={setMenuItemRef}>
                 Gerenciar Permissões
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -269,7 +270,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="/administracao/gerenciamento-usuarios" onSetRef={setMenuItemRef}>
                 Gerenciamento de Usuários
               </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/perfis-permissoes" onSetMenuItemRef={setMenuItemRef}>
+              <SidebarMenuItem href="/administracao/perfis-permissoes" onSetRef={setMenuItemRef}>
                 Perfis e Permissões
               </SidebarMenuItem>
               <SidebarMenuItem href="/administracao/setores-grupos" onSetRef={setMenuItemRef}>
