@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -31,7 +30,7 @@ import { EstabelecimentoLocal } from '@/types/turismo';
 
 const TurismoEstabelecimentosLocais = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [tipoFilter, setTipoFilter] = useState('');
+  const [tipoFilter, setTipoFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<EstabelecimentoLocal | null>(null);
 
@@ -108,7 +107,7 @@ const TurismoEstabelecimentosLocais = () => {
   const filteredEstabelecimentos = estabelecimentos.filter(estabelecimento => 
     (estabelecimento.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
      estabelecimento.endereco.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (tipoFilter === '' || estabelecimento.tipo === tipoFilter)
+    (tipoFilter === 'all' || estabelecimento.tipo === tipoFilter)
   );
 
   const EstabelecimentoForm = () => (
@@ -266,7 +265,7 @@ const TurismoEstabelecimentosLocais = () => {
                   <SelectValue placeholder="Filtrar por tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   <SelectItem value="Hotel">Hotel</SelectItem>
                   <SelectItem value="Pousada">Pousada</SelectItem>
                   <SelectItem value="Restaurante">Restaurante</SelectItem>
