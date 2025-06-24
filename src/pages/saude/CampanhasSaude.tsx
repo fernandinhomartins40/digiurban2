@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import {
@@ -33,7 +34,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, FileText, Search, Users, Activity, Heart } from "lucide-react";
-import { HealthCampaign } from "@/types/saude";
+
+// Define the HealthCampaign type locally since we can't modify the types file
+type HealthCampaign = {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  targetAudience: string;
+  location: string;
+  status: "planejada" | "em andamento" | "concluída" | "cancelada";
+  coverageGoal: number;
+  currentCoverage: number;
+};
 
 // Mock data
 const mockCampaigns: HealthCampaign[] = [
@@ -119,6 +133,8 @@ const statusColors: Record<string, string> = {
 };
 
 const CampanhasSaude = () => {
+  console.log("CampanhasSaude component rendering");
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 

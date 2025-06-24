@@ -227,7 +227,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="/gabinete/ordens-setores" onSetRef={setMenuItemRef}>
                 Ordens aos Setores
               </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/gerenciar-permissoes" onSetRef={setMenuItemRef}>
+              <SidebarMenuItem href="/gabinete/gerenciar-permissoes" onSetMenuItemRef={setMenuItemRef}>
                 Gerenciar Permissões
               </SidebarMenuItem>
             </SidebarSubmenu>
@@ -269,7 +269,7 @@ export const Sidebar: FC = () => {
               <SidebarMenuItem href="/administracao/gerenciamento-usuarios" onSetRef={setMenuItemRef}>
                 Gerenciamento de Usuários
               </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/perfis-permissoes" onSetRef={setMenuItemRef}>
+              <SidebarMenuItem href="/administracao/perfis-permissoes" onSetMenuItemRef={setMenuItemRef}>
                 Perfis e Permissões
               </SidebarMenuItem>
               <SidebarMenuItem href="/administracao/setores-grupos" onSetRef={setMenuItemRef}>
