@@ -67,32 +67,46 @@ const modules = [
 
 export const ModulesGrid: FC = () => {
   return (
-    <section id="modules" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Módulos Especializados
+    <section id="modules" className="py-24 bg-white relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-10 left-1/4 w-20 h-20 gradient-accent rounded-full opacity-5 animate-float"></div>
+        <div className="absolute bottom-20 right-1/4 w-16 h-16 gradient-secondary rounded-full opacity-5 animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-10 w-12 h-12 gradient-warm rounded-full opacity-5 animate-float" style={{animationDelay: '4s'}}></div>
+      </div>
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-20 animate-slide-up">
+          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            Módulos <span className="text-gradient">Especializados</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             Cada área da administração municipal tem suas especificidades. 
-            O DigiUrbis oferece módulos dedicados para atender todas as demandas.
+            O DigiUrbis oferece módulos dedicados para atender todas as demandas com eficiência.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {modules.map((module, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale border border-gray-100"
+              className="group bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-card hover:shadow-glow hover-lift transition-all duration-500 border border-gray-100/50 relative overflow-hidden"
+              style={{animationDelay: `${index * 0.05}s`}}
             >
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${module.color}`}>
-                <module.icon className="h-6 w-6" />
+              {/* Hover gradient background */}
+              <div className="absolute inset-0 gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
+              
+              <div className={`relative w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${module.color}`}>
+                <module.icon className="h-8 w-8" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="relative text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">
                 {module.title}
               </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="relative text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
                 {module.description}
               </p>
+              
+              {/* Animated border */}
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
             </div>
           ))}
         </div>

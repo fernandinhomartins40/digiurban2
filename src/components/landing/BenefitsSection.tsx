@@ -37,31 +37,38 @@ const benefits = [
 
 export const BenefitsSection: FC = () => {
   return (
-    <section id="benefits" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Por que escolher DigiUrbis?
+    <section id="benefits" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-20 right-10 w-32 h-32 gradient-cool rounded-full opacity-10 animate-float"></div>
+      <div className="absolute bottom-20 left-10 w-24 h-24 gradient-warm rounded-full opacity-10 animate-float" style={{animationDelay: '3s'}}></div>
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-20 animate-slide-up">
+          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            Por que escolher <span className="text-gradient">DigiUrbis</span>?
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Transforme sua administração municipal com tecnologia moderna e processos otimizados
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            Transforme sua administração municipal com tecnologia moderna e processos otimizados 
+            que colocam o cidadão no centro de tudo
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-all duration-300 hover-scale"
+              className="group p-8 bg-white/80 backdrop-blur-sm rounded-2xl hover-lift shadow-card hover:shadow-glow transition-all duration-500 border border-white/50"
+              style={{animationDelay: `${index * 0.1}s`}}
             >
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <benefit.icon className="h-6 w-6 text-blue-600" />
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mb-6 group-hover:animate-glow transition-all duration-300">
+                <benefit.icon className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-purple-600 transition-colors duration-300">
                 {benefit.title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed text-lg">
                 {benefit.description}
               </p>
+              <div className="mt-6 w-full h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
             </div>
           ))}
         </div>
