@@ -16,10 +16,10 @@ export const CTASection: FC = () => {
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="animate-slide-up">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-            Pronto para <span className="text-gradient bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">transformar</span> sua cidade?
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight drop-shadow-lg">
+            Pronto para <span className="bg-gradient-to-r from-yellow-200 via-pink-200 to-cyan-200 bg-clip-text text-transparent drop-shadow-lg">transformar</span> sua cidade?
           </h2>
-          <p className="text-xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl text-white/95 mb-12 max-w-4xl mx-auto leading-relaxed drop-shadow-md">
             Junte-se a centenas de municípios que já modernizaram sua gestão com DigiUrbis.
             Nossa equipe está pronta para ajudar você a dar o próximo passo na transformação digital.
           </p>

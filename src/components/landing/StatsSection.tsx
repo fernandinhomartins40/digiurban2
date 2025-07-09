@@ -20,10 +20,10 @@ export const StatsSection: FC = () => {
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20 animate-slide-up">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Resultados que <span className="text-gradient bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">Transformam</span>
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
+            Resultados que <span className="bg-gradient-to-r from-yellow-200 via-pink-200 to-cyan-200 bg-clip-text text-transparent drop-shadow-lg">Transformam</span>
           </h2>
-          <p className="text-xl text-white/90 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl text-white/95 max-w-4xl mx-auto leading-relaxed drop-shadow-md">
             Números que comprovam a eficácia do DigiUrbis na modernização municipal e satisfação dos cidadãos
           </p>
         </div>

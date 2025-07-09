@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle } from "lucide-react";
+import heroImage from "@/assets/hero-municipal-management.jpg";
 
 export const HeroSection: FC = () => {
   return (
@@ -17,13 +18,13 @@ export const HeroSection: FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="animate-slide-up">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight drop-shadow-lg">
               Transforme sua
-              <span className="block text-gradient bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-yellow-300 via-pink-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-lg">
                 Gestão Municipal
               </span>
             </h1>
-            <p className="text-xl text-white/90 mb-10 leading-relaxed">
+            <p className="text-xl text-white/95 mb-10 leading-relaxed drop-shadow-md">
               A plataforma completa para modernizar a administração pública, 
               conectar cidadãos e otimizar processos com tecnologia de ponta.
             </p>
@@ -39,17 +40,17 @@ export const HeroSection: FC = () => {
               </Button>
             </div>
             <div className="grid grid-cols-1 gap-4 animate-fade-in-delay">
-              <div className="flex items-center text-white/90 bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                <CheckCircle className="h-6 w-6 text-green-400 mr-4 flex-shrink-0" />
-                <span className="text-lg">Implementação rápida e suporte completo</span>
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-md rounded-lg p-4 border border-white/30">
+                <CheckCircle className="h-6 w-6 text-green-300 mr-4 flex-shrink-0 drop-shadow-sm" />
+                <span className="text-lg font-medium drop-shadow-sm">Implementação rápida e suporte completo</span>
               </div>
-              <div className="flex items-center text-white/90 bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                <CheckCircle className="h-6 w-6 text-green-400 mr-4 flex-shrink-0" />
-                <span className="text-lg">Interface intuitiva para cidadãos e servidores</span>
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-md rounded-lg p-4 border border-white/30">
+                <CheckCircle className="h-6 w-6 text-green-300 mr-4 flex-shrink-0 drop-shadow-sm" />
+                <span className="text-lg font-medium drop-shadow-sm">Interface intuitiva para cidadãos e servidores</span>
               </div>
-              <div className="flex items-center text-white/90 bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                <CheckCircle className="h-6 w-6 text-green-400 mr-4 flex-shrink-0" />
-                <span className="text-lg">Segurança e transparência garantidas</span>
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-md rounded-lg p-4 border border-white/30">
+                <CheckCircle className="h-6 w-6 text-green-300 mr-4 flex-shrink-0 drop-shadow-sm" />
+                <span className="text-lg font-medium drop-shadow-sm">Segurança e transparência garantidas</span>
               </div>
             </div>
           </div>
@@ -57,8 +58,8 @@ export const HeroSection: FC = () => {
             <div className="relative">
               <div className="absolute inset-0 gradient-accent rounded-3xl opacity-20 animate-glow"></div>
               <img
-                src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&w=800&q=80"
-                alt="Gestão Municipal Digital"
+                src={heroImage}
+                alt="Gestão Municipal Digital - Dashboard DigiUrbis"
                 className="relative rounded-3xl shadow-glow hover-lift"
               />
               <div className="absolute -bottom-8 -right-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-card animate-float">
