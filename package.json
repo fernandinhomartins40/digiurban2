@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:server",
+    "build:frontend": "vite build",
+    "build:server": "tsc src/server/index.ts --outDir src/server --target es2020 --module commonjs --esModuleInterop --resolveJsonModule --allowSyntheticDefaultImports --skipLibCheck",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -19,7 +21,13 @@
     "deploy": "./scripts/deploy.sh production",
     "monitor": "./scripts/monitor.sh full",
     "backup": "./scripts/manage.sh backup",
-    "manage": "./scripts/manage.sh"
+    "manage": "./scripts/manage.sh",
+    "deploy:minimal": "pm2 deploy ecosystem.config.js production",
+    "deploy:setup": "pm2 deploy ecosystem.config.js production setup",
+    "deploy:revert": "pm2 deploy ecosystem.config.js production revert 1",
+    "logs:production": "pm2 logs digiurban-minimal",
+    "status:production": "pm2 status digiurban-minimal",
+    "restart:production": "pm2 restart digiurban-minimal"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
