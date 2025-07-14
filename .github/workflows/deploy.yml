@@ -123,9 +123,9 @@ jobs:
           echo "📥 Downloading repository..."
           
           # Try different archive URLs
-          if wget -O main.zip "https://github.com/${{ github.repository }}/archive/main.zip"; then
+          if wget -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/main.zip"; then
             echo "✅ Downloaded main.zip"
-          elif wget -O main.zip "https://github.com/${{ github.repository }}/archive/refs/heads/main.zip"; then
+          elif wget -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/refs/heads/main.zip"; then
             echo "✅ Downloaded main.zip (alternative URL)"
           else
             echo "❌ Wget failed, trying git clone..."
@@ -133,7 +133,7 @@ jobs:
             rm -f main.zip
             
             # Fallback to git clone with public URL
-            if git clone https://github.com/${{ github.repository }}.git; then
+            if git clone https://github.com/fernandinhomartins40/digiurban2.git; then
               echo "✅ Git clone successful"
             else
               echo "❌ All download methods failed"
