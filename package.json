@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && npm run build:server",
     "build:frontend": "vite build",
-    "build:server": "tsc src/server/index.ts src/server/init-db.ts src/server/db.ts --outDir src/server --target es2020 --module commonjs --esModuleInterop --resolveJsonModule --allowSyntheticDefaultImports --skipLibCheck",
+    "build:server": "tsc --project tsconfig.server.json",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

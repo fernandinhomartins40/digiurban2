@@ -174,8 +174,24 @@ jobs:
           echo "📦 Installing dependencies..."
           npm ci --silent
           
+          # Install TypeScript if not present
+          if ! command -v tsc &> /dev/null; then
+            echo "📦 Installing TypeScript globally..."
+            npm install -g typescript
+          fi
+          
           echo "🏗️ Building application..."
           npm run build
+          
+          # Verify that server files were built
+          echo "🔍 Verifying server build..."
+          if [ ! -f "src/server/index.js" ]; then
+            echo "❌ Server build failed - index.js not found"
+            echo "📁 Contents of src/server/:"
+            ls -la src/server/
+            exit 1
+          fi
+          echo "✅ Server build verified"
           
           # Verify frontend build
           if [ ! -d "dist" ]; then
@@ -244,8 +260,32 @@ jobs:
           
           # Start/restart application
           echo "🔄 Starting application..."
+          
+          # Create logs directory
+          mkdir -p /opt/digiurban/logs
+          
+          # Debug: Show current directory and files
+          echo "📁 Current directory: $(pwd)"
+          echo "📁 Files in src/server/:"
+          ls -la src/server/
+          echo "📁 JavaScript files:"
+          find src/server/ -name "*.js" -type f
+          
+          # Delete existing PM2 process
           pm2 delete ${{ env.APP_NAME }} 2>/dev/null || true
-          pm2 start ecosystem.config.js --env production
+          
+          # Start with explicit configuration
+          echo "🚀 Starting PM2 process..."
+          pm2 start ecosystem.config.js --env production --log-date-format="YYYY-MM-DD HH:mm:ss Z"
+          
+          # Wait a moment for process to initialize
+          sleep 5
+          
+          # Show PM2 status immediately
+          echo "📊 PM2 Status after start:"
+          pm2 status
+          
+          # Save PM2 configuration
           pm2 save
           
           # Setup PM2 startup (if first time)
@@ -275,18 +315,27 @@ jobs:
               break
             else
               echo "❌ Health check failed (attempt $i)"
-              if [ $i -eq 5 ]; then
-                echo "🔍 Final attempt failed. Showing logs and details:"
-                pm2 logs ${{ env.APP_NAME }} --lines 30
-                echo "📊 PM2 Status:"
-                pm2 status
-                echo "🔌 Network connections:"
-                netstat -tlnp | grep :5000
-                echo "🗄️ Database status:"
-                systemctl status postgresql
-                echo "❌ Health check failed after 5 attempts"
-                exit 1
-              fi
+                             if [ $i -eq 5 ]; then
+                 echo "🔍 Final attempt failed. Showing logs and details:"
+                 echo "===== PM2 LOGS ====="
+                 pm2 logs ${{ env.APP_NAME }} --lines 50 --nostream
+                 echo "===== PM2 STATUS ====="
+                 pm2 status
+                 echo "===== PM2 DESCRIBE ====="
+                 pm2 describe ${{ env.APP_NAME }}
+                 echo "===== ERROR LOGS ====="
+                 cat /opt/digiurban/logs/error.log 2>/dev/null || echo "No error log file"
+                 echo "===== NETWORK CONNECTIONS ====="
+                 netstat -tlnp | grep :5000 || echo "Port 5000 not listening"
+                 echo "===== DATABASE STATUS ====="
+                 systemctl status postgresql --no-pager
+                 echo "===== PROCESS LIST ====="
+                 ps aux | grep -E "(node|pm2)" | grep -v grep
+                 echo "===== ENVIRONMENT ====="
+                 env | grep -E "(NODE|PORT|DATABASE)"
+                 echo "❌ Health check failed after 5 attempts"
+                 exit 1
+               fi
               sleep 10
             fi
           done
