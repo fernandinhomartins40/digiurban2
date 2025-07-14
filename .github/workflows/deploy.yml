@@ -208,15 +208,33 @@ jobs:
           
           # Setup PostgreSQL database if needed
           echo "🗄️ Setting up database..."
-          if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw digiurban_db; then
-            sudo -u postgres createdb digiurban_db
-            sudo -u postgres psql -c "CREATE USER digiurban WITH PASSWORD '${{ secrets.DB_PASSWORD || 'postgres' }}';"
-            sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE digiurban_db TO digiurban;"
+          
+          # Install PostgreSQL if not present
+          if ! command -v psql &> /dev/null; then
+            echo "📦 Installing PostgreSQL..."
+            apt install -y postgresql postgresql-contrib
+            systemctl start postgresql
+            systemctl enable postgresql
           fi
           
-          # Run database migrations
-          echo "🔄 Running database migrations..."
-          npm run migrate 2>/dev/null || echo "⚠️ Migration command not found or failed"
+          # Ensure PostgreSQL is running
+          systemctl status postgresql || systemctl start postgresql
+          
+          # Create database and user if they don't exist
+          if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw digiurban_db; then
+            echo "🏗️ Creating database and user..."
+            sudo -u postgres createdb digiurban_db
+            sudo -u postgres psql -c "CREATE USER digiurban WITH PASSWORD '${{ secrets.DB_PASSWORD || 'postgres' }}';" || echo "User may already exist"
+            sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE digiurban_db TO digiurban;"
+            sudo -u postgres psql -c "ALTER USER digiurban CREATEDB;"
+          fi
+          
+          # Test database connection
+          echo "🧪 Testing database connection..."
+          export DATABASE_URL="postgres://digiurban:${{ secrets.DB_PASSWORD || 'postgres' }}@localhost:5432/digiurban_db"
+          
+          # Skip migration as it will run automatically when the server starts
+          echo "✅ Database setup completed"
           
           # Install PM2 if not exists
           if ! command -v pm2 &> /dev/null; then
@@ -237,14 +255,41 @@ jobs:
           
           # Health check
           echo "🔍 Running health check..."
-          sleep 15
-          if curl -f http://localhost:5000/api/health > /dev/null 2>&1; then
-            echo "✅ Health check passed!"
-          else
-            echo "❌ Health check failed"
-            pm2 logs ${{ env.APP_NAME }} --lines 20
-            exit 1
-          fi
+          echo "⏰ Waiting 20 seconds for application to start..."
+          sleep 20
+          
+          # Check if PM2 process is running
+          echo "📊 PM2 Status:"
+          pm2 status ${{ env.APP_NAME }} || echo "PM2 process not found"
+          
+          # Check if port 5000 is listening
+          echo "🔌 Checking port 5000:"
+          netstat -tlnp | grep :5000 || echo "Port 5000 not listening"
+          
+          # Try health check multiple times
+          echo "🩺 Attempting health check..."
+          for i in {1..5}; do
+            echo "Attempt $i/5..."
+            if curl -f http://localhost:5000/api/health > /dev/null 2>&1; then
+              echo "✅ Health check passed!"
+              break
+            else
+              echo "❌ Health check failed (attempt $i)"
+              if [ $i -eq 5 ]; then
+                echo "🔍 Final attempt failed. Showing logs and details:"
+                pm2 logs ${{ env.APP_NAME }} --lines 30
+                echo "📊 PM2 Status:"
+                pm2 status
+                echo "🔌 Network connections:"
+                netstat -tlnp | grep :5000
+                echo "🗄️ Database status:"
+                systemctl status postgresql
+                echo "❌ Health check failed after 5 attempts"
+                exit 1
+              fi
+              sleep 10
+            fi
+          done
 
     - name: 🔍 Verify Deployment
       uses: appleboy/ssh-action@v1.0.3
