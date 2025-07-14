@@ -76,7 +76,7 @@ jobs:
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
+        password: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         timeout: 600s
         script: |
@@ -227,7 +227,7 @@ jobs:
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
+        password: ${{ secrets.VPS_SSH_KEY }}
         script: |
           echo "🔍 Deployment verification..."
           
