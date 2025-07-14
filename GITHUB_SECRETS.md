@@ -33,7 +33,10 @@ Clique em **New repository secret** para cada uma das secrets abaixo:
   # No seu VPS, gere uma chave SSH
   ssh-keygen -t ed25519 -C "github-actions@digiurban.com.br"
   
-  # Copie a chave PRIVADA (arquivo sem .pub)
+  # Adicione a chave pública ao authorized_keys
+  cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys
+  
+  # Copie a chave PRIVADA para usar como secret
   cat ~/.ssh/id_ed25519
   ```
 - **Exemplo do conteúdo:**
@@ -58,11 +61,6 @@ Clique em **New repository secret** para cada uma das secrets abaixo:
 - **Nome:** `JWT_SECRET`
 - **Conteúdo:** Chave secreta para JWT (pelo menos 32 caracteres)
 - **Exemplo:** `minha-chave-jwt-super-secreta-2024-digiurban-app`
-
-### **REDIS_PASSWORD**
-- **Nome:** `REDIS_PASSWORD`
-- **Conteúdo:** Senha do Redis para produção
-- **Exemplo:** `Redis@Pass2024Segura!`
 
 ---
 
@@ -103,13 +101,15 @@ Clique em **New repository secret** para cada uma das secrets abaixo:
 
 Após criar todas as secrets, você deve ver na página **Secrets and variables** → **Actions**:
 
+### Obrigatórias:
 - ✅ VPS_HOST
 - ✅ VPS_USER  
 - ✅ VPS_SSH_KEY
 - ✅ VPS_PORT
 - ✅ DB_PASSWORD
 - ✅ JWT_SECRET
-- ✅ REDIS_PASSWORD
+
+### Opcionais:
 - ✅ SMTP_HOST (opcional)
 - ✅ SMTP_PORT (opcional)
 - ✅ SMTP_USER (opcional)
@@ -123,7 +123,7 @@ Após criar todas as secrets, você deve ver na página **Secrets and variables*
 Para testar se as secrets estão funcionando, você pode:
 
 1. **Fazer um commit e push** para a branch `main`
-2. **Acompanhar o workflow** em **Actions** → **Deploy to Hostinger VPS**
+2. **Acompanhar o workflow** em **Actions** → **🚀 Deploy DigiUrban**
 3. **Verificar os logs** para ver se a conexão SSH está funcionando
 
 ---
@@ -148,37 +148,48 @@ Para testar se as secrets estão funcionando, você pode:
 
 ### Como criar a secret VPS_SSH_KEY:
 
-1. **No seu VPS:**
+1. **Conecte-se ao seu VPS:**
    ```bash
-   # Gerar chave SSH
-   ssh-keygen -t ed25519 -f ~/.ssh/github_actions_key
-   
-   # Adicionar a chave pública ao authorized_keys
-   cat ~/.ssh/github_actions_key.pub >> ~/.ssh/authorized_keys
-   
-   # Copiar a chave privada
-   cat ~/.ssh/github_actions_key
+   ssh root@185.244.XXX.XXX
    ```
 
-2. **No GitHub:**
-   - Nome: `VPS_SSH_KEY`
-   - Conteúdo: Cole todo o conteúdo da chave privada (incluindo as linhas BEGIN e END)
-
-3. **Testar:**
+2. **Gere uma chave SSH específica para o deploy:**
    ```bash
-   # No seu computador local
-   ssh -i ~/.ssh/github_actions_key usuario@seu-vps.com
+   ssh-keygen -t ed25519 -C "github-actions@digiurban.com.br" -f ~/.ssh/github_actions
    ```
+
+3. **Adicione a chave pública ao authorized_keys:**
+   ```bash
+   cat ~/.ssh/github_actions.pub >> ~/.ssh/authorized_keys
+   ```
+
+4. **Copie a chave privada e cole como secret:**
+   ```bash
+   cat ~/.ssh/github_actions
+   ```
+
+5. **Cole o conteúdo completo (incluindo BEGIN/END) na secret VPS_SSH_KEY**
 
 ---
 
-## 🎯 Próximos Passos
+## 🎯 Lista de Verificação Final
 
-Após configurar todas as secrets:
+Antes de fazer o deploy, certifique-se de que:
 
-1. ✅ Faça commit e push das alterações
-2. ✅ Acompanhe o workflow em **Actions**
-3. ✅ Verifique se a aplicação está funcionando em `https://www.digiurban.com.br`
-4. ✅ Monitore os logs em caso de erro
+- [ ] Todas as secrets obrigatórias estão criadas
+- [ ] A chave SSH foi gerada e adicionada ao VPS
+- [ ] O domínio está apontando para o IP do VPS
+- [ ] A porta SSH está correta (normalmente 22)
+- [ ] O usuário tem permissões de sudo no VPS
+- [ ] As senhas são fortes e únicas
 
-> **Lembre-se:** As secrets são criptografadas e só ficam visíveis durante a execução do workflow. Elas não aparecem nos logs públicos do GitHub Actions. 
+---
+
+## 🚀 Próximos Passos
+
+Após configurar as secrets:
+
+1. Faça um commit e push para a branch `main`
+2. Acompanhe o workflow em **Actions**
+3. Verifique se a aplicação está funcionando em `https://www.digiurban.com.br`
+4. Configure o domínio e SSL se necessário 

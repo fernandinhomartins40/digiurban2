@@ -76,8 +76,8 @@ jobs:
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        port: 22
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT || 22 }}
         timeout: 600s
         script: |
           echo "🚀 Starting deployment..."
@@ -123,9 +123,9 @@ jobs:
           echo "📥 Downloading repository..."
           
           # Download repository using GitHub token for private repos
-          if wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/main.zip"; then
+          if wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/main.zip"; then
             echo "✅ Downloaded main.zip with authentication"
-          elif wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/refs/heads/main.zip"; then
+          elif wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"; then
             echo "✅ Downloaded main.zip (alternative URL) with authentication"
           else
             echo "❌ Wget failed, trying git clone with token..."
@@ -133,7 +133,7 @@ jobs:
             rm -f main.zip
             
             # Fallback to git clone with authentication
-            if git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fernandinhomartins40/digiurban2.git; then
+            if git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fernandinhomartins040/digiurban2.git; then
               echo "✅ Git clone successful with authentication"
             else
               echo "❌ All download methods failed"
@@ -315,27 +315,27 @@ jobs:
               break
             else
               echo "❌ Health check failed (attempt $i)"
-                             if [ $i -eq 5 ]; then
-                 echo "🔍 Final attempt failed. Showing logs and details:"
-                 echo "===== PM2 LOGS ====="
-                 pm2 logs ${{ env.APP_NAME }} --lines 50 --nostream
-                 echo "===== PM2 STATUS ====="
-                 pm2 status
-                 echo "===== PM2 DESCRIBE ====="
-                 pm2 describe ${{ env.APP_NAME }}
-                 echo "===== ERROR LOGS ====="
-                 cat /opt/digiurban/logs/error.log 2>/dev/null || echo "No error log file"
-                 echo "===== NETWORK CONNECTIONS ====="
-                                   netstat -tlnp | grep :3000 || echo "Port 3000 not listening"
-                 echo "===== DATABASE STATUS ====="
-                 systemctl status postgresql --no-pager
-                 echo "===== PROCESS LIST ====="
-                 ps aux | grep -E "(node|pm2)" | grep -v grep
-                 echo "===== ENVIRONMENT ====="
-                 env | grep -E "(NODE|PORT|DATABASE)"
-                 echo "❌ Health check failed after 5 attempts"
-                 exit 1
-               fi
+              if [ $i -eq 5 ]; then
+                echo "🔍 Final attempt failed. Showing logs and details:"
+                echo "===== PM2 LOGS ====="
+                pm2 logs ${{ env.APP_NAME }} --lines 50 --nostream
+                echo "===== PM2 STATUS ====="
+                pm2 status
+                echo "===== PM2 DESCRIBE ====="
+                pm2 describe ${{ env.APP_NAME }}
+                echo "===== ERROR LOGS ====="
+                cat /opt/digiurban/logs/error.log 2>/dev/null || echo "No error log file"
+                echo "===== NETWORK CONNECTIONS ====="
+                netstat -tlnp | grep :3000 || echo "Port 3000 not listening"
+                echo "===== DATABASE STATUS ====="
+                systemctl status postgresql --no-pager
+                echo "===== PROCESS LIST ====="
+                ps aux | grep -E "(node|pm2)" | grep -v grep
+                echo "===== ENVIRONMENT ====="
+                env | grep -E "(NODE|PORT|DATABASE)"
+                echo "❌ Health check failed after 5 attempts"
+                exit 1
+              fi
               sleep 10
             fi
           done
@@ -345,7 +345,8 @@ jobs:
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT || 22 }}
         script: |
           echo "🔍 Deployment verification..."
           
@@ -359,8 +360,8 @@ jobs:
           
           # Test endpoints
           echo "🌐 Testing endpoints..."
-                  curl -s http://localhost:3000/api/health | jq '.' 2>/dev/null || echo "Health endpoint OK"
-        curl -s http://localhost:3000/ | head -5 || echo "Root endpoint OK"
+          curl -s http://localhost:3000/api/health | jq '.' 2>/dev/null || echo "Health endpoint OK"
+          curl -s http://localhost:3000/ | head -5 || echo "Root endpoint OK"
           
           echo "✅ Verification completed!"
 

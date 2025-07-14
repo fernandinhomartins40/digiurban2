@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Script de setup inicial para VPS Hostinger
-# Execute este script na primeira configuração do servidor
+# 🚀 Script de Setup VPS para DigiUrban
+# Prepara o servidor para receber deploy automatizado via GitHub Actions
 
 set -e
 
 # Configurações
-DOMAIN="your-domain.com"
-EMAIL="your-email@example.com"
-APP_DIR="/var/www/digiurban"
-USER="digiurban"
+DOMAIN="www.digiurban.com.br"
+APP_USER="digiurban"
+APP_DIR="/opt/digiurban"
+POSTGRES_VERSION="15"
 
 # Cores para output
 RED='\033[0;31m'
@@ -18,8 +18,13 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Função para logging
 log() {
-    echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')] $1${NC}"
+    echo -e "${GREEN}[INFO] $1${NC}"
+}
+
+warning() {
+    echo -e "${YELLOW}[WARNING] $1${NC}"
 }
 
 error() {
@@ -27,265 +32,234 @@ error() {
     exit 1
 }
 
-warning() {
-    echo -e "${YELLOW}[WARNING] $1${NC}"
-}
+# Verificar se está executando como root
+if [[ $EUID -ne 0 ]]; then
+   error "Este script deve ser executado como root"
+fi
 
-info() {
-    echo -e "${BLUE}[INFO] $1${NC}"
-}
+log "🚀 Iniciando setup do VPS para DigiUrban..."
 
-# Atualizar sistema
-update_system() {
-    log "Atualizando sistema..."
-    apt update && apt upgrade -y
-    apt install -y curl wget git vim htop ufw fail2ban
-}
+# 1. Atualizar sistema
+log "📦 Atualizando sistema..."
+apt update -y && apt upgrade -y
 
-# Configurar firewall
-setup_firewall() {
-    log "Configurando firewall..."
-    ufw default deny incoming
-    ufw default allow outgoing
-    ufw allow ssh
-    ufw allow 80/tcp
-    ufw allow 443/tcp
-    ufw --force enable
-}
+# 2. Instalar dependências básicas
+log "📦 Instalando dependências básicas..."
+apt install -y curl wget git unzip htop nano ufw fail2ban
 
-# Instalar Docker
-install_docker() {
-    log "Instalando Docker..."
-    
-    # Remover versões antigas
-    apt remove -y docker docker-engine docker.io containerd runc || true
-    
-    # Instalar dependências
-    apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
-    
-    # Adicionar chave GPG
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    
-    # Adicionar repositório
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-    
-    # Instalar Docker
-    apt update
-    apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-    
-    # Instalar Docker Compose
-    curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-    
-    # Adicionar usuário ao grupo docker
-    usermod -aG docker $USER
-    
-    # Habilitar Docker no boot
-    systemctl enable docker
-    systemctl start docker
-}
+# 3. Configurar firewall
+log "🔥 Configurando firewall..."
+ufw allow ssh
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw allow 3000/tcp
+ufw --force enable
 
-# Criar usuário para aplicação
-create_user() {
-    log "Criando usuário para aplicação..."
-    
-    if ! id "$USER" &>/dev/null; then
-        useradd -m -s /bin/bash "$USER"
-        usermod -aG docker "$USER"
-        usermod -aG sudo "$USER"
-        
-        # Configurar SSH para o usuário
-        mkdir -p /home/$USER/.ssh
-        cp /root/.ssh/authorized_keys /home/$USER/.ssh/
-        chown -R $USER:$USER /home/$USER/.ssh
-        chmod 700 /home/$USER/.ssh
-        chmod 600 /home/$USER/.ssh/authorized_keys
-        
-        log "Usuário $USER criado com sucesso"
-    else
-        warning "Usuário $USER já existe"
-    fi
-}
+# 4. Instalar Node.js 18
+log "📦 Instalando Node.js 18..."
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+apt install -y nodejs
 
-# Configurar diretórios
-setup_directories() {
-    log "Configurando diretórios..."
-    
-    mkdir -p "$APP_DIR"
-    mkdir -p "$APP_DIR/logs"
-    mkdir -p "$APP_DIR/backups"
-    mkdir -p "$APP_DIR/uploads"
-    mkdir -p "$APP_DIR/nginx"
-    mkdir -p "$APP_DIR/certbot/conf"
-    mkdir -p "$APP_DIR/certbot/www"
-    
-    chown -R $USER:$USER "$APP_DIR"
-    chmod -R 755 "$APP_DIR"
-}
+# Verificar instalação
+node_version=$(node --version)
+npm_version=$(npm --version)
+log "✅ Node.js ${node_version} instalado"
+log "✅ NPM ${npm_version} instalado"
 
-# Clonar repositório
-clone_repository() {
-    log "Clonando repositório..."
-    
-    if [ ! -d "$APP_DIR/.git" ]; then
-        info "Digite a URL do repositório Git:"
-        read -r REPO_URL
-        
-        su - $USER -c "git clone $REPO_URL $APP_DIR"
-        
-        # Copiar arquivo de ambiente
-        cp "$APP_DIR/.env.production" "$APP_DIR/.env"
-        
-        log "Repositório clonado com sucesso"
-    else
-        warning "Repositório já existe"
-    fi
-}
+# 5. Instalar PostgreSQL
+log "🗄️ Instalando PostgreSQL ${POSTGRES_VERSION}..."
+apt install -y postgresql postgresql-contrib
 
-# Configurar SSL
-setup_ssl() {
-    log "Configurando SSL com Let's Encrypt..."
+# Iniciar e habilitar PostgreSQL
+systemctl start postgresql
+systemctl enable postgresql
+
+# 6. Instalar PM2
+log "📦 Instalando PM2..."
+npm install -g pm2
+
+# 7. Instalar TypeScript
+log "📦 Instalando TypeScript..."
+npm install -g typescript
+
+# 8. Criar usuário para aplicação
+log "👤 Criando usuário da aplicação..."
+if ! id "$APP_USER" &>/dev/null; then
+    useradd -m -s /bin/bash "$APP_USER"
+    log "✅ Usuário $APP_USER criado"
+else
+    log "ℹ️ Usuário $APP_USER já existe"
+fi
+
+# 9. Criar estrutura de diretórios
+log "📁 Criando estrutura de diretórios..."
+mkdir -p "$APP_DIR"
+mkdir -p "$APP_DIR/logs"
+mkdir -p "$APP_DIR/backups"
+
+# Definir permissões
+chown -R "$APP_USER:$APP_USER" "$APP_DIR"
+chmod -R 755 "$APP_DIR"
+
+# 10. Configurar PostgreSQL
+log "🔧 Configurando PostgreSQL..."
+
+# Criar banco de dados e usuário
+sudo -u postgres psql -c "CREATE DATABASE digiurban_db;" 2>/dev/null || log "ℹ️ Banco digiurban_db já existe"
+sudo -u postgres psql -c "CREATE USER digiurban WITH PASSWORD 'changeme';" 2>/dev/null || log "ℹ️ Usuário digiurban já existe"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE digiurban_db TO digiurban;"
+sudo -u postgres psql -c "ALTER USER digiurban CREATEDB;"
+
+# 11. Configurar chaves SSH para deploy
+log "🔑 Configurando chaves SSH para deploy..."
+mkdir -p /root/.ssh
+chmod 700 /root/.ssh
+
+# Gerar chave SSH para GitHub Actions (se não existir)
+if [ ! -f /root/.ssh/github_actions ]; then
+    ssh-keygen -t ed25519 -C "github-actions@digiurban.com.br" -f /root/.ssh/github_actions -N ""
+    cat /root/.ssh/github_actions.pub >> /root/.ssh/authorized_keys
+    chmod 600 /root/.ssh/authorized_keys
+    log "✅ Chave SSH para GitHub Actions criada"
     
-    # Criar configuração temporária do Nginx
-    cat > /tmp/nginx-temp.conf << EOF
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}🔑 CHAVE SSH PARA GITHUB ACTIONS:${NC}"
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${YELLOW}Copie o conteúdo abaixo e cole na secret VPS_SSH_KEY do GitHub:${NC}"
+    echo ""
+    cat /root/.ssh/github_actions
+    echo ""
+    echo -e "${BLUE}========================================${NC}"
+else
+    log "ℹ️ Chave SSH para GitHub Actions já existe"
+fi
+
+# 12. Instalar Nginx (opcional)
+log "📦 Instalando Nginx..."
+apt install -y nginx
+
+# Configurar Nginx básico
+cat > /etc/nginx/sites-available/digiurban << 'EOF'
 server {
     listen 80;
-    server_name $DOMAIN;
-    
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
-    
+    server_name www.digiurban.com.br digiurban.com.br;
+
     location / {
-        return 301 https://\$server_name\$request_uri;
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
     }
 }
 EOF
-    
-    # Iniciar Nginx temporário
-    docker run --rm -d \
-        --name nginx-temp \
-        -p 80:80 \
-        -v /tmp/nginx-temp.conf:/etc/nginx/conf.d/default.conf \
-        -v "$APP_DIR/certbot/www:/var/www/certbot" \
-        nginx:alpine
-    
-    # Obter certificado SSL
-    docker run --rm \
-        -v "$APP_DIR/certbot/conf:/etc/letsencrypt" \
-        -v "$APP_DIR/certbot/www:/var/www/certbot" \
-        certbot/certbot \
-        certonly --webroot \
-        --webroot-path=/var/www/certbot \
-        --email "$EMAIL" \
-        --agree-tos \
-        --no-eff-email \
-        -d "$DOMAIN"
-    
-    # Parar Nginx temporário
-    docker stop nginx-temp
-    
-    log "SSL configurado com sucesso"
-}
 
-# Configurar cron para renovação SSL
-setup_ssl_renewal() {
-    log "Configurando renovação automática do SSL..."
-    
-    # Criar script de renovação
-    cat > /usr/local/bin/renew-ssl.sh << 'EOF'
-#!/bin/bash
-cd /var/www/digiurban
-docker-compose exec certbot certbot renew --quiet
-docker-compose exec nginx nginx -s reload
-EOF
-    
-    chmod +x /usr/local/bin/renew-ssl.sh
-    
-    # Adicionar ao cron
-    (crontab -l 2>/dev/null; echo "0 12 * * * /usr/local/bin/renew-ssl.sh") | crontab -
-    
-    log "Renovação automática do SSL configurada"
-}
+# Habilitar site
+ln -sf /etc/nginx/sites-available/digiurban /etc/nginx/sites-enabled/
+rm -f /etc/nginx/sites-enabled/default
 
-# Configurar monitoramento
-setup_monitoring() {
-    log "Configurando monitoramento básico..."
-    
-    # Instalar htop e outros utilitários
-    apt install -y htop iotop nethogs ncdu
-    
-    # Configurar logrotate
-    cat > /etc/logrotate.d/digiurban << EOF
-$APP_DIR/logs/*.log {
+# Testar configuração do Nginx
+nginx -t && systemctl reload nginx
+
+# 13. Instalar Certbot para SSL (opcional)
+log "🔒 Instalando Certbot para SSL..."
+apt install -y certbot python3-certbot-nginx
+
+# 14. Configurar PM2 startup
+log "🔄 Configurando PM2 startup..."
+pm2 startup systemd -u root --hp /root
+
+# 15. Configurar logrotate
+log "📋 Configurando logrotate..."
+cat > /etc/logrotate.d/digiurban << 'EOF'
+/opt/digiurban/logs/*.log {
     daily
+    missingok
     rotate 7
     compress
     delaycompress
-    missingok
     notifempty
-    create 0644 $USER $USER
+    create 0640 digiurban digiurban
+    postrotate
+        pm2 reloadLogs
+    endscript
 }
 EOF
-    
-    log "Monitoramento configurado"
-}
 
-# Configurar backup automático
-setup_backup() {
-    log "Configurando backup automático..."
-    
-    # Criar script de backup
-    cat > /usr/local/bin/backup-digiurban.sh << EOF
+# 16. Criar script de backup
+log "💾 Criando script de backup..."
+cat > /usr/local/bin/backup-digiurban.sh << 'EOF'
 #!/bin/bash
-cd $APP_DIR
-docker exec digiurban_db pg_dump -U digiurban digiurban_db > backups/backup_\$(date +%Y%m%d_%H%M%S).sql
-find backups/ -name "backup_*.sql" -type f -mtime +7 -delete
+BACKUP_DIR="/opt/digiurban/backups"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+# Backup do banco
+sudo -u postgres pg_dump digiurban_db > "$BACKUP_DIR/db_backup_$TIMESTAMP.sql"
+
+# Backup dos arquivos
+tar -czf "$BACKUP_DIR/files_backup_$TIMESTAMP.tar.gz" -C /opt/digiurban current
+
+# Manter apenas os últimos 7 backups
+find "$BACKUP_DIR" -name "*.sql" -type f -mtime +7 -delete
+find "$BACKUP_DIR" -name "*.tar.gz" -type f -mtime +7 -delete
+
+echo "Backup concluído: $TIMESTAMP"
 EOF
-    
-    chmod +x /usr/local/bin/backup-digiurban.sh
-    
-    # Adicionar ao cron (backup diário às 2:00)
-    (crontab -l 2>/dev/null; echo "0 2 * * * /usr/local/bin/backup-digiurban.sh") | crontab -
-    
-    log "Backup automático configurado"
-}
 
-# Função principal
-main() {
-    log "Iniciando setup do VPS para DigiUrban..."
-    
-    # Verificar se está rodando como root
-    if [ "$EUID" -ne 0 ]; then
-        error "Execute este script como root"
-    fi
-    
-    # Solicitar informações
-    read -p "Digite o domínio (ex: exemplo.com): " DOMAIN
-    read -p "Digite o email para SSL: " EMAIL
-    
-    # Executar setup
-    update_system
-    setup_firewall
-    install_docker
-    create_user
-    setup_directories
-    clone_repository
-    setup_ssl
-    setup_ssl_renewal
-    setup_monitoring
-    setup_backup
-    
-    log "Setup concluído com sucesso!"
-    
-    info "Próximos passos:"
-    info "1. Configure as variáveis de ambiente em $APP_DIR/.env"
-    info "2. Ajuste a configuração do Nginx em $APP_DIR/nginx/conf.d/digiurban.conf"
-    info "3. Execute o deploy: su - $USER -c 'cd $APP_DIR && ./scripts/deploy.sh production'"
-    info "4. Configure os secrets do GitHub Actions no repositório"
-    
-    warning "Importante: Reinicie o servidor para aplicar todas as configurações!"
-}
+chmod +x /usr/local/bin/backup-digiurban.sh
 
-# Executar
-main "$@" 
+# 17. Configurar cron para backup
+log "⏰ Configurando backup automático..."
+(crontab -l 2>/dev/null; echo "0 2 * * * /usr/local/bin/backup-digiurban.sh") | crontab -
+
+# 18. Instalar monitoring tools
+log "📊 Instalando ferramentas de monitoramento..."
+apt install -y htop iotop nethogs
+
+# 19. Configurar swapfile (se necessário)
+if [ ! -f /swapfile ]; then
+    log "💾 Criando swapfile..."
+    fallocate -l 2G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    echo '/swapfile none swap sw 0 0' >> /etc/fstab
+    log "✅ Swapfile de 2GB criado"
+fi
+
+# 20. Finalizar
+log "🎉 Setup do VPS concluído com sucesso!"
+
+echo -e "\n${GREEN}========================================${NC}"
+echo -e "${GREEN}✅ SETUP CONCLUÍDO COM SUCESSO!${NC}"
+echo -e "${GREEN}========================================${NC}"
+echo ""
+echo -e "${BLUE}📋 Próximos passos:${NC}"
+echo -e "  1. Configure as secrets no GitHub:"
+echo -e "     - VPS_HOST: $(curl -s ifconfig.me)"
+echo -e "     - VPS_USER: root"
+echo -e "     - VPS_PORT: 22"
+echo -e "     - VPS_SSH_KEY: (chave mostrada acima)"
+echo -e "     - DB_PASSWORD: (defina uma senha forte)"
+echo -e "     - JWT_SECRET: (defina uma chave secreta)"
+echo ""
+echo -e "  2. Configure o domínio para apontar para este IP: $(curl -s ifconfig.me)"
+echo ""
+echo -e "  3. Faça push para a branch main para iniciar o deploy"
+echo ""
+echo -e "  4. Após o deploy, configure SSL:"
+echo -e "     sudo certbot --nginx -d www.digiurban.com.br"
+echo ""
+echo -e "${BLUE}🔗 URLs úteis:${NC}"
+echo -e "  - Aplicação: http://$(curl -s ifconfig.me):3000"
+echo -e "  - Aplicação (com domínio): http://www.digiurban.com.br"
+echo -e "  - Logs: tail -f /opt/digiurban/logs/*.log"
+echo -e "  - Status PM2: pm2 status"
+echo -e "  - Backup: /usr/local/bin/backup-digiurban.sh"
+echo ""
+echo -e "${YELLOW}⚠️ Lembre-se de alterar as senhas padrão!${NC}"
+echo -e "${GREEN}========================================${NC}" 
