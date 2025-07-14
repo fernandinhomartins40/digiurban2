@@ -119,21 +119,20 @@ jobs:
           git config --global user.name "Deploy Bot"
           git config --global init.defaultBranch main
           
-          # Try multiple clone methods
-          if git clone https://github.com/fernandinhomartins040/digiurban2.git; then
-            echo "✅ HTTPS clone successful"
-          elif git clone git://github.com/fernandinhomartins040/digiurban2.git; then
-            echo "✅ Git protocol clone successful"
+          # Use wget method first (more reliable for public repos)
+          echo "📥 Downloading repository..."
+          if wget -O main.zip "https://github.com/${{ github.repository }}/archive/refs/heads/main.zip"; then
+            unzip -q main.zip
+            mv digiurban2-main digiurban2
+            rm main.zip
+            echo "✅ Wget download successful"
           else
-            echo "❌ Git clone failed, trying wget fallback..."
-            wget -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"
-            if [ -f "main.zip" ]; then
-              unzip -q main.zip
-              mv digiurban2-main digiurban2
-              rm main.zip
-              echo "✅ Wget fallback successful"
+            echo "❌ Wget failed, trying git clone..."
+            # Fallback to git clone with public URL
+            if git clone https://github.com/${{ github.repository }}.git; then
+              echo "✅ Git clone successful"
             else
-              echo "❌ All clone methods failed"
+              echo "❌ All download methods failed"
               exit 1
             fi
           fi
