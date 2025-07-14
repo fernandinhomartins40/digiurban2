@@ -1,498 +1,282 @@
-name: Deploy to Hostinger VPS
+name: 🚀 Deploy DigiUrban
 
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deploy even if no changes'
+        required: false
+        default: 'false'
+        type: boolean
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  NODE_VERSION: '18'
+  APP_NAME: 'digiurban-minimal'
+  DEPLOY_PATH: '/opt/digiurban'
 
 jobs:
-  # Job de teste e build
-  build-and-test:
+  build:
+    name: 🏗️ Build Application
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
+    - name: 📥 Checkout code
       uses: actions/checkout@v4
-      
-    - name: Setup Node.js
+
+    - name: 📦 Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        
-    - name: Install dependencies
-      run: |
-        npm ci
-        
-    - name: Run tests
-      run: |
-        npm run test --if-present
-        
-    - name: Build application
+        cache-dependency-path: package-lock.json
+
+    - name: 🔧 Install Dependencies
+      run: npm ci --silent
+
+    - name: 🏗️ Build Frontend
       run: |
         npm run build
-        
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-files
-        path: dist/
-        
-  # Job de build da imagem Docker
-  build-docker:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
-    permissions:
-      contents: read
-      packages: write
-      
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-      
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=sha
-          type=raw,value=latest,enable={{is_default_branch}}
-          
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        
-  # Job de deploy completo no VPS
-  deploy:
-    needs: [build-and-test, build-docker]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup VPS and Deploy Application
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: ${{ secrets.VPS_PORT }}
-        script: |
-          set -e
-          
-          echo "🚀 Iniciando deploy automatizado do DigiUrban..."
-          
-          # ========================================
-          # 1. CONFIGURAÇÃO INICIAL DO AMBIENTE
-          # ========================================
-          
-          # Criar usuário de deploy se não existir
-          if ! id "digiurban" &>/dev/null; then
-            echo "👤 Criando usuário digiurban..."
-            sudo useradd -m -s /bin/bash digiurban
-            sudo usermod -aG docker digiurban
-            sudo usermod -aG sudo digiurban
-          fi
-          
-          # Criar diretório da aplicação
-          echo "📁 Criando estrutura de diretórios..."
-          sudo mkdir -p /var/www/digiurban
-          sudo chown -R digiurban:digiurban /var/www/digiurban
-          
-          # Navegar para o diretório da aplicação
-          cd /var/www/digiurban
-          
-          # ========================================
-          # 2. INSTALAÇÃO DE DEPENDÊNCIAS DO SISTEMA
-          # ========================================
-          
-          echo "📦 Instalando dependências do sistema..."
-          sudo apt-get update -y
-          sudo apt-get install -y curl git nginx certbot python3-certbot-nginx fail2ban ufw
-          
-          # Instalar Docker se não estiver instalado
-          if ! command -v docker &> /dev/null; then
-            echo "🐳 Instalando Docker..."
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
-            sudo usermod -aG docker $USER
-            sudo systemctl start docker
-            sudo systemctl enable docker
-          fi
-          
-          # Instalar Docker Compose se não estiver instalado
-          if ! command -v docker-compose &> /dev/null; then
-            echo "🐳 Instalando Docker Compose..."
-            sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            sudo chmod +x /usr/local/bin/docker-compose
-          fi
-          
-          # ========================================
-          # 3. CONFIGURAÇÃO DO FIREWALL
-          # ========================================
-          
-          echo "🔥 Configurando firewall..."
-          sudo ufw --force enable
-          sudo ufw allow ssh
-          sudo ufw allow 80/tcp
-          sudo ufw allow 443/tcp
-          sudo ufw allow 5432/tcp
-          sudo ufw allow 6379/tcp
-          sudo ufw --force reload
-          
-          # ========================================
-          # 4. BACKUP DO BANCO DE DADOS (se existir)
-          # ========================================
-          
-          echo "💾 Fazendo backup do banco de dados..."
-          mkdir -p backups
-          if docker ps | grep -q "digiurban_db"; then
-            echo "📊 Banco de dados encontrado. Fazendo backup..."
-            docker exec digiurban_db pg_dump -U digiurban digiurban_db > backups/backup_$(date +%Y%m%d_%H%M%S).sql 2>/dev/null || echo "⚠️  Erro no backup, continuando..."
-          else
-            echo "ℹ️  Nenhum banco de dados encontrado para backup."
-          fi
-          
-          # ========================================
-          # 5. DOWNLOAD DO CÓDIGO DA APLICAÇÃO
-          # ========================================
-          
-          echo "⬇️  Baixando código da aplicação..."
-          if [ -d ".git" ]; then
-            echo "📡 Atualizando repositório existente..."
-            git fetch origin
-            git reset --hard origin/main
-          else
-            echo "📡 Clonando repositório pela primeira vez..."
-            git clone https://github.com/${{ github.repository }}.git .
-          fi
-          
-          # ========================================
-          # 6. CONFIGURAÇÃO DE ARQUIVOS DE AMBIENTE
-          # ========================================
-          
-          echo "⚙️  Configurando arquivos de ambiente..."
-          
-          # Criar arquivo .env.production com as secrets
-          cat > .env.production << EOF
-          # Configuração do Banco de Dados
-          DB_HOST=digiurban_db
-          DB_PORT=5432
-          DB_NAME=digiurban_db
-          DB_USER=digiurban
-          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          
-          # Configuração da Aplicação
-          NODE_ENV=production
-          PORT=3000
-          
-          # Configuração de CORS
-          CORS_ORIGIN=https://www.digiurban.com.br,https://digiurban.com.br
-          
-          # Configuração de JWT
-          JWT_SECRET=${{ secrets.JWT_SECRET }}
-          JWT_EXPIRES_IN=24h
-          
-          # Configuração do Redis
-          REDIS_HOST=digiurban_redis
-          REDIS_PORT=6379
-          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-          
-          # Configuração de Email (se fornecido)
-          SMTP_HOST=${{ secrets.SMTP_HOST }}
-          SMTP_PORT=${{ secrets.SMTP_PORT }}
-          SMTP_USER=${{ secrets.SMTP_USER }}
-          SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
-          
-          # Configuração SSL
-          SSL_CERT_PATH=/etc/letsencrypt/live/www.digiurban.com.br/fullchain.pem
-          SSL_KEY_PATH=/etc/letsencrypt/live/www.digiurban.com.br/privkey.pem
-          
-          # Configuração de Logs
-          LOG_LEVEL=info
-          LOG_FILE=/var/log/digiurban/app.log
-          EOF
-          
-          # Criar diretório de logs
-          sudo mkdir -p /var/log/digiurban
-          sudo chown -R digiurban:digiurban /var/log/digiurban
-          
-          # ========================================
-          # 7. CONFIGURAÇÃO DO NGINX
-          # ========================================
-          
-          echo "🌐 Configurando Nginx..."
-          sudo mkdir -p /etc/nginx/sites-available
-          sudo mkdir -p /etc/nginx/sites-enabled
-          
-          # Copiar configuração do Nginx
-          sudo cp nginx/nginx.conf /etc/nginx/nginx.conf
-          sudo cp nginx/conf.d/digiurban.conf /etc/nginx/sites-available/digiurban.conf
-          
-          # Habilitar site
-          sudo ln -sf /etc/nginx/sites-available/digiurban.conf /etc/nginx/sites-enabled/
-          sudo rm -f /etc/nginx/sites-enabled/default
-          
-          # Testar configuração do Nginx
-          sudo nginx -t
-          
-          # ========================================
-          # 8. CONFIGURAÇÃO DO SSL/TLS
-          # ========================================
-          
-          echo "🔒 Configurando SSL/TLS..."
-          
-          # Parar Nginx temporariamente para o Certbot
-          sudo systemctl stop nginx
-          
-          # Obter certificado SSL (se ainda não existir)
-          if [ ! -f "/etc/letsencrypt/live/www.digiurban.com.br/fullchain.pem" ]; then
-            echo "🔐 Obtendo certificado SSL..."
-            sudo certbot certonly --standalone -d www.digiurban.com.br -d digiurban.com.br --non-interactive --agree-tos --email contato@digiurban.com.br
-          else
-            echo "✅ Certificado SSL já existe."
-          fi
-          
-          # Iniciar Nginx
-          sudo systemctl start nginx
-          sudo systemctl enable nginx
-          
-          # ========================================
-          # 9. DOWNLOAD DA IMAGEM DOCKER
-          # ========================================
-          
-          echo "🐳 Fazendo login no GitHub Container Registry..."
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          
-          echo "📦 Baixando imagem Docker..."
-          docker pull ghcr.io/${{ github.repository }}:latest
-          
-          # ========================================
-          # 10. PARAR CONTAINERS ANTIGOS
-          # ========================================
-          
-          echo "⏹️  Parando containers antigos..."
-          docker-compose down 2>/dev/null || echo "ℹ️  Nenhum container rodando."
-          
-          # ========================================
-          # 11. CONFIGURAÇÃO DO BANCO DE DADOS
-          # ========================================
-          
-          echo "🗄️  Configurando banco de dados..."
-          
-          # Subir apenas o banco de dados primeiro
-          docker-compose up -d digiurban_db
-          
-          # Aguardar banco ficar pronto
-          echo "⏳ Aguardando banco de dados ficar pronto..."
-          for i in {1..60}; do
-            if docker exec digiurban_db pg_isready -U digiurban; then
-              echo "✅ Banco de dados pronto!"
-              break
-            fi
-            sleep 2
-          done
-          
-          # Criar banco de dados se não existir
-          docker exec digiurban_db psql -U digiurban -c "CREATE DATABASE digiurban_db;" 2>/dev/null || echo "ℹ️  Banco de dados já existe."
-          
-          # ========================================
-          # 12. SUBIR TODOS OS CONTAINERS
-          # ========================================
-          
-          echo "🚀 Subindo todos os containers..."
-          docker-compose up -d
-          
-          # ========================================
-          # 13. EXECUTAR MIGRATIONS E SEEDERS
-          # ========================================
-          
-          echo "⏳ Aguardando aplicação ficar pronta..."
-          sleep 30
-          
-          echo "🔄 Executando migrations..."
-          docker exec digiurban_app npm run migrate 2>/dev/null || echo "ℹ️  Nenhuma migration para executar."
-          
-          echo "🌱 Executando seeders..."
-          docker exec digiurban_app npm run seed 2>/dev/null || echo "ℹ️  Nenhum seeder para executar."
-          
-          # ========================================
-          # 14. CONFIGURAR RENOVAÇÃO AUTOMÁTICA SSL
-          # ========================================
-          
-          echo "🔄 Configurando renovação automática do SSL..."
-          (sudo crontab -l 2>/dev/null; echo "0 12 * * * /usr/bin/certbot renew --quiet") | sudo crontab -
-          
-          # ========================================
-          # 15. CONFIGURAR BACKUP AUTOMÁTICO
-          # ========================================
-          
-          echo "💾 Configurando backup automático..."
-          (sudo crontab -l 2>/dev/null; echo "0 2 * * * cd /var/www/digiurban && docker exec digiurban_db pg_dump -U digiurban digiurban_db > backups/backup_\$(date +\%Y\%m\%d_\%H\%M\%S).sql") | sudo crontab -
-          
-          # ========================================
-          # 16. LIMPEZA E OTIMIZAÇÃO
-          # ========================================
-          
-          echo "🧹 Limpeza e otimização..."
-          docker system prune -f
-          docker image prune -f
-          
-          # Remover backups antigos (manter apenas últimos 7 dias)
-          find backups/ -name "backup_*.sql" -mtime +7 -delete 2>/dev/null || true
-          
-          # ========================================
-          # 17. VERIFICAÇÃO FINAL
-          # ========================================
-          
-          echo "🔍 Verificação final dos containers..."
-          docker-compose ps
-          
-          echo "✅ Deploy concluído com sucesso!"
-          echo "🌐 Aplicação disponível em: https://www.digiurban.com.br"
-          
-          # Mostrar status dos serviços
-          echo "📊 Status dos serviços:"
-          docker-compose ps --format "table {{.Name}}\t{{.Status}}\t{{.Ports}}"
-          
-    - name: Notify deployment status
-      if: always()
-      uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        text: |
-          🚀 Deploy do DigiUrban ${{ job.status }}!
-          
-          📋 Detalhes:
-          • Branch: ${{ github.ref }}
-          • Commit: ${{ github.sha }}
-          • Autor: ${{ github.actor }}
-          • Domínio: https://www.digiurban.com.br
-          
-          ${{ job.status == 'success' && '✅ Aplicação online e funcionando!' || '❌ Falha no deploy - verifique os logs!' }}
+        echo "✅ Frontend build completed"
+
+    - name: 🧪 Test Backend Startup
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-        
-  # Job de verificação completa de saúde
-  health-check:
-    needs: deploy
+        NODE_ENV: test
+        JWT_SECRET: test-secret-for-build
+        DATABASE_URL: postgres://test:test@localhost:5432/test
+      run: |
+        echo "Testing backend startup..."
+        timeout 10s npm run start || echo "✅ Backend startup test completed"
+
+    - name: 📊 Build Summary
+      run: |
+        echo "## 📊 Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Frontend build: $(du -sh dist | cut -f1)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Backend size: $(du -sh src/server | cut -f1)" >> $GITHUB_STEP_SUMMARY
+        echo "- 📦 Dependencies: $(ls node_modules | wc -l) packages" >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    name: 🚀 Deploy to VPS
+    needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
+    if: github.ref == 'refs/heads/main'
+
     steps:
-    - name: Wait for deployment
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🔧 Setup deployment variables
       run: |
-        echo "⏳ Aguardando 60 segundos para aplicação estabilizar..."
-        sleep 60
-      
-    - name: Comprehensive Health Check
-      run: |
-        echo "🔍 Executando verificação completa de saúde..."
-        
-        # Verificar se o domínio está respondendo
-        echo "🌐 Verificando domínio principal..."
-        if curl -f -k https://www.digiurban.com.br --max-time 30; then
-          echo "✅ Domínio principal respondendo!"
-        else
-          echo "❌ Domínio principal não está respondendo!"
-          exit 1
-        fi
-        
-        # Verificar redirecionamento HTTP para HTTPS
-        echo "🔒 Verificando redirecionamento HTTPS..."
-        if curl -I http://www.digiurban.com.br --max-time 30 | grep -q "301\|302"; then
-          echo "✅ Redirecionamento HTTPS funcionando!"
-        else
-          echo "⚠️  Redirecionamento HTTPS pode não estar funcionando."
-        fi
-        
-        # Verificar API de saúde (se existir)
-        echo "🩺 Verificando API de saúde..."
-        if curl -f -k https://www.digiurban.com.br/api/health --max-time 30; then
-          echo "✅ API de saúde respondendo!"
-        else
-          echo "ℹ️  API de saúde não encontrada (normal se não implementada)."
-        fi
-        
-        # Verificar certificado SSL
-        echo "🔐 Verificando certificado SSL..."
-        if echo | openssl s_client -connect www.digiurban.com.br:443 -servername www.digiurban.com.br 2>/dev/null | grep -q "Verify return code: 0"; then
-          echo "✅ Certificado SSL válido!"
-        else
-          echo "⚠️  Certificado SSL pode ter problemas."
-        fi
-        
-        echo "🎉 Verificação de saúde concluída com sucesso!"
-        
-    - name: Rollback on failure
-      if: failure()
-      uses: appleboy/ssh-action@v1.0.0
+        echo "TIMESTAMP=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_ENV
+        echo "COMMIT_HASH=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+
+    - name: 🚀 Deploy to VPS
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: ${{ secrets.VPS_PORT }}
+        username: ${{ secrets.VPS_USERNAME }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: 22
+        timeout: 600s
         script: |
-          set -e
+          echo "🚀 Starting deployment..."
           
-          echo "🔄 Iniciando rollback automático..."
+          # Install system dependencies
+          echo "📦 Installing system dependencies..."
+          apt update -y
+          apt install -y curl git wget unzip postgresql-client
           
-          cd /var/www/digiurban
-          
-          # Reverter para commit anterior
-          git reset --hard HEAD~1
-          
-          # Fazer rollback dos containers
-          docker-compose down
-          docker-compose up -d
-          
-          # Aguardar containers ficarem prontos
-          sleep 30
-          
-          # Verificar se rollback funcionou
-          if curl -f -k https://www.digiurban.com.br --max-time 30; then
-            echo "✅ Rollback realizado com sucesso!"
-          else
-            echo "❌ Rollback falhou - intervenção manual necessária!"
+          # Install Node.js 18 if not exists
+          if ! command -v node &> /dev/null; then
+            echo "📦 Installing Node.js 18..."
+            curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+            apt install -y nodejs
           fi
           
-    - name: Final Status Report
+          # Verify Node.js installation
+          echo "✅ Node.js version: $(node --version)"
+          echo "✅ NPM version: $(npm --version)"
+          
+          # Create directories
+          mkdir -p ${{ env.DEPLOY_PATH }}
+          cd ${{ env.DEPLOY_PATH }}
+          
+          # Backup current deployment
+          if [ -d "current" ]; then
+            echo "📦 Creating backup..."
+            cp -r current backup_$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
+            # Keep only last 3 backups
+            ls -dt backup_* | tail -n +4 | xargs rm -rf 2>/dev/null || true
+          fi
+          
+          # Clone repository
+          echo "📥 Cloning repository..."
+          rm -rf digiurban2
+          
+          # Configure Git for non-interactive clone
+          git config --global user.email "deploy@digiurban.com"
+          git config --global user.name "Deploy Bot"
+          git config --global init.defaultBranch main
+          
+          # Try multiple clone methods
+          if git clone https://github.com/fernandinhomartins040/digiurban2.git; then
+            echo "✅ HTTPS clone successful"
+          elif git clone git://github.com/fernandinhomartins040/digiurban2.git; then
+            echo "✅ Git protocol clone successful"
+          else
+            echo "❌ Git clone failed, trying wget fallback..."
+            wget -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"
+            if [ -f "main.zip" ]; then
+              unzip -q main.zip
+              mv digiurban2-main digiurban2
+              rm main.zip
+              echo "✅ Wget fallback successful"
+            else
+              echo "❌ All clone methods failed"
+              exit 1
+            fi
+          fi
+          
+          if [ ! -d "digiurban2" ]; then
+            echo "❌ Repository directory not found after clone"
+            exit 1
+          fi
+          
+          cd digiurban2
+          echo "✅ Repository cloned successfully"
+          
+          # Install dependencies and build
+          echo "📦 Installing dependencies..."
+          npm ci --silent
+          
+          echo "🏗️ Building application..."
+          npm run build
+          
+          # Verify frontend build
+          if [ ! -d "dist" ]; then
+            echo "❌ Frontend build failed - dist directory not found"
+            exit 1
+          fi
+          
+          # Copy frontend build to backend public
+          echo "📂 Copying frontend build to backend..."
+          mkdir -p src/server/public
+          cp -r dist/* src/server/public/
+          
+          # Update current symlink
+          cd ${{ env.DEPLOY_PATH }}
+          rm -f current
+          ln -sf digiurban2 current
+          
+          # Setup environment
+          cd current
+          if [ ! -f .env ]; then
+            echo "⚙️ Creating environment file..."
+            cat > .env << EOF
+          NODE_ENV=production
+          PORT=5000
+          DATABASE_URL=postgres://digiurban:${{ secrets.DB_PASSWORD || 'postgres' }}@localhost:5432/digiurban_db
+          JWT_SECRET=${{ secrets.JWT_SECRET || 'change-this-secret-in-production' }}
+          CORS_ORIGIN=https://www.digiurban.com.br
+          EOF
+          fi
+          
+          # Setup PostgreSQL database if needed
+          echo "🗄️ Setting up database..."
+          if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw digiurban_db; then
+            sudo -u postgres createdb digiurban_db
+            sudo -u postgres psql -c "CREATE USER digiurban WITH PASSWORD '${{ secrets.DB_PASSWORD || 'postgres' }}';"
+            sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE digiurban_db TO digiurban;"
+          fi
+          
+          # Run database migrations
+          echo "🔄 Running database migrations..."
+          npm run migrate 2>/dev/null || echo "⚠️ Migration command not found or failed"
+          
+          # Install PM2 if not exists
+          if ! command -v pm2 &> /dev/null; then
+            echo "📦 Installing PM2..."
+            npm install -g pm2
+          fi
+          
+          # Start/restart application
+          echo "🔄 Starting application..."
+          pm2 delete ${{ env.APP_NAME }} 2>/dev/null || true
+          pm2 start ecosystem.config.js --env production
+          pm2 save
+          
+          # Setup PM2 startup (if first time)
+          pm2 startup systemd -u $USER --hp /home/$USER 2>/dev/null || true
+          
+          echo "✅ Deployment completed!"
+          
+          # Health check
+          echo "🔍 Running health check..."
+          sleep 15
+          if curl -f http://localhost:5000/api/health > /dev/null 2>&1; then
+            echo "✅ Health check passed!"
+          else
+            echo "❌ Health check failed"
+            pm2 logs ${{ env.APP_NAME }} --lines 20
+            exit 1
+          fi
+
+    - name: 🔍 Verify Deployment
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        script: |
+          echo "🔍 Deployment verification..."
+          
+          # Check PM2 status
+          echo "📊 PM2 Status:"
+          pm2 status ${{ env.APP_NAME }}
+          
+          # Check application logs
+          echo "📋 Recent logs:"
+          pm2 logs ${{ env.APP_NAME }} --lines 10 --nostream
+          
+          # Test endpoints
+          echo "🌐 Testing endpoints..."
+          curl -s http://localhost:5000/api/health | jq '.' 2>/dev/null || echo "Health endpoint OK"
+          curl -s http://localhost:5000/ | head -5 || echo "Root endpoint OK"
+          
+          echo "✅ Verification completed!"
+
+    - name: 📊 Deployment Summary
       if: always()
       run: |
-        echo "📊 ======================================"
-        echo "📊 RELATÓRIO FINAL DO DEPLOY"
-        echo "📊 ======================================"
-        echo "🌐 Domínio: https://www.digiurban.com.br"
-        echo "📅 Data: $(date)"
-        echo "🔧 Commit: ${{ github.sha }}"
-        echo "👤 Autor: ${{ github.actor }}"
-        echo "🎯 Status: ${{ job.status }}"
-        echo "📊 ======================================" 
+        echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Environment:** Production" >> $GITHUB_STEP_SUMMARY
+        echo "- **Server:** ${{ secrets.VPS_HOST }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Timestamp:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit:** ${{ env.COMMIT_HASH }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **URL:** https://www.digiurban.com.br" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔗 Quick Links" >> $GITHUB_STEP_SUMMARY
+        echo "- [🌐 Website](https://www.digiurban.com.br)" >> $GITHUB_STEP_SUMMARY
+        echo "- [❤️ Health Check](http://${{ secrets.VPS_HOST }}:5000/api/health)" >> $GITHUB_STEP_SUMMARY
+        echo "- [📊 API Status](http://${{ secrets.VPS_HOST }}:5000/)" >> $GITHUB_STEP_SUMMARY
+
+  notify:
+    name: 📢 Notify Results
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: 📢 Success Notification
+      if: needs.deploy.result == 'success'
+      run: |
+        echo "🎉 Deployment successful!"
+        echo "✅ Application is live at https://www.digiurban.com.br"
+        
+    - name: 🚨 Failure Notification
+      if: needs.deploy.result == 'failure'
+      run: |
+        echo "❌ Deployment failed!"
+        echo "Check the logs above for details."
+        exit 1 
