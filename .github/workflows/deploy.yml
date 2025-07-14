@@ -121,18 +121,43 @@ jobs:
           
           # Use wget method first (more reliable for public repos)
           echo "📥 Downloading repository..."
-          if wget -O main.zip "https://github.com/${{ github.repository }}/archive/refs/heads/main.zip"; then
-            unzip -q main.zip
-            mv digiurban2-main digiurban2
-            rm main.zip
-            echo "✅ Wget download successful"
+          
+          # Try different archive URLs
+          if wget -O main.zip "https://github.com/${{ github.repository }}/archive/main.zip"; then
+            echo "✅ Downloaded main.zip"
+          elif wget -O main.zip "https://github.com/${{ github.repository }}/archive/refs/heads/main.zip"; then
+            echo "✅ Downloaded main.zip (alternative URL)"
           else
             echo "❌ Wget failed, trying git clone..."
+            # Remove any failed download files
+            rm -f main.zip
+            
             # Fallback to git clone with public URL
             if git clone https://github.com/${{ github.repository }}.git; then
               echo "✅ Git clone successful"
             else
               echo "❌ All download methods failed"
+              exit 1
+            fi
+          fi
+          
+          # If we have a zip file, extract it
+          if [ -f "main.zip" ]; then
+            echo "📦 Extracting archive..."
+            if unzip -q main.zip; then
+              # Find the extracted directory (could be digiurban2-main or fernandinhomartins040-digiurban2-*)
+              EXTRACTED_DIR=$(find . -maxdepth 1 -type d -name "*digiurban2*" ! -name "digiurban2" | head -1)
+              if [ -n "$EXTRACTED_DIR" ]; then
+                mv "$EXTRACTED_DIR" digiurban2
+                echo "✅ Archive extracted and renamed to digiurban2"
+              else
+                echo "❌ Could not find extracted directory"
+                ls -la
+                exit 1
+              fi
+              rm main.zip
+            else
+              echo "❌ Failed to extract archive"
               exit 1
             fi
           fi
