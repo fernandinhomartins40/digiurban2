@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
     proxy: {
       // Proxy all /api requests to the backend server
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
