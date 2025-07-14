@@ -122,19 +122,19 @@ jobs:
           # Use wget method first (more reliable for public repos)
           echo "📥 Downloading repository..."
           
-          # Try different archive URLs
-          if wget -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/main.zip"; then
-            echo "✅ Downloaded main.zip"
-          elif wget -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/refs/heads/main.zip"; then
-            echo "✅ Downloaded main.zip (alternative URL)"
+          # Download repository using GitHub token for private repos
+          if wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/main.zip"; then
+            echo "✅ Downloaded main.zip with authentication"
+          elif wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/refs/heads/main.zip"; then
+            echo "✅ Downloaded main.zip (alternative URL) with authentication"
           else
-            echo "❌ Wget failed, trying git clone..."
+            echo "❌ Wget failed, trying git clone with token..."
             # Remove any failed download files
             rm -f main.zip
             
-            # Fallback to git clone with public URL
-            if git clone https://github.com/fernandinhomartins40/digiurban2.git; then
-              echo "✅ Git clone successful"
+            # Fallback to git clone with authentication
+            if git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fernandinhomartins40/digiurban2.git; then
+              echo "✅ Git clone successful with authentication"
             else
               echo "❌ All download methods failed"
               exit 1
