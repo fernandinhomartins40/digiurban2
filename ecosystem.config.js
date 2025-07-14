@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'digiurban-minimal',
-    script: 'src/server/index.js',
+    script: 'dist-server/server/index.js',
     cwd: '/opt/digiurban/current',
     instances: 1,
     exec_mode: 'fork',
@@ -34,7 +34,7 @@ module.exports = {
       ref: 'origin/main',
       repo: 'https://github.com/fernandinhomartins040/digiurban2.git',
       path: '/opt/digiurban',
-      'post-deploy': 'npm ci --silent && npm run build && mkdir -p src/server/public && cp -r dist/* src/server/public/ && pm2 reload ecosystem.config.js --env production'
+      'post-deploy': 'npm ci --silent && npm run build && mkdir -p dist-server/public && cp -r dist/* dist-server/public/ && pm2 reload ecosystem.config.js --env production'
     }
   }
 }; 

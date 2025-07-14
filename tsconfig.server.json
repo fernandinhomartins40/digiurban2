@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "CommonJS",
-    "outDir": "./src/server",
-    "rootDir": "./src/server",
+    "outDir": "./dist-server",
+    "rootDir": "./src",
     "strict": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -22,6 +22,7 @@
   "exclude": [
     "node_modules",
     "dist",
+    "dist-server",
     "src/server/**/*.js"
   ]
 } 

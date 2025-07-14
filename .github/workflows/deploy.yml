@@ -185,10 +185,12 @@ jobs:
           
           # Verify that server files were built
           echo "🔍 Verifying server build..."
-          if [ ! -f "src/server/index.js" ]; then
+          if [ ! -f "dist-server/server/index.js" ]; then
             echo "❌ Server build failed - index.js not found"
-            echo "📁 Contents of src/server/:"
-            ls -la src/server/
+            echo "📁 Contents of dist-server/:"
+            ls -la dist-server/ || echo "dist-server directory not found"
+            echo "📁 Contents of dist-server/server/:"
+            ls -la dist-server/server/ || echo "dist-server/server directory not found"
             exit 1
           fi
           echo "✅ Server build verified"
@@ -201,8 +203,8 @@ jobs:
           
           # Copy frontend build to backend public
           echo "📂 Copying frontend build to backend..."
-          mkdir -p src/server/public
-          cp -r dist/* src/server/public/
+          mkdir -p dist-server/public
+          cp -r dist/* dist-server/public/
           
           # Update current symlink
           cd ${{ env.DEPLOY_PATH }}

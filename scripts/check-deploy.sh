@@ -145,14 +145,14 @@ check_app_files() {
         log "Diretório da aplicação existe"
         
         # Verificar arquivos essenciais
-        if [ -f "$APP_DIR/current/src/server/index.js" ]; then
+        if [ -f "$APP_DIR/current/dist-server/server/index.js" ]; then
             log "Arquivo do servidor existe"
         else
             error "Arquivo do servidor não encontrado"
             return 1
         fi
         
-        if [ -d "$APP_DIR/current/src/server/public" ]; then
+        if [ -d "$APP_DIR/current/dist-server/public" ]; then
             log "Arquivos do frontend existem"
         else
             error "Arquivos do frontend não encontrados"
