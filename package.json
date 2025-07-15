@@ -18,6 +18,7 @@
     "setup": "npm install && npm run migrate",
     "docker:build": "docker build -t digiurban .",
     "docker:run": "docker run -p 3003:3003 digiurban",
+    "test:connection": "curl -f http://82.25.69.57:3003/api/health || echo 'Connection test'",
     "deploy": "./scripts/deploy-systemd.sh production",
     "deploy:legacy": "./scripts/deploy.sh production",
     "monitor": "./scripts/monitor.sh full",

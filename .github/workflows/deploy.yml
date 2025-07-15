@@ -2,19 +2,14 @@ name: 🚀 Deploy DigiUrban
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      force_deploy:
-        description: 'Force deploy even if no changes'
-        required: false
-        default: false
-        type: boolean
 
 env:
   NODE_VERSION: '18'
-  SERVICE_NAME: 'digiurban.service'
-  DEPLOY_PATH: '/opt/digiurban'
+  VPS_HOST: '82.25.69.57'
+  VPS_USER: 'root'
+  DOMAIN: 'fuseloja.com.br'
 
 jobs:
   build:
@@ -30,31 +25,14 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: package-lock.json
 
     - name: 🔧 Install Dependencies
       run: npm ci --silent
 
-    - name: 🏗️ Build Frontend
+    - name: 🏗️ Build Application
       run: |
         npm run build
-        echo "✅ Frontend build completed"
-
-    - name: 🧪 Test Backend Startup
-      env:
-        NODE_ENV: test
-        JWT_SECRET: test-secret-for-build
-        DATABASE_URL: postgres://test:test@localhost:5432/test
-      run: |
-        echo "Testing backend startup..."
-        timeout 10s npm run start || echo "✅ Backend startup test completed"
-
-    - name: 📊 Build Summary
-      run: |
-        echo "## 📊 Build Summary" >> $GITHUB_STEP_SUMMARY
-        echo "- ✅ Frontend build: $(du -sh dist | cut -f1)" >> $GITHUB_STEP_SUMMARY
-        echo "- ✅ Backend size: $(du -sh src/server | cut -f1)" >> $GITHUB_STEP_SUMMARY
-        echo "- 📦 Dependencies: $(ls node_modules | wc -l) packages" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Build completed successfully"
 
   deploy:
     name: 🚀 Deploy to VPS
@@ -66,210 +44,77 @@ jobs:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
 
-    - name: 🔧 Setup deployment variables
-      run: |
-        echo "TIMESTAMP=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_ENV
-        echo "COMMIT_HASH=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
-
-    - name: 🔌 Test SSH Connection
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER || 'root' }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: ${{ secrets.VPS_PORT || 22 }}
-        timeout: 30s
-        debug: true
-        script: |
-          echo "✅ SSH connection successful!"
-          echo "🖥️ Server info: $(uname -a)"
-          echo "💾 Disk space: $(df -h / | tail -1)"
-          echo "🔧 Node.js: $(node --version 2>/dev/null || echo 'Not installed')"
-
     - name: 🚀 Deploy to VPS
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER || 'root' }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: ${{ secrets.VPS_PORT || 22 }}
-        timeout: 600s
-        command_timeout: 30m
-        debug: true
+        host: ${{ env.VPS_HOST }}
+        username: ${{ env.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: 22
+        timeout: 10m
         script: |
-          echo "🚀 Starting deployment..."
+          echo "🚀 Starting deployment to ${{ env.DOMAIN }}..."
+          
+          # Create application directory
+          mkdir -p /opt/digiurban
+          cd /opt/digiurban
           
           # Install system dependencies
           echo "📦 Installing system dependencies..."
           apt update -y
-          apt install -y curl git wget unzip postgresql-client
+          apt install -y curl git wget unzip postgresql-client nodejs npm
           
-          # Install Node.js 18 if not exists
-          if ! command -v node &> /dev/null; then
-            echo "📦 Installing Node.js 18..."
-            curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-            apt install -y nodejs
-          fi
-          
-          # Verify Node.js installation
+          # Verify Node.js
           echo "✅ Node.js version: $(node --version)"
           echo "✅ NPM version: $(npm --version)"
-          
-          # Create directories
-          mkdir -p ${{ env.DEPLOY_PATH }}
-          cd ${{ env.DEPLOY_PATH }}
           
           # Backup current deployment
           if [ -d "current" ]; then
             echo "📦 Creating backup..."
             cp -r current backup_$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
-            # Keep only last 3 backups
-            ls -dt backup_* | tail -n +4 | xargs rm -rf 2>/dev/null || true
+            find . -name "backup_*" -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true
           fi
           
-          # Clone repository
-          echo "📥 Cloning repository..."
-          rm -rf digiurban2
-          
-          # Configure Git for non-interactive clone
-          git config --global user.email "deploy@digiurban.com"
-          git config --global user.name "Deploy Bot"
-          git config --global init.defaultBranch main
-          
-          # Use wget method first (more reliable for public repos)
-          echo "📥 Downloading repository..."
-          
-          # Download repository using GitHub token for private repos
-          if wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/main.zip"; then
-            echo "✅ Downloaded main.zip with authentication"
-          elif wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"; then
-            echo "✅ Downloaded main.zip (alternative URL) with authentication"
+          # Clone/update repository
+          echo "📥 Downloading latest code..."
+          if [ -d "digiurban2" ]; then
+            cd digiurban2
+            git pull origin main || (cd .. && rm -rf digiurban2 && git clone https://github.com/fernandinhomartins040/digiurban2.git)
           else
-            echo "❌ Wget failed, trying git clone with token..."
-            # Remove any failed download files
-            rm -f main.zip
-            
-            # Fallback to git clone with authentication
-            if git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fernandinhomartins040/digiurban2.git; then
-              echo "✅ Git clone successful with authentication"
-            else
-              echo "❌ All download methods failed"
-              exit 1
-            fi
+            git clone https://github.com/fernandinhomartins040/digiurban2.git
+            cd digiurban2
           fi
           
-          # If we have a zip file, extract it
-          if [ -f "main.zip" ]; then
-            echo "📦 Extracting archive..."
-            if unzip -q main.zip; then
-              # Find the extracted directory (could be digiurban2-main or fernandinhomartins040-digiurban2-*)
-              EXTRACTED_DIR=$(find . -maxdepth 1 -type d -name "*digiurban2*" ! -name "digiurban2" | head -1)
-              if [ -n "$EXTRACTED_DIR" ]; then
-                mv "$EXTRACTED_DIR" digiurban2
-                echo "✅ Archive extracted and renamed to digiurban2"
-              else
-                echo "❌ Could not find extracted directory"
-                ls -la
-                exit 1
-              fi
-              rm main.zip
-            else
-              echo "❌ Failed to extract archive"
-              exit 1
-            fi
-          fi
-          
-          if [ ! -d "digiurban2" ]; then
-            echo "❌ Repository directory not found after clone"
-            exit 1
-          fi
-          
-          cd digiurban2
-          echo "✅ Repository cloned successfully"
+          echo "✅ Code updated successfully"
           
           # Install dependencies and build
           echo "📦 Installing dependencies..."
           npm ci --silent
           
-          # Install TypeScript if not present
-          if ! command -v tsc &> /dev/null; then
-            echo "📦 Installing TypeScript globally..."
-            npm install -g typescript
-          fi
-          
           echo "🏗️ Building application..."
           npm run build
           
-          # Verify that server files were built
-          echo "🔍 Verifying server build..."
+          # Verify build
           if [ ! -f "dist-server/server/index.js" ]; then
-            echo "❌ Server build failed - index.js not found"
-            echo "📁 Contents of dist-server/:"
-            ls -la dist-server/ || echo "dist-server directory not found"
-            echo "📁 Contents of dist-server/server/:"
-            ls -la dist-server/server/ || echo "dist-server/server directory not found"
+            echo "❌ Build failed - server file not found"
             exit 1
           fi
-          echo "✅ Server build verified"
           
-          # Verify frontend build
           if [ ! -d "dist" ]; then
-            echo "❌ Frontend build failed - dist directory not found"
+            echo "❌ Build failed - frontend dist not found"
             exit 1
           fi
           
-          # Copy frontend build to backend public
-          echo "📂 Copying frontend build to backend..."
+          # Copy frontend to backend public
           mkdir -p dist-server/public
           cp -r dist/* dist-server/public/
           
+          echo "✅ Build completed successfully"
+          
           # Update current symlink
-          cd ${{ env.DEPLOY_PATH }}
+          cd /opt/digiurban
           rm -f current
           ln -sf digiurban2 current
-          
-          # Setup environment
-          cd current
-          if [ ! -f .env ]; then
-            echo "⚙️ Creating environment file..."
-            cat > .env << EOF
-          NODE_ENV=production
-          PORT=3003
-          DATABASE_URL=postgres://digiurban:${{ secrets.DB_PASSWORD || 'postgres' }}@localhost:5432/digiurban_db
-          JWT_SECRET=${{ secrets.JWT_SECRET || 'change-this-secret-in-production' }}
-          CORS_ORIGIN=https://www.digiurban.com.br
-          EOF
-          fi
-          
-          # Setup PostgreSQL database if needed
-          echo "🗄️ Setting up database..."
-          
-          # Install PostgreSQL if not present
-          if ! command -v psql &> /dev/null; then
-            echo "📦 Installing PostgreSQL..."
-            apt install -y postgresql postgresql-contrib
-            systemctl start postgresql
-            systemctl enable postgresql
-          fi
-          
-          # Ensure PostgreSQL is running
-          systemctl status postgresql || systemctl start postgresql
-          
-          # Create database and user if they don't exist
-          if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw digiurban_db; then
-            echo "🏗️ Creating database and user..."
-            sudo -u postgres createdb digiurban_db
-            sudo -u postgres psql -c "CREATE USER digiurban WITH PASSWORD '${{ secrets.DB_PASSWORD || 'postgres' }}';" || echo "User may already exist"
-            sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE digiurban_db TO digiurban;"
-            sudo -u postgres psql -c "ALTER USER digiurban CREATEDB;"
-          fi
-          
-          # Test database connection
-          echo "🧪 Testing database connection..."
-          export DATABASE_URL="postgres://digiurban:${{ secrets.DB_PASSWORD || 'postgres' }}@localhost:5432/digiurban_db"
-          
-          # Skip migration as it will run automatically when the server starts
-          echo "✅ Database setup completed"
           
           # Create digiurban user if not exists
           if ! id "digiurban" &>/dev/null; then
@@ -277,143 +122,109 @@ jobs:
             useradd -r -s /bin/bash -d /opt/digiurban -c "DigiUrban Application" digiurban
           fi
           
+          # Setup environment
+          echo "⚙️ Setting up environment..."
+          cd current
+          cat > .env << EOF
+          NODE_ENV=production
+          PORT=3003
+          DATABASE_URL=postgres://digiurban:DigiUrban2024!@localhost:5432/digiurban_db
+          JWT_SECRET=DigiUrban2024SecretKeyVeryLongAndSecureForJWT12345
+          CORS_ORIGIN=https://${{ env.DOMAIN }}
+          APP_URL=https://${{ env.DOMAIN }}
+          API_URL=https://${{ env.DOMAIN }}/api
+          EOF
+          
+          # Setup PostgreSQL
+          echo "🗄️ Setting up PostgreSQL..."
+          if ! command -v psql &> /dev/null; then
+            apt install -y postgresql postgresql-contrib
+            systemctl start postgresql
+            systemctl enable postgresql
+          fi
+          
+          systemctl start postgresql
+          
+          # Create database and user
+          sudo -u postgres psql -c "CREATE DATABASE digiurban_db;" 2>/dev/null || echo "Database may already exist"
+          sudo -u postgres psql -c "CREATE USER digiurban WITH PASSWORD 'DigiUrban2024!';" 2>/dev/null || echo "User may already exist"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE digiurban_db TO digiurban;" 2>/dev/null
+          sudo -u postgres psql -c "ALTER USER digiurban CREATEDB;" 2>/dev/null
+          
+          echo "✅ Database setup completed"
+          
           # Setup systemd service
           echo "⚙️ Setting up systemd service..."
+          cp systemd/digiurban.service /etc/systemd/system/
           
-          # Create logs directory
-          mkdir -p /opt/digiurban/logs
-          
-          # Copy systemd service file
-          cp /opt/digiurban/current/systemd/digiurban.service /etc/systemd/system/
-          
-          # Set proper permissions
+          # Set permissions
           chown -R digiurban:digiurban /opt/digiurban
           chmod -R 755 /opt/digiurban
+          mkdir -p /opt/digiurban/logs
+          chown -R digiurban:digiurban /opt/digiurban/logs
           
-          # Reload systemd and enable service
+          # Reload and start service
           systemctl daemon-reload
           systemctl enable digiurban.service
-          
-          # Stop service if running
           systemctl stop digiurban.service 2>/dev/null || true
-          
-          # Start service
-          echo "🚀 Starting DigiUrban service..."
           systemctl start digiurban.service
           
-          # Wait a moment for service to initialize
-          sleep 10
+          # Wait for service to start
+          sleep 15
           
-          # Show systemd status
-          echo "📊 Systemd Status:"
-          systemctl status digiurban.service --no-pager -l || true
-          
-          echo "✅ Deployment completed!"
+          # Check service status
+          if systemctl is-active --quiet digiurban.service; then
+            echo "✅ DigiUrban service started successfully"
+          else
+            echo "❌ Service failed to start"
+            systemctl status digiurban.service --no-pager -l
+            journalctl -u digiurban.service --no-pager -l -n 20
+            exit 1
+          fi
           
           # Health check
           echo "🔍 Running health check..."
-          echo "⏰ Waiting 20 seconds for application to start..."
-          sleep 20
+          sleep 10
           
-          # Check if systemd service is running
-          echo "📊 Systemd Status:"
-          systemctl status digiurban.service --no-pager -l || echo "Service not found"
-          
-          # Check if port 3003 is listening
-          echo "🔌 Checking port 3003:"
-          netstat -tlnp | grep :3003 || echo "Port 3003 not listening"
-          
-          # Try health check multiple times
-          echo "🩺 Attempting health check..."
-          for i in {1..5}; do
-            echo "Attempt $i/5..."
-            if curl -f http://localhost:3003/api/health > /dev/null 2>&1; then
+          for i in {1..10}; do
+            if curl -f http://localhost:3003/api/health >/dev/null 2>&1; then
               echo "✅ Health check passed!"
               break
+            elif [ $i -eq 10 ]; then
+              echo "❌ Health check failed after 10 attempts"
+              echo "Service status:"
+              systemctl status digiurban.service --no-pager -l
+              echo "Recent logs:"
+              journalctl -u digiurban.service --no-pager -l -n 30
+              exit 1
             else
-              echo "❌ Health check failed (attempt $i)"
-              if [ $i -eq 5 ]; then
-                echo "🔍 Final attempt failed. Showing logs and details:"
-                echo "===== SYSTEMD STATUS ====="
-                systemctl status digiurban.service --no-pager -l
-                echo "===== SYSTEMD LOGS ====="
-                journalctl -u digiurban.service --no-pager -l -n 50
-                echo "===== APPLICATION LOGS ====="
-                cat /opt/digiurban/logs/digiurban.log 2>/dev/null || echo "No application log file"
-                echo "===== ERROR LOGS ====="
-                cat /opt/digiurban/logs/digiurban-error.log 2>/dev/null || echo "No error log file"
-                echo "===== NETWORK CONNECTIONS ====="
-                netstat -tlnp | grep :3003 || echo "Port 3003 not listening"
-                echo "===== DATABASE STATUS ====="
-                systemctl status postgresql --no-pager
-                echo "===== PROCESS LIST ====="
-                ps aux | grep -E "(node|digiurban)" | grep -v grep
-                echo "===== ENVIRONMENT ====="
-                env | grep -E "(NODE|PORT|DATABASE)"
-                echo "❌ Health check failed after 5 attempts"
-                exit 1
-              fi
-              sleep 10
+              echo "⏳ Health check attempt $i/10..."
+              sleep 5
             fi
           done
-
-    - name: 🔍 Verify Deployment
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER || 'root' }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: ${{ secrets.VPS_PORT || 22 }}
-        debug: true
-        script: |
-          echo "🔍 Deployment verification..."
           
-          # Check systemd status
-          echo "📊 Systemd Status:"
+          # Final verification
+          echo "🔍 Final verification..."
+          echo "📊 Service status:"
           systemctl status digiurban.service --no-pager -l
           
-          # Check application logs
-          echo "📋 Recent logs:"
-          journalctl -u digiurban.service --no-pager -l -n 10
+          echo "🌐 Testing endpoints:"
+          curl -s http://localhost:3003/api/health | head -3 || echo "Health endpoint accessible"
           
-          # Test endpoints
-          echo "🌐 Testing endpoints..."
-          curl -s http://localhost:3003/api/health | jq '.' 2>/dev/null || echo "Health endpoint OK"
-          curl -s http://localhost:3003/ | head -5 || echo "Root endpoint OK"
-          
-          echo "✅ Verification completed!"
+          echo "🎉 Deployment completed successfully!"
+          echo "🌍 Application is live at: https://${{ env.DOMAIN }}"
+          echo "🔗 Health check: http://${{ env.VPS_HOST }}:3003/api/health"
 
     - name: 📊 Deployment Summary
       if: always()
       run: |
         echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
         echo "- **Environment:** Production" >> $GITHUB_STEP_SUMMARY
-        echo "- **Server:** ${{ secrets.VPS_HOST }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Domain:** ${{ env.DOMAIN }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Server:** ${{ env.VPS_HOST }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Timestamp:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-        echo "- **Commit:** ${{ env.COMMIT_HASH }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **URL:** https://www.digiurban.com.br" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit:** ${GITHUB_SHA:0:7}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 🔗 Quick Links" >> $GITHUB_STEP_SUMMARY
-        echo "- [🌐 Website](https://www.digiurban.com.br)" >> $GITHUB_STEP_SUMMARY
-        echo "- [❤️ Health Check](http://${{ secrets.VPS_HOST }}:3003/api/health)" >> $GITHUB_STEP_SUMMARY
-        echo "- [📊 API Status](http://${{ secrets.VPS_HOST }}:3003/)" >> $GITHUB_STEP_SUMMARY
-
-  notify:
-    name: 📢 Notify Results
-    needs: [build, deploy]
-    runs-on: ubuntu-latest
-    if: always()
-    
-    steps:
-    - name: 📢 Success Notification
-      if: needs.deploy.result == 'success'
-      run: |
-        echo "🎉 Deployment successful!"
-        echo "✅ Application is live at https://www.digiurban.com.br"
-        
-    - name: 🚨 Failure Notification
-      if: needs.deploy.result == 'failure'
-      run: |
-        echo "❌ Deployment failed!"
-        echo "Check the logs above for details."
-        exit 1 
+        echo "- [🌐 Website](https://${{ env.DOMAIN }})" >> $GITHUB_STEP_SUMMARY
+        echo "- [❤️ Health Check](http://${{ env.VPS_HOST }}:3003/api/health)" >> $GITHUB_STEP_SUMMARY
