@@ -1,0 +1,49 @@
+[Unit]
+Description=DigiUrban Application
+Documentation=https://github.com/fernandinhomartins040/digiurban2
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=digiurban
+Group=digiurban
+WorkingDirectory=/opt/digiurban/current
+ExecStart=/usr/bin/node dist-server/server/index.js
+Restart=always
+RestartSec=10
+StartLimitInterval=60s
+StartLimitBurst=3
+
+# Environment variables
+Environment=NODE_ENV=production
+Environment=PORT=3003
+EnvironmentFile=-/opt/digiurban/current/.env
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/digiurban/logs /opt/digiurban/uploads /tmp
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=32768
+
+# Logging
+StandardOutput=append:/opt/digiurban/logs/digiurban.log
+StandardError=append:/opt/digiurban/logs/digiurban-error.log
+SyslogIdentifier=digiurban
+
+# Health monitoring
+TimeoutStartSec=60s
+TimeoutStopSec=30s
+KillMode=process
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

@@ -13,7 +13,7 @@ on:
 
 env:
   NODE_VERSION: '18'
-  APP_NAME: 'digiurban-minimal'
+  SERVICE_NAME: 'digiurban.service'
   DEPLOY_PATH: '/opt/digiurban'
 
 jobs:
@@ -254,44 +254,42 @@ jobs:
           # Skip migration as it will run automatically when the server starts
           echo "✅ Database setup completed"
           
-          # Install PM2 if not exists
-          if ! command -v pm2 &> /dev/null; then
-            echo "📦 Installing PM2..."
-            npm install -g pm2
+          # Create digiurban user if not exists
+          if ! id "digiurban" &>/dev/null; then
+            echo "👤 Creating digiurban user..."
+            useradd -r -s /bin/bash -d /opt/digiurban -c "DigiUrban Application" digiurban
           fi
           
-          # Start/restart application
-          echo "🔄 Starting application..."
+          # Setup systemd service
+          echo "⚙️ Setting up systemd service..."
           
           # Create logs directory
           mkdir -p /opt/digiurban/logs
           
-          # Debug: Show current directory and files
-          echo "📁 Current directory: $(pwd)"
-          echo "📁 Files in src/server/:"
-          ls -la src/server/
-          echo "📁 JavaScript files:"
-          find src/server/ -name "*.js" -type f
+          # Copy systemd service file
+          cp /opt/digiurban/current/systemd/digiurban.service /etc/systemd/system/
           
-          # Delete existing PM2 process
-          pm2 delete ${{ env.APP_NAME }} 2>/dev/null || true
+          # Set proper permissions
+          chown -R digiurban:digiurban /opt/digiurban
+          chmod -R 755 /opt/digiurban
           
-          # Start with explicit configuration
-          echo "🚀 Starting PM2 process..."
-          pm2 start ecosystem.config.js --env production --log-date-format="YYYY-MM-DD HH:mm:ss Z"
+          # Reload systemd and enable service
+          systemctl daemon-reload
+          systemctl enable digiurban.service
           
-          # Wait a moment for process to initialize
-          sleep 5
+          # Stop service if running
+          systemctl stop digiurban.service 2>/dev/null || true
           
-          # Show PM2 status immediately
-          echo "📊 PM2 Status after start:"
-          pm2 status
+          # Start service
+          echo "🚀 Starting DigiUrban service..."
+          systemctl start digiurban.service
           
-          # Save PM2 configuration
-          pm2 save
+          # Wait a moment for service to initialize
+          sleep 10
           
-          # Setup PM2 startup (if first time)
-          pm2 startup systemd -u $USER --hp /home/$USER 2>/dev/null || true
+          # Show systemd status
+          echo "📊 Systemd Status:"
+          systemctl status digiurban.service --no-pager -l || true
           
           echo "✅ Deployment completed!"
           
@@ -300,9 +298,9 @@ jobs:
           echo "⏰ Waiting 20 seconds for application to start..."
           sleep 20
           
-          # Check if PM2 process is running
-          echo "📊 PM2 Status:"
-          pm2 status ${{ env.APP_NAME }} || echo "PM2 process not found"
+          # Check if systemd service is running
+          echo "📊 Systemd Status:"
+          systemctl status digiurban.service --no-pager -l || echo "Service not found"
           
           # Check if port 3003 is listening
           echo "🔌 Checking port 3003:"
@@ -319,20 +317,20 @@ jobs:
               echo "❌ Health check failed (attempt $i)"
               if [ $i -eq 5 ]; then
                 echo "🔍 Final attempt failed. Showing logs and details:"
-                echo "===== PM2 LOGS ====="
-                pm2 logs ${{ env.APP_NAME }} --lines 50 --nostream
-                echo "===== PM2 STATUS ====="
-                pm2 status
-                echo "===== PM2 DESCRIBE ====="
-                pm2 describe ${{ env.APP_NAME }}
+                echo "===== SYSTEMD STATUS ====="
+                systemctl status digiurban.service --no-pager -l
+                echo "===== SYSTEMD LOGS ====="
+                journalctl -u digiurban.service --no-pager -l -n 50
+                echo "===== APPLICATION LOGS ====="
+                cat /opt/digiurban/logs/digiurban.log 2>/dev/null || echo "No application log file"
                 echo "===== ERROR LOGS ====="
-                cat /opt/digiurban/logs/error.log 2>/dev/null || echo "No error log file"
+                cat /opt/digiurban/logs/digiurban-error.log 2>/dev/null || echo "No error log file"
                 echo "===== NETWORK CONNECTIONS ====="
                 netstat -tlnp | grep :3003 || echo "Port 3003 not listening"
                 echo "===== DATABASE STATUS ====="
                 systemctl status postgresql --no-pager
                 echo "===== PROCESS LIST ====="
-                ps aux | grep -E "(node|pm2)" | grep -v grep
+                ps aux | grep -E "(node|digiurban)" | grep -v grep
                 echo "===== ENVIRONMENT ====="
                 env | grep -E "(NODE|PORT|DATABASE)"
                 echo "❌ Health check failed after 5 attempts"
@@ -352,13 +350,13 @@ jobs:
         script: |
           echo "🔍 Deployment verification..."
           
-          # Check PM2 status
-          echo "📊 PM2 Status:"
-          pm2 status ${{ env.APP_NAME }}
+          # Check systemd status
+          echo "📊 Systemd Status:"
+          systemctl status digiurban.service --no-pager -l
           
           # Check application logs
           echo "📋 Recent logs:"
-          pm2 logs ${{ env.APP_NAME }} --lines 10 --nostream
+          journalctl -u digiurban.service --no-pager -l -n 10
           
           # Test endpoints
           echo "🌐 Testing endpoints..."
