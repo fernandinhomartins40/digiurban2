@@ -192,11 +192,10 @@ jobs:
           echo "⚙️ Setting up systemd service..."
           cp systemd/digiurban.service /etc/systemd/system/
           
-          # Set permissions
+          # Set permissions and create required directories
+          mkdir -p /opt/digiurban/logs /opt/digiurban/uploads
           chown -R digiurban:digiurban /opt/digiurban
           chmod -R 755 /opt/digiurban
-          mkdir -p /opt/digiurban/logs
-          chown -R digiurban:digiurban /opt/digiurban/logs
           
           # Reload and start service
           systemctl daemon-reload

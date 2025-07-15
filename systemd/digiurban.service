@@ -20,15 +20,9 @@ Environment=NODE_ENV=production
 Environment=PORT=3003
 EnvironmentFile=-/opt/digiurban/current/.env
 
-# Security settings
+# Security settings (simplified to avoid namespace issues)
 NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=true
-ReadWritePaths=/opt/digiurban/logs /opt/digiurban/uploads /tmp
 PrivateTmp=true
-ProtectKernelTunables=true
-ProtectKernelModules=true
-ProtectControlGroups=true
 
 # Resource limits
 LimitNOFILE=65536
