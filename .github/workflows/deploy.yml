@@ -129,20 +129,20 @@ jobs:
           echo "🏗️ Building application..."
           npm run build
           
+          # Copy frontend build to backend public folder
+          mkdir -p apps/backend/dist/public
+          cp -r apps/frontend/dist/* apps/backend/dist/public/
+          
           # Verify build
-          if [ ! -f "dist-server/server/index.js" ]; then
+          if [ ! -f "apps/backend/dist/index.js" ]; then
             echo "❌ Build failed - server file not found"
             exit 1
           fi
           
-          if [ ! -d "dist" ]; then
+          if [ ! -d "apps/frontend/dist" ]; then
             echo "❌ Build failed - frontend dist not found"
             exit 1
           fi
-          
-          # Copy frontend to backend public
-          mkdir -p dist-server/public
-          cp -r dist/* dist-server/public/
           
           echo "✅ Build completed successfully"
           
@@ -216,7 +216,7 @@ jobs:
           # Verify everything is ready before starting
           echo "🔍 Pre-start verification..."
           echo "Working directory: $(ls -la /opt/digiurban/current/)"
-          echo "Server file exists: $(test -f /opt/digiurban/current/dist-server/server/index.js && echo 'YES' || echo 'NO')"
+          echo "Server file exists: $(test -f /opt/digiurban/current/apps/backend/dist/index.js && echo 'YES' || echo 'NO')"
           echo "User digiurban: $(id digiurban)"
           
           # Test Node.js execution manually first
@@ -227,7 +227,7 @@ jobs:
           echo "Environment file:"
           cat .env
           echo "Testing server startup..."
-          timeout 10s sudo -u digiurban node dist-server/server/index.js || echo "Manual test completed"
+          timeout 10s sudo -u digiurban node apps/backend/dist/index.js || echo "Manual test completed"
           
           # Start service
           echo "🚀 Starting systemd service..."
@@ -250,7 +250,7 @@ jobs:
             echo "=== ERROR LOGS ==="
             cat /opt/digiurban/logs/digiurban-error.log 2>/dev/null || echo "No error log"
             echo "=== MANUAL TEST ==="
-            cd /opt/digiurban/current && sudo -u digiurban node dist-server/server/index.js &
+            cd /opt/digiurban/current && sudo -u digiurban node apps/backend/dist/index.js &
             sleep 5
             kill %1 2>/dev/null || true
             exit 1

@@ -1,7 +1,7 @@
 
 import express from 'express';
 import pool from '../db';
-import { ChatRoom, ChatMessage, ChatParticipant, SendMessageRequest } from '../../types/chat';
+import { ChatRoom, ChatMessage, ChatParticipant, SendMessageRequest } from '../types/chat';
 import { AuthenticatedRequest } from '../types/auth';
 
 const router = express.Router();

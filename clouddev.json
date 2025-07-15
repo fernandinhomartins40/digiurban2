@@ -1,0 +1,117 @@
+{
+  "name": "digiurban",
+  "version": "1.0.0",
+  "author": "Fernando Martins",
+  "type": "fullstack",
+  "description": "Sistema de gestão urbana digital",
+  
+  "frontend": {
+    "framework": "react",
+    "bundler": "vite",
+    "port": 5173,
+    "build": {
+      "command": "npm run build:frontend",
+      "output": "apps/frontend/dist",
+      "public": "apps/frontend/public"
+    },
+    "dev": {
+      "command": "npm run dev:frontend",
+      "port": 5173
+    }
+  },
+  
+  "backend": {
+    "runtime": "node",
+    "framework": "express",
+    "port": 3003,
+    "build": {
+      "command": "npm run build:backend",
+      "output": "apps/backend/dist",
+      "entry": "apps/backend/src/index.ts"
+    },
+    "start": {
+      "command": "node apps/backend/dist/index.js",
+      "healthcheck": "/api/health"
+    },
+    "dev": {
+      "command": "npm run dev:backend",
+      "port": 3003
+    }
+  },
+  
+  "database": {
+    "type": "postgresql",
+    "host": "localhost",
+    "port": 5432,
+    "name": "digiurban_db",
+    "user": "digiurban",
+    "migrations": "database/migrations",
+    "seeds": "database/seeds"
+  },
+  
+  "domain": {
+    "production": "fuseloja.com.br",
+    "ssl": {
+      "enabled": true,
+      "auto": true,
+      "cert_path": "/etc/letsencrypt/live/fuseloja.com.br/fullchain.pem",
+      "key_path": "/etc/letsencrypt/live/fuseloja.com.br/privkey.pem"
+    }
+  },
+  
+  "resources": {
+    "cpu": "1000m",
+    "memory": "512Mi",
+    "auto_scaling": {
+      "enabled": true,
+      "min_replicas": 1,
+      "max_replicas": 3,
+      "cpu_threshold": 80
+    }
+  },
+  
+  "backup": {
+    "enabled": true,
+    "schedule": "0 2 * * *",
+    "retention": "7d",
+    "storage": "/opt/digiurban/backups"
+  },
+  
+  "monitoring": {
+    "logs": {
+      "level": "info",
+      "file": "/opt/digiurban/logs/app.log",
+      "error_file": "/opt/digiurban/logs/error.log"
+    },
+    "metrics": {
+      "enabled": true,
+      "endpoint": "/metrics"
+    },
+    "alerts": {
+      "enabled": false
+    }
+  },
+  
+  "cicd": {
+    "provider": "github_actions",
+    "branches": {
+      "production": "main",
+      "staging": "develop"
+    },
+    "stages": ["build", "deploy"],
+    "hooks": {
+      "pre_deploy": [],
+      "post_deploy": ["health_check"]
+    }
+  },
+  
+  "deployment": {
+    "strategy": "systemd",
+    "service_name": "digiurban",
+    "user": "digiurban",
+    "group": "digiurban",
+    "working_directory": "/opt/digiurban/current",
+    "environment_file": "/opt/digiurban/current/.env",
+    "restart_policy": "always"
+  }
+}
