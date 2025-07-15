@@ -217,7 +217,7 @@ jobs:
             echo "⚙️ Creating environment file..."
             cat > .env << EOF
           NODE_ENV=production
-          PORT=3000
+          PORT=3003
           DATABASE_URL=postgres://digiurban:${{ secrets.DB_PASSWORD || 'postgres' }}@localhost:5432/digiurban_db
           JWT_SECRET=${{ secrets.JWT_SECRET || 'change-this-secret-in-production' }}
           CORS_ORIGIN=https://www.digiurban.com.br
@@ -304,15 +304,15 @@ jobs:
           echo "📊 PM2 Status:"
           pm2 status ${{ env.APP_NAME }} || echo "PM2 process not found"
           
-          # Check if port 3000 is listening
-          echo "🔌 Checking port 3000:"
-          netstat -tlnp | grep :3000 || echo "Port 3000 not listening"
+          # Check if port 3003 is listening
+          echo "🔌 Checking port 3003:"
+          netstat -tlnp | grep :3003 || echo "Port 3003 not listening"
           
           # Try health check multiple times
           echo "🩺 Attempting health check..."
           for i in {1..5}; do
             echo "Attempt $i/5..."
-            if curl -f http://localhost:3000/api/health > /dev/null 2>&1; then
+            if curl -f http://localhost:3003/api/health > /dev/null 2>&1; then
               echo "✅ Health check passed!"
               break
             else
@@ -328,7 +328,7 @@ jobs:
                 echo "===== ERROR LOGS ====="
                 cat /opt/digiurban/logs/error.log 2>/dev/null || echo "No error log file"
                 echo "===== NETWORK CONNECTIONS ====="
-                netstat -tlnp | grep :3000 || echo "Port 3000 not listening"
+                netstat -tlnp | grep :3003 || echo "Port 3003 not listening"
                 echo "===== DATABASE STATUS ====="
                 systemctl status postgresql --no-pager
                 echo "===== PROCESS LIST ====="
@@ -362,8 +362,8 @@ jobs:
           
           # Test endpoints
           echo "🌐 Testing endpoints..."
-          curl -s http://localhost:3000/api/health | jq '.' 2>/dev/null || echo "Health endpoint OK"
-          curl -s http://localhost:3000/ | head -5 || echo "Root endpoint OK"
+          curl -s http://localhost:3003/api/health | jq '.' 2>/dev/null || echo "Health endpoint OK"
+          curl -s http://localhost:3003/ | head -5 || echo "Root endpoint OK"
           
           echo "✅ Verification completed!"
 
@@ -379,8 +379,8 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 🔗 Quick Links" >> $GITHUB_STEP_SUMMARY
         echo "- [🌐 Website](https://www.digiurban.com.br)" >> $GITHUB_STEP_SUMMARY
-        echo "- [❤️ Health Check](http://${{ secrets.VPS_HOST }}:3000/api/health)" >> $GITHUB_STEP_SUMMARY
-        echo "- [📊 API Status](http://${{ secrets.VPS_HOST }}:3000/)" >> $GITHUB_STEP_SUMMARY
+        echo "- [❤️ Health Check](http://${{ secrets.VPS_HOST }}:3003/api/health)" >> $GITHUB_STEP_SUMMARY
+        echo "- [📊 API Status](http://${{ secrets.VPS_HOST }}:3003/)" >> $GITHUB_STEP_SUMMARY
 
   notify:
     name: 📢 Notify Results
