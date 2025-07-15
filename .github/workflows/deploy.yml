@@ -96,22 +96,22 @@ jobs:
           rm -rf digiurban2
           
           # Method 1: Try with GitHub token
-          if wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"; then
+          if wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/refs/heads/main.zip"; then
             echo "✅ Downloaded with GitHub token"
             unzip -q main.zip
             mv digiurban2-main digiurban2
             rm main.zip
           # Method 2: Try public download
-          elif wget -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/main.zip"; then
+          elif wget -O main.zip "https://github.com/fernandinhomartins40/digiurban2/archive/main.zip"; then
             echo "✅ Downloaded public archive"
             unzip -q main.zip
             mv digiurban2-main digiurban2
             rm main.zip
           # Method 3: Try git clone with token
-          elif git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fernandinhomartins040/digiurban2.git; then
+          elif git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fernandinhomartins40/digiurban2.git; then
             echo "✅ Git clone with token successful"
           # Method 4: Try public git clone
-          elif git clone https://github.com/fernandinhomartins040/digiurban2.git; then
+          elif git clone https://github.com/fernandinhomartins40/digiurban2.git; then
             echo "✅ Public git clone successful"
           else
             echo "❌ All download methods failed"
