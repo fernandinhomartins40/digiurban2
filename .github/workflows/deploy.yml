@@ -71,14 +71,31 @@ jobs:
         echo "TIMESTAMP=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_ENV
         echo "COMMIT_HASH=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
 
+    - name: 🔌 Test SSH Connection
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER || 'root' }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT || 22 }}
+        timeout: 30s
+        debug: true
+        script: |
+          echo "✅ SSH connection successful!"
+          echo "🖥️ Server info: $(uname -a)"
+          echo "💾 Disk space: $(df -h / | tail -1)"
+          echo "🔧 Node.js: $(node --version 2>/dev/null || echo 'Not installed')"
+
     - name: 🚀 Deploy to VPS
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
+        username: ${{ secrets.VPS_USER || 'root' }}
         key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT || 22 }}
         timeout: 600s
+        command_timeout: 30m
+        debug: true
         script: |
           echo "🚀 Starting deployment..."
           
@@ -344,9 +361,10 @@ jobs:
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
+        username: ${{ secrets.VPS_USER || 'root' }}
         key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT || 22 }}
+        debug: true
         script: |
           echo "🔍 Deployment verification..."
           
