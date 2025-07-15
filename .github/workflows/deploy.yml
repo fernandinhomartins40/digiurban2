@@ -62,7 +62,23 @@ jobs:
           # Install system dependencies
           echo "📦 Installing system dependencies..."
           apt update -y
-          apt install -y curl git wget unzip postgresql-client nodejs npm
+          apt install -y curl git wget unzip postgresql-client
+          
+          # Install Node.js 18 properly
+          echo "📦 Installing Node.js 18..."
+          if ! command -v node &> /dev/null || [[ "$(node --version)" != "v18"* ]]; then
+            # Remove any existing nodejs/npm to avoid conflicts
+            apt remove -y nodejs npm 2>/dev/null || true
+            apt autoremove -y 2>/dev/null || true
+            
+            # Install Node.js 18 from NodeSource
+            curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+            apt install -y nodejs
+            
+            # Verify installation
+            node --version
+            npm --version
+          fi
           
           # Verify Node.js
           echo "✅ Node.js version: $(node --version)"
@@ -75,20 +91,25 @@ jobs:
             find . -name "backup_*" -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true
           fi
           
-          # Clone/update repository
+          # Download repository using wget (more reliable)
           echo "📥 Downloading latest code..."
-          if [ -d "digiurban2" ]; then
-            cd digiurban2
-            git pull origin main || (cd .. && rm -rf digiurban2 && git clone https://github.com/fernandinhomartins040/digiurban2.git)
+          rm -rf digiurban2
+          
+          if wget -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"; then
+            echo "✅ Downloaded repository archive"
+            unzip -q main.zip
+            mv digiurban2-main digiurban2
+            rm main.zip
           else
-            git clone https://github.com/fernandinhomartins040/digiurban2.git
-            cd digiurban2
+            echo "❌ Failed to download repository"
+            exit 1
           fi
           
           echo "✅ Code updated successfully"
           
           # Install dependencies and build
           echo "📦 Installing dependencies..."
+          cd digiurban2
           npm ci --silent
           
           echo "🏗️ Building application..."
