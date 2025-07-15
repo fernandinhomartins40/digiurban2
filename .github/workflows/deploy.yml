@@ -91,17 +91,31 @@ jobs:
             find . -name "backup_*" -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true
           fi
           
-          # Download repository using wget (more reliable)
+          # Download repository (try multiple methods)
           echo "📥 Downloading latest code..."
           rm -rf digiurban2
           
-          if wget -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"; then
-            echo "✅ Downloaded repository archive"
+          # Method 1: Try with GitHub token
+          if wget --header="Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/refs/heads/main.zip"; then
+            echo "✅ Downloaded with GitHub token"
             unzip -q main.zip
             mv digiurban2-main digiurban2
             rm main.zip
+          # Method 2: Try public download
+          elif wget -O main.zip "https://github.com/fernandinhomartins040/digiurban2/archive/main.zip"; then
+            echo "✅ Downloaded public archive"
+            unzip -q main.zip
+            mv digiurban2-main digiurban2
+            rm main.zip
+          # Method 3: Try git clone with token
+          elif git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fernandinhomartins040/digiurban2.git; then
+            echo "✅ Git clone with token successful"
+          # Method 4: Try public git clone
+          elif git clone https://github.com/fernandinhomartins040/digiurban2.git; then
+            echo "✅ Public git clone successful"
           else
-            echo "❌ Failed to download repository"
+            echo "❌ All download methods failed"
+            echo "Repository may be private or inaccessible"
             exit 1
           fi
           
