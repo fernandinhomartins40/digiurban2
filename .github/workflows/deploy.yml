@@ -219,6 +219,16 @@ jobs:
           echo "Server file exists: $(test -f /opt/digiurban/current/dist-server/server/index.js && echo 'YES' || echo 'NO')"
           echo "User digiurban: $(id digiurban)"
           
+          # Test Node.js execution manually first
+          echo "🧪 Testing Node.js execution manually..."
+          cd /opt/digiurban/current
+          echo "Current directory: $(pwd)"
+          echo "Node.js version: $(node --version)"
+          echo "Environment file:"
+          cat .env
+          echo "Testing server startup..."
+          timeout 10s sudo -u digiurban node dist-server/server/index.js || echo "Manual test completed"
+          
           # Start service
           echo "🚀 Starting systemd service..."
           systemctl start digiurban.service
@@ -231,8 +241,18 @@ jobs:
             echo "✅ DigiUrban service started successfully"
           else
             echo "❌ Service failed to start"
+            echo "=== SYSTEMD STATUS ==="
             systemctl status digiurban.service --no-pager -l
-            journalctl -u digiurban.service --no-pager -l -n 20
+            echo "=== SYSTEMD LOGS ==="
+            journalctl -u digiurban.service --no-pager -l -n 50
+            echo "=== APPLICATION LOGS ==="
+            cat /opt/digiurban/logs/digiurban.log 2>/dev/null || echo "No application log"
+            echo "=== ERROR LOGS ==="
+            cat /opt/digiurban/logs/digiurban-error.log 2>/dev/null || echo "No error log"
+            echo "=== MANUAL TEST ==="
+            cd /opt/digiurban/current && sudo -u digiurban node dist-server/server/index.js &
+            sleep 5
+            kill %1 2>/dev/null || true
             exit 1
           fi
           
