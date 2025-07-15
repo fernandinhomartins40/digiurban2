@@ -192,15 +192,35 @@ jobs:
           echo "⚙️ Setting up systemd service..."
           cp systemd/digiurban.service /etc/systemd/system/
           
-          # Set permissions and create required directories
-          mkdir -p /opt/digiurban/logs /opt/digiurban/uploads
+          # Create ALL required directories
+          echo "📁 Creating required directories..."
+          mkdir -p /opt/digiurban/logs
+          mkdir -p /opt/digiurban/uploads
+          mkdir -p /opt/digiurban/current/dist-server
+          mkdir -p /opt/digiurban/current/dist
+          
+          # Set proper ownership and permissions
           chown -R digiurban:digiurban /opt/digiurban
           chmod -R 755 /opt/digiurban
+          
+          # Verify directories exist
+          echo "✅ Directories created:"
+          ls -la /opt/digiurban/
+          ls -la /opt/digiurban/current/ || echo "Current directory check"
           
           # Reload and start service
           systemctl daemon-reload
           systemctl enable digiurban.service
           systemctl stop digiurban.service 2>/dev/null || true
+          
+          # Verify everything is ready before starting
+          echo "🔍 Pre-start verification..."
+          echo "Working directory: $(ls -la /opt/digiurban/current/)"
+          echo "Server file exists: $(test -f /opt/digiurban/current/dist-server/server/index.js && echo 'YES' || echo 'NO')"
+          echo "User digiurban: $(id digiurban)"
+          
+          # Start service
+          echo "🚀 Starting systemd service..."
           systemctl start digiurban.service
           
           # Wait for service to start

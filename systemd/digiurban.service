@@ -1,6 +1,6 @@
 [Unit]
 Description=DigiUrban Application
-Documentation=https://github.com/fernandinhomartins040/digiurban2
+Documentation=https://github.com/fernandinhomartins40/digiurban2
 After=network.target postgresql.service
 Wants=postgresql.service
 
@@ -19,14 +19,6 @@ StartLimitBurst=3
 Environment=NODE_ENV=production
 Environment=PORT=3003
 EnvironmentFile=-/opt/digiurban/current/.env
-
-# Security settings (simplified to avoid namespace issues)
-NoNewPrivileges=true
-PrivateTmp=true
-
-# Resource limits
-LimitNOFILE=65536
-LimitNPROC=32768
 
 # Logging
 StandardOutput=append:/opt/digiurban/logs/digiurban.log
