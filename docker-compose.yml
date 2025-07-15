@@ -11,7 +11,7 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgres://digiurban:${DB_PASSWORD}@db:5432/digiurban_db
-      - PORT=3000
+      - PORT=3003
       - JWT_SECRET=${JWT_SECRET}
       - CORS_ORIGIN=${CORS_ORIGIN}
     volumes:
@@ -20,7 +20,7 @@ services:
     networks:
       - digiurban_network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3003/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3

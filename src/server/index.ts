@@ -16,7 +16,7 @@ import chatRoutes from './api/chat';
 import alertRoutes from './api/alerts';
 
 const app = express();
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3003;
 
 app.use(cors());
 app.use(express.json());

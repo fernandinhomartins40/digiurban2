@@ -54,7 +54,7 @@ RUN mkdir -p /app/uploads /app/logs && chown -R nodejs:nodejs /app
 USER nodejs
 
 # Expor porta
-EXPOSE 5000
+EXPOSE 3003
 
 # Comando de inicialização
 CMD ["npm", "start"] 

@@ -17,7 +17,7 @@
     "migrate": "cd src/server && node init-db.js",
     "setup": "npm install && npm run migrate",
     "docker:build": "docker build -t digiurban .",
-    "docker:run": "docker run -p 5000:5000 digiurban",
+    "docker:run": "docker run -p 3003:3003 digiurban",
     "deploy": "./scripts/deploy.sh production",
     "monitor": "./scripts/monitor.sh full",
     "backup": "./scripts/manage.sh backup",

@@ -9,7 +9,7 @@ module.exports = {
     max_memory_restart: '500M',
     env: {
       NODE_ENV: 'production',
-      PORT: 3000
+      PORT: 3003
     },
     error_file: '/opt/digiurban/logs/error.log',
     out_file: '/opt/digiurban/logs/out.log',

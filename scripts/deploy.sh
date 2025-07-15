@@ -66,7 +66,7 @@ create_backup() {
 
 # Verificar se a aplicação está funcionando
 health_check() {
-    local url="http://localhost:5000/api/health"
+    local url="http://localhost:3003/api/health"
     local max_attempts=30
     local attempt=0
     
