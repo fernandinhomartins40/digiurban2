@@ -7,9 +7,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- Configurar políticas de senha
-ALTER SYSTEM SET password_encryption = 'scram-sha-256';
-
 -- Função para atualizar timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
