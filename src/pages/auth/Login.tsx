@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { customAuth } from '../../lib/custom-auth'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import { Label } from '../../components/ui/label'
@@ -42,28 +43,26 @@ export default function Login() {
     setError('')
 
     try {
-      const { user, profile } = await signIn(formData.email, formData.password)
+      console.log('🔐 Tentando login customizado...')
       
-      if (user && profile) {
-        toast.success(`Bem-vindo(a), ${profile.nome_completo}!`)
+      // Usar sistema de login customizado
+      const response = await customAuth.signIn(formData.email, formData.password)
+      
+      if (response.success && response.user && response.profile) {
+        toast.success(`Bem-vindo(a), ${response.profile.nome_completo}!`)
         
         // Redirecionar baseado no tipo de usuário
-        if (profile.tipo_usuario === 'cidadao') {
+        if (response.profile.tipo_usuario === 'cidadao') {
           navigate('/admin') // Dashboard do cidadão
         } else {
           navigate('/admin') // Dashboard administrativo
         }
+      } else {
+        setError(response.error || 'Erro ao fazer login')
       }
     } catch (error: any) {
-      console.error('Erro no login:', error)
-      
-      if (error.message.includes('Invalid login credentials')) {
-        setError('Email ou senha incorretos')
-      } else if (error.message.includes('Email not confirmed')) {
-        setError('Por favor, confirme seu email antes de fazer login')
-      } else {
-        setError('Erro ao fazer login. Tente novamente.')
-      }
+      console.error('Erro no login customizado:', error)
+      setError('Erro interno do sistema. Tente novamente.')
     } finally {
       setLoading(false)
     }
@@ -104,6 +103,18 @@ export default function Login() {
             <CardDescription className="text-center">
               Digite suas credenciais para acessar o sistema
             </CardDescription>
+            {/* Credenciais de teste */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg mt-4">
+              <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">
+                🔐 Credenciais de Teste:
+              </p>
+              <p className="text-xs text-blue-600 dark:text-blue-400">
+                Email: prefeito@municipio.gov.br
+              </p>
+              <p className="text-xs text-blue-600 dark:text-blue-400">
+                Senha: Prefeito@2024
+              </p>
+            </div>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
