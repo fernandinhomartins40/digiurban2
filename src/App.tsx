@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute, AdminRoute, AdminOnlyRoute } from './components/ProtectedRoute';
 
 // Landing Page
 import LandingPage from './pages/LandingPage';
@@ -163,39 +165,132 @@ import VigilanciaIntegrada from './pages/seguranca-publica/VigilanciaIntegrada';
 
 import NotFound from './pages/NotFound';
 
+// Auth pages
+import Login from './pages/auth/Login';
+import RegisterCitizen from './pages/auth/RegisterCitizen';
+import RegisterServer from './pages/auth/RegisterServer';
+import Unauthorized from './pages/Unauthorized';
+
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <Routes>
+      <AuthProvider>
+        <Router>
+          <Routes>
           {/* Landing page */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/landing" element={<LandingPage />} />
           
+          {/* Authentication routes */}
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register/citizen" element={<RegisterCitizen />} />
+          <Route path="/auth/register/server" element={
+            <AdminOnlyRoute>
+              <RegisterServer />
+            </AdminOnlyRoute>
+          } />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          
           {/* Admin panel - main pages */}
-          <Route path="/admin" element={<Index />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/catalogo-servicos" element={<CatalogoServicos />} />
-          <Route path="/meus-protocolos" element={<MeusProtocolos />} />
-          <Route path="/documentos-pessoais" element={<DocumentosPessoais />} />
-          <Route path="/minhas-avaliacoes" element={<MinhasAvaliacoes />} />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <Index />
+            </ProtectedRoute>
+          } />
+          <Route path="/chat" element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          } />
+          <Route path="/catalogo-servicos" element={
+            <ProtectedRoute>
+              <CatalogoServicos />
+            </ProtectedRoute>
+          } />
+          <Route path="/meus-protocolos" element={
+            <ProtectedRoute>
+              <MeusProtocolos />
+            </ProtectedRoute>
+          } />
+          <Route path="/documentos-pessoais" element={
+            <ProtectedRoute>
+              <DocumentosPessoais />
+            </ProtectedRoute>
+          } />
+          <Route path="/minhas-avaliacoes" element={
+            <ProtectedRoute>
+              <MinhasAvaliacoes />
+            </ProtectedRoute>
+          } />
 
           {/* Gabinete */}
-          <Route path="/gabinete/atendimentos" element={<GabineteAtendimentos />} />
-          <Route path="/gabinete/visao-geral" element={<GabineteVisaoGeral />} />
-          <Route path="/gabinete/gerenciar-alertas" element={<GabineteGerenciarAlertas />} />
-          <Route path="/gabinete/ordens-setores" element={<GabineteOrdensSetores />} />
-          <Route path="/gabinete/mapa-demandas" element={<GabineteMapaDemandas />} />
-          <Route path="/gabinete/projetos-estrategicos" element={<GabineteProjetosEstrategicos />} />
-          <Route path="/gabinete/agenda-executiva" element={<GabineteAgendaExecutiva />} />
-          <Route path="/gabinete/relatorios-executivos" element={<GabineteRelatoriosExecutivos />} />
-          <Route path="/gabinete/monitoramento-kpis" element={<GabineteMonitoramentoKPIs />} />
-          <Route path="/gabinete/comunicacao-oficial" element={<GabineteComunitcacaoOficial />} />
-          <Route path="/gabinete/auditoria-transparencia" element={<GabineteAuditoriaTransparencia />} />
-          <Route path="/gabinete/gerenciar-permissoes" element={<GabineteGerenciarPermissoes />} />
-          <Route path="/gabinete/configuracoes-sistema" element={<GabineteConfiguracoesSistema />} />
+          <Route path="/gabinete/atendimentos" element={
+            <AdminRoute>
+              <GabineteAtendimentos />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/visao-geral" element={
+            <AdminRoute>
+              <GabineteVisaoGeral />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/gerenciar-alertas" element={
+            <AdminRoute>
+              <GabineteGerenciarAlertas />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/ordens-setores" element={
+            <AdminOnlyRoute>
+              <GabineteOrdensSetores />
+            </AdminOnlyRoute>
+          } />
+          <Route path="/gabinete/mapa-demandas" element={
+            <AdminRoute>
+              <GabineteMapaDemandas />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/projetos-estrategicos" element={
+            <AdminRoute>
+              <GabineteProjetosEstrategicos />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/agenda-executiva" element={
+            <AdminRoute>
+              <GabineteAgendaExecutiva />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/relatorios-executivos" element={
+            <AdminRoute>
+              <GabineteRelatoriosExecutivos />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/monitoramento-kpis" element={
+            <AdminRoute>
+              <GabineteMonitoramentoKPIs />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/comunicacao-oficial" element={
+            <AdminRoute>
+              <GabineteComunitcacaoOficial />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/auditoria-transparencia" element={
+            <AdminRoute>
+              <GabineteAuditoriaTransparencia />
+            </AdminRoute>
+          } />
+          <Route path="/gabinete/gerenciar-permissoes" element={
+            <AdminOnlyRoute>
+              <GabineteGerenciarPermissoes />
+            </AdminOnlyRoute>
+          } />
+          <Route path="/gabinete/configuracoes-sistema" element={
+            <AdminOnlyRoute>
+              <GabineteConfiguracoesSistema />
+            </AdminOnlyRoute>
+          } />
 
           {/* Correio */}
           <Route path="/correio/caixa-entrada" element={<CorreioCaixaEntrada />} />
@@ -207,11 +302,31 @@ function App() {
           <Route path="/correio/assinaturas-digitais" element={<CorreioAssinaturasDigitais />} />
 
           {/* Administração */}
-          <Route path="/administracao/gerenciamento-usuarios" element={<AdministracaoGerenciamentoUsuarios />} />
-          <Route path="/administracao/perfis-permissoes" element={<AdministracaoPerfisPermissoes />} />
-          <Route path="/administracao/setores-grupos" element={<AdministracaoSetoresGrupos />} />
-          <Route path="/administracao/configuracoes-gerais" element={<AdministracaoConfiguracoesGerais />} />
-          <Route path="/administracao/auditoria-acessos" element={<AdministracaoAuditoriaAcessos />} />
+          <Route path="/administracao/gerenciamento-usuarios" element={
+            <AdminOnlyRoute>
+              <AdministracaoGerenciamentoUsuarios />
+            </AdminOnlyRoute>
+          } />
+          <Route path="/administracao/perfis-permissoes" element={
+            <AdminOnlyRoute>
+              <AdministracaoPerfisPermissoes />
+            </AdminOnlyRoute>
+          } />
+          <Route path="/administracao/setores-grupos" element={
+            <AdminOnlyRoute>
+              <AdministracaoSetoresGrupos />
+            </AdminOnlyRoute>
+          } />
+          <Route path="/administracao/configuracoes-gerais" element={
+            <AdminOnlyRoute>
+              <AdministracaoConfiguracoesGerais />
+            </AdminOnlyRoute>
+          } />
+          <Route path="/administracao/auditoria-acessos" element={
+            <AdminOnlyRoute>
+              <AdministracaoAuditoriaAcessos />
+            </AdminOnlyRoute>
+          } />
 
           {/* Relatórios */}
           <Route path="/relatorios/relatorios" element={<RelatoriosRelatorios />} />
@@ -332,9 +447,10 @@ function App() {
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Toaster />
-      </Router>
+          </Routes>
+          <Toaster />
+        </Router>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

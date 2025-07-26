@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { SidebarLogo } from "./SidebarLogo";
 import { UserProfile } from "./UserProfile";
 import { SidebarMenuItem, SidebarMenuGroup, SidebarSubmenu } from "./SidebarMenu";
+import { PermissionAwareSidebarMenuItem } from "./SidebarMenu/PermissionAwareSidebarMenuItem";
+import { PermissionAwareSidebarSubmenu } from "./SidebarMenu/PermissionAwareSidebarSubmenu";
+import { useAuth } from "../contexts/AuthContext";
 import { useSidebarScroll } from "../hooks/useSidebarScroll";
 import { 
   Activity, 
@@ -108,6 +111,7 @@ import {
 
 export const Sidebar: FC = () => {
   const { sidebarRef, setMenuItemRef } = useSidebarScroll();
+  const { profile, isCitizen } = useAuth();
 
   return (
     <div className="hidden md:flex md:w-64 md:flex-col">
@@ -203,35 +207,62 @@ export const Sidebar: FC = () => {
           </SidebarMenuGroup>
 
           
-          <div className="px-3 py-2 mt-3">
-            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
-              Área Administrativa
-            </div>
+          {/* Área Administrativa - apenas para servidores */}
+          {!isCitizen() && (
+            <div className="px-3 py-2 mt-3">
+              <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
+                Área Administrativa
+              </div>
             
-            <SidebarSubmenu 
+            <PermissionAwareSidebarSubmenu 
               title="Gabinete do Prefeito" 
               icon={<Briefcase className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/gabinete"
+              allowedUserTypes={['super_admin', 'admin', 'secretario']}
             >
-              <SidebarMenuItem href="/gabinete/atendimentos" onSetRef={setMenuItemRef}>
+              <PermissionAwareSidebarMenuItem 
+                href="/gabinete/atendimentos" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin', 'secretario']}
+              >
                 Atendimentos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/visao-geral" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/gabinete/visao-geral" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin', 'secretario']}
+              >
                 Visão Geral
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/mapa-demandas" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/gabinete/mapa-demandas" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin', 'secretario']}
+              >
                 Mapa de Demandas
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/relatorios-executivos" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/gabinete/relatorios-executivos" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin', 'secretario']}
+              >
                 Relatórios Executivos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/ordens-setores" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/gabinete/ordens-setores" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin']}
+              >
                 Ordens aos Setores
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/gabinete/gerenciar-permissoes" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/gabinete/gerenciar-permissoes" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin']}
+              >
                 Gerenciar Permissões
-              </SidebarMenuItem>
-            </SidebarSubmenu>
+              </PermissionAwareSidebarMenuItem>
+            </PermissionAwareSidebarSubmenu>
 
             
             <SidebarSubmenu 
@@ -262,27 +293,48 @@ export const Sidebar: FC = () => {
               </SidebarMenuItem>
             </SidebarSubmenu>
 
-            <SidebarSubmenu 
+            <PermissionAwareSidebarSubmenu 
               title="Administração do Sistema" 
               icon={<Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
               basePath="/administracao"
+              allowedUserTypes={['super_admin', 'admin']}
             >
-              <SidebarMenuItem href="/administracao/gerenciamento-usuarios" onSetRef={setMenuItemRef}>
+              <PermissionAwareSidebarMenuItem 
+                href="/administracao/gerenciamento-usuarios" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin']}
+              >
                 Gerenciamento de Usuários
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/perfis-permissoes" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/administracao/perfis-permissoes" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin']}
+              >
                 Perfis e Permissões
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/setores-grupos" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/administracao/setores-grupos" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin']}
+              >
                 Setores e Grupos
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/configuracoes-gerais" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/administracao/configuracoes-gerais" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin']}
+              >
                 Configurações Gerais
-              </SidebarMenuItem>
-              <SidebarMenuItem href="/administracao/auditoria-acessos" onSetRef={setMenuItemRef}>
+              </PermissionAwareSidebarMenuItem>
+              <PermissionAwareSidebarMenuItem 
+                href="/administracao/auditoria-acessos" 
+                onSetRef={setMenuItemRef}
+                allowedUserTypes={['super_admin', 'admin']}
+              >
                 Auditoria de Acessos
-              </SidebarMenuItem>
-            </SidebarSubmenu>
+              </PermissionAwareSidebarMenuItem>
+            </PermissionAwareSidebarSubmenu>
 
             <SidebarSubmenu 
               title="Relatórios e Indicadores" 
@@ -322,9 +374,9 @@ export const Sidebar: FC = () => {
               </SidebarMenuItem>
             </SidebarSubmenu>
 
-            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center mt-4">
-              Módulos Setoriais
-            </div>
+              <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center mt-4">
+                Módulos Setoriais
+              </div>
             
             <SidebarSubmenu 
               title="Saúde" 
@@ -659,7 +711,8 @@ export const Sidebar: FC = () => {
                 Programação de Equipes
               </SidebarMenuItem>
             </SidebarSubmenu>
-          </div>
+            </div>
+          )}
         </div>
         
         {/* Parte inferior fixa - Perfil do usuário */}
