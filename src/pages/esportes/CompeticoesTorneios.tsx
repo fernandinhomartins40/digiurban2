@@ -52,13 +52,13 @@ export default function EsportesCompeticoesTorneios() {
         id: Date.now().toString(),
         nome: formData.nome || "",
         modalidade: formData.modalidade || "",
-        tipo: formData.tipo as any || "Municipal",
+        tipo: (formData.tipo as Competicao['tipo']) || "Municipal",
         dataInicio: formData.dataInicio || "",
         dataFim: formData.dataFim || "",
         local: formData.local || "",
         equipesParticipantes: [],
         premiacao: formData.premiacao || "",
-        status: formData.status as any || "Planejada",
+        status: (formData.status as Competicao['status']) || "Planejada",
         regulamento: formData.regulamento || ""
       };
       setCompeticoes([...competicoes, newCompeticao]);
@@ -143,7 +143,7 @@ export default function EsportesCompeticoesTorneios() {
                 </div>
                 <div>
                   <Label htmlFor="tipo">Tipo</Label>
-                  <Select value={formData.tipo} onValueChange={(value) => setFormData({ ...formData, tipo: value as any })}>
+                  <Select value={formData.tipo} onValueChange={(value) => setFormData({ ...formData, tipo: value as Competicao['tipo'] })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o tipo" />
                     </SelectTrigger>
@@ -196,7 +196,7 @@ export default function EsportesCompeticoesTorneios() {
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as any })}>
+                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as Competicao['status'] })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o status" />
                     </SelectTrigger>

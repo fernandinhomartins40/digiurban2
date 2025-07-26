@@ -59,7 +59,7 @@ export default function EsportesAtletasFederados() {
         federacao: formData.federacao || "",
         numeroRegistro: formData.numeroRegistro || "",
         vigencia: formData.vigencia || "",
-        status: formData.status as any || "Ativo",
+        status: (formData.status as AtletaFederado['status']) || "Ativo",
         conquistas: []
       };
       setAtletas([...atletas, newAtleta]);
@@ -200,7 +200,7 @@ export default function EsportesAtletasFederados() {
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as any })}>
+                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as AtletaFederado['status'] })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o status" />
                     </SelectTrigger>

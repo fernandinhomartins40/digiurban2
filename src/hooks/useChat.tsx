@@ -217,7 +217,7 @@ export const useChat = () => {
         markAsRead(room.id).catch(console.error)
       ]);
     }
-  }, [fetchMessages, fetchParticipants]);
+  }, [fetchMessages, fetchParticipants, markAsRead]);
 
   // Mark messages as read
   const markAsRead = useCallback(async (roomId: number) => {

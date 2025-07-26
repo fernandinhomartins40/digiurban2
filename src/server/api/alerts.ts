@@ -64,7 +64,7 @@ router.get('/alerts', async (req, res) => {
       WHERE 1=1
     `;
     
-    const params: any[] = [];
+    const params: (string | number | boolean)[] = [];
     let paramCount = 0;
     
     if (alert_type) {

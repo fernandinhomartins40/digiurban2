@@ -52,8 +52,8 @@ export default function EsportesAtendimentos() {
         cpf: formData.cpf || "",
         telefone: formData.telefone || "",
         modalidade: formData.modalidade || "",
-        categoria: formData.categoria as any || "Adulto",
-        status: formData.status as any || "Pendente",
+        categoria: (formData.categoria as 'Infantil' | 'Juvenil' | 'Adulto' | 'Terceira Idade') || "Adulto",
+        status: (formData.status as 'Pendente' | 'Em Andamento' | 'Concluído' | 'Cancelado') || "Pendente",
         data: formData.data || new Date().toISOString().split('T')[0],
         observacoes: formData.observacoes || ""
       };
@@ -147,7 +147,7 @@ export default function EsportesAtendimentos() {
                 </div>
                 <div>
                   <Label htmlFor="categoria">Categoria</Label>
-                  <Select value={formData.categoria} onValueChange={(value) => setFormData({ ...formData, categoria: value as any })}>
+                  <Select value={formData.categoria} onValueChange={(value) => setFormData({ ...formData, categoria: value as 'Infantil' | 'Juvenil' | 'Adulto' | 'Terceira Idade' })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione a categoria" />
                     </SelectTrigger>
@@ -161,7 +161,7 @@ export default function EsportesAtendimentos() {
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as any })}>
+                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as 'Pendente' | 'Em Andamento' | 'Concluído' | 'Cancelado' })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o status" />
                     </SelectTrigger>

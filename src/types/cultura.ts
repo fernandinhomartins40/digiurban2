@@ -29,7 +29,7 @@ export interface ProjetoCultural {
   objetivos: string;
   publicoAlvo: string;
   metodologia: string;
-  cronograma: any[];
+  cronograma: Array<{atividade: string; dataInicio: string; dataFim: string; responsavel: string}>;
   resultadosEsperados: string;
   status: "em elaboracao" | "aprovado" | "em execucao" | "concluido" | "suspenso" | "cancelado";
 }

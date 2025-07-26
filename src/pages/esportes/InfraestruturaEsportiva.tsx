@@ -53,7 +53,7 @@ export default function EsportesInfraestruturaEsportiva() {
       const newInfraestrutura: InfraestruturaSport = {
         id: Date.now().toString(),
         nome: formData.nome || "",
-        tipo: formData.tipo as any || "Quadra",
+        tipo: (formData.tipo as InfraestruturaSport['tipo']) || "Quadra",
         endereco: formData.endereco || "",
         capacidade: formData.capacidade || 0,
         modalidades: [],
@@ -61,7 +61,7 @@ export default function EsportesInfraestruturaEsportiva() {
         horarioFuncionamento: formData.horarioFuncionamento || "",
         responsavel: formData.responsavel || "",
         telefone: formData.telefone || "",
-        status: formData.status as any || "Ativo",
+        status: (formData.status as InfraestruturaSport['status']) || "Ativo",
         observacoes: formData.observacoes || ""
       };
       setInfraestruturas([...infraestruturas, newInfraestrutura]);
@@ -138,7 +138,7 @@ export default function EsportesInfraestruturaEsportiva() {
                 </div>
                 <div>
                   <Label htmlFor="tipo">Tipo</Label>
-                  <Select value={formData.tipo} onValueChange={(value) => setFormData({ ...formData, tipo: value as any })}>
+                  <Select value={formData.tipo} onValueChange={(value) => setFormData({ ...formData, tipo: value as InfraestruturaSport['tipo'] })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o tipo" />
                     </SelectTrigger>
@@ -201,7 +201,7 @@ export default function EsportesInfraestruturaEsportiva() {
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as any })}>
+                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as InfraestruturaSport['status'] })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o status" />
                     </SelectTrigger>

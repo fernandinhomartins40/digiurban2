@@ -62,7 +62,7 @@ export interface AssistenciaTecnica {
   custoEstimado?: number;
   custoReal?: number;
   materiaisNecessarios?: string[];
-  cronograma?: any[];
+  cronograma?: Array<{etapa: string; dataInicio: string; dataFim: string; status: string}>;
   avaliacaoProdutor?: number; // 1-5
   observacoes?: string;
 }
@@ -84,8 +84,8 @@ export interface ProgramaRural {
   fonteRecurso?: string;
   participantesInscritos: number;
   participantesAtivos: number;
-  metasEstabelecidas: any[];
-  resultadosAlcancados?: any[];
+  metasEstabelecidas: Array<{meta: string; valor: number; prazo: string; status: string}>;
+  resultadosAlcancados?: Array<{resultado: string; valor: number; data: string; observacoes?: string}>;
   status: "planejamento" | "inscricoes_abertas" | "em_execucao" | "concluido" | "suspenso";
   documentosNecessarios?: string[];
   observacoes?: string;

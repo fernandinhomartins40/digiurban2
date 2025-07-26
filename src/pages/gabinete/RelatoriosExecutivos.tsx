@@ -93,7 +93,7 @@ const ReportHeader: FC<{ title: string; description: string }> = ({ title, descr
 );
 
 // Componente para a tabela de dados
-const DataTable: FC<{ data: any[]; columns: { key: string; label: string }[] }> = ({ data, columns }) => (
+const DataTable: FC<{ data: Record<string, string | number>[]; columns: { key: string; label: string }[] }> = ({ data, columns }) => (
   <div className="overflow-x-auto">
     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
       <thead>

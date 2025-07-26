@@ -17,7 +17,7 @@ export interface CitizenAlert {
   category_id?: number;
   priority: 1 | 2 | 3 | 4; // 1=baixa, 2=média, 3=alta, 4=crítica
   target_type: 'all' | 'department' | 'region' | 'custom';
-  target_criteria?: Record<string, any>;
+  target_criteria?: Record<string, string | number | boolean>;
   sender_id: number;
   is_active: boolean;
   schedule_at?: string;
@@ -64,7 +64,7 @@ export interface CreateAlertRequest {
   category_id?: number;
   priority: 1 | 2 | 3 | 4;
   target_type: 'all' | 'department' | 'region' | 'custom';
-  target_criteria?: Record<string, any>;
+  target_criteria?: Record<string, string | number | boolean>;
   schedule_at?: string;
   expires_at?: string;
 }

@@ -65,7 +65,7 @@ export default function EsportesEscolinhasEsportivas() {
         vagasOcupadas: 0,
         valor: formData.valor || 0,
         descricao: formData.descricao || "",
-        status: formData.status as any || "Ativa"
+        status: (formData.status as EscolinhaSport['status']) || "Ativa"
       };
       setEscolinhas([...escolinhas, newEscolinha]);
     }
@@ -218,7 +218,7 @@ export default function EsportesEscolinhasEsportivas() {
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as any })}>
+                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as EscolinhaSport['status'] })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o status" />
                     </SelectTrigger>

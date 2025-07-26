@@ -115,7 +115,7 @@ const GerenciarAlertas: FC = () => {
   const { alerts, categories, isLoading, error, fetchAlerts, fetchStatistics } = useAlerts();
   const [filters, setFilters] = useState<AlertFilters>({});
   const [searchTerm, setSearchTerm] = useState("");
-  const [statistics, setStatistics] = useState<any>(null);
+  const [statistics, setStatistics] = useState<{total: number; sent: number; read: number; pending: number} | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   useEffect(() => {
