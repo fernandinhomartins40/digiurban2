@@ -4,11 +4,10 @@
 // 2. Start your PostgreSQL instance and ensure DATABASE_URL is correct.
 // 3. Run the backend:   npm run dev:server   (requires ts-node)
 // 4. For fullstack development, use:   npm run dev   (requires concurrently)
-// The frontend will run on :8080 and API requests will proxy to :3000
+// The frontend will run on :8080 and API requests will proxy to :5000
 
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 import pool from './db';
 import initializeDatabase from './init-db';
 import usersRouter from './api/users';
@@ -16,13 +15,10 @@ import chatRoutes from './api/chat';
 import alertRoutes from './api/alerts';
 
 const app = express();
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3003;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
 
 app.use(cors());
 app.use(express.json());
-
-// Serve static files from public directory (frontend build)
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Test database connection and initialize
 async function setupDatabase() {
@@ -76,17 +72,6 @@ app.get('/api/health', async (req, res) => {
       }
     });
   }
-});
-
-// Catch-all handler: serve index.html for all non-API routes (SPA support)
-app.get('*', (req, res) => {
-  // Skip API routes
-  if (req.path.startsWith('/api/')) {
-    return res.status(404).json({ error: 'API route not found' });
-  }
-  
-  // Serve index.html for all other routes
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Error handling middleware

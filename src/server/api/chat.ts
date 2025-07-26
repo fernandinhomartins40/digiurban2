@@ -1,6 +1,7 @@
+
 import express from 'express';
-import pool from '../database/db';
-import { ChatRoom, ChatMessage, ChatParticipant, SendMessageRequest } from '../types/chat';
+import pool from '../db';
+import { ChatRoom, ChatMessage, ChatParticipant, SendMessageRequest } from '../../types/chat';
 import { AuthenticatedRequest } from '../types/auth';
 
 const router = express.Router();
@@ -17,7 +18,7 @@ const mockAuth = (req: AuthenticatedRequest, res: express.Response, next: expres
   next();
 };
 
-// Apply auth middleware to all routes
+// Apply mock auth to all routes
 router.use(mockAuth);
 
 // Get all chat rooms for current user
@@ -64,7 +65,7 @@ router.get('/rooms', async (req: AuthenticatedRequest, res) => {
     
     const result = await pool.query(query, [userId]);
     
-    const rooms = result.rows.map((row: any) => ({
+    const rooms = result.rows.map(row => ({
       ...row,
       participants_count: parseInt(row.participants_count) || 0,
       unread_count: parseInt(row.unread_count) || 0
@@ -144,7 +145,7 @@ router.get('/rooms/:roomId/messages', async (req: AuthenticatedRequest, res) => 
     
     const result = await pool.query(query, [roomId, limit, offset]);
     
-    const messages = result.rows.reverse();
+    const messages = result.rows.reverse(); // Return in chronological order
     
     console.log('✅ Messages fetched successfully:', messages.length, 'messages');
     res.json(messages);
@@ -244,70 +245,87 @@ router.post('/rooms/:roomId/messages', async (req: AuthenticatedRequest, res) =>
   }
 });
 
-// Mark message as read
-router.patch('/rooms/:roomId/messages/:messageId/read', async (req: AuthenticatedRequest, res) => {
+// Get participants for a room
+router.get('/rooms/:roomId/participants', async (req: AuthenticatedRequest, res) => {
   try {
-    const { roomId, messageId } = req.params;
+    const { roomId } = req.params;
     const userId = req.user?.id;
+    
+    console.log(`🔄 Fetching participants for room ${roomId}`);
     
     if (!userId) {
       return res.status(401).json({ error: 'User not authenticated' });
     }
     
-    await pool.query(
-      'UPDATE chat_messages SET is_read = true WHERE id = $1 AND room_id = $2 AND user_id != $3',
-      [messageId, roomId, userId]
+    // Verify room exists
+    const roomCheck = await pool.query(
+      'SELECT id FROM chat_rooms WHERE id = $1 AND is_active = true',
+      [roomId]
     );
     
-    res.json({ success: true });
-  } catch (error) {
-    console.error('❌ Error marking message as read:', error);
-    res.status(500).json({ 
-      error: 'Failed to mark message as read',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-// Create a new chat room
-router.post('/rooms', async (req: AuthenticatedRequest, res) => {
-  try {
-    const { name, type = 'general', department } = req.body;
-    const userId = req.user?.id;
-    
-    if (!userId) {
-      return res.status(401).json({ error: 'User not authenticated' });
+    if (roomCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Chat room not found or inactive' });
     }
     
-    if (!name || name.trim().length === 0) {
-      return res.status(400).json({ error: 'Room name is required' });
-    }
-    
-    // Create the room
-    const roomQuery = `
-      INSERT INTO chat_rooms (name, type, department)
-      VALUES ($1, $2, $3)
-      RETURNING *
+    const query = `
+      SELECT 
+        cp.id,
+        cp.room_id,
+        cp.user_id,
+        cp.role,
+        cp.joined_at,
+        cp.last_seen,
+        json_build_object(
+          'id', u.id,
+          'name', u.name,
+          'email', u.email,
+          'role', u.role
+        ) as user
+      FROM chat_participants cp
+      JOIN users u ON cp.user_id = u.id
+      WHERE cp.room_id = $1
+      ORDER BY cp.joined_at ASC
     `;
     
-    const roomResult = await pool.query(roomQuery, [name.trim(), type, department]);
-    const newRoom = roomResult.rows[0];
+    const result = await pool.query(query, [roomId]);
     
-    // Add creator as moderator
-    await pool.query(
-      'INSERT INTO chat_participants (room_id, user_id, role) VALUES ($1, $2, $3)',
-      [newRoom.id, userId, 'moderator']
-    );
-    
-    console.log('✅ Chat room created successfully:', newRoom.id);
-    res.status(201).json(newRoom);
+    console.log('✅ Participants fetched successfully:', result.rows.length, 'participants');
+    res.json(result.rows);
   } catch (error) {
-    console.error('❌ Error creating chat room:', error);
+    console.error('❌ Error fetching participants:', error);
     res.status(500).json({ 
-      error: 'Failed to create chat room',
+      error: 'Failed to fetch participants',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 });
 
-export default router; 
+// Mark messages as read
+router.post('/rooms/:roomId/mark-read', async (req: AuthenticatedRequest, res) => {
+  try {
+    const { roomId } = req.params;
+    const userId = req.user?.id;
+    
+    console.log(`🔄 Marking messages as read for room ${roomId}, user ${userId}`);
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    await pool.query(
+      'UPDATE chat_messages SET is_read = true WHERE room_id = $1 AND user_id != $2 AND is_read = false',
+      [roomId, userId]
+    );
+    
+    console.log('✅ Messages marked as read successfully');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('❌ Error marking messages as read:', error);
+    res.status(500).json({ 
+      error: 'Failed to mark messages as read',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+export default router;
