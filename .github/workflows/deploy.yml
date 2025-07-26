@@ -123,10 +123,35 @@ jobs:
       run: |
         echo "🔑 Configurando SSH para deploy..."
         mkdir -p ~/.ssh
-        echo "${{ secrets.VPS_PASSWORD }}" > ~/.ssh/id_rsa
+        
+        # Escrever a chave SSH de forma segura
+        echo "${{ secrets.VPS_PASSWORD }}" | tr -d '\r' > ~/.ssh/id_rsa
+        
+        # Verificar se a chave foi escrita corretamente
+        if [ ! -s ~/.ssh/id_rsa ]; then
+          echo "❌ Erro: Chave SSH vazia ou não encontrada"
+          exit 1
+        fi
+        
+        # Definir permissões corretas
         chmod 600 ~/.ssh/id_rsa
+        chmod 700 ~/.ssh
+        
+        # Verificar formato da chave
+        if ! grep -q "BEGIN.*PRIVATE KEY" ~/.ssh/id_rsa; then
+          echo "❌ Erro: Formato de chave SSH inválido"
+          head -2 ~/.ssh/id_rsa
+          exit 1
+        fi
+        
+        # Adicionar host conhecido
         ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
-        echo "✅ SSH configurado"
+        
+        # Testar conexão SSH
+        echo "🔍 Testando conexão SSH..."
+        ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "echo 'Conexão SSH bem-sucedida'"
+        
+        echo "✅ SSH configurado e testado"
 
     - name: 🔍 Verificar estado atual da VPS
       run: |
