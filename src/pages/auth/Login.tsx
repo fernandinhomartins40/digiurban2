@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { customAuth } from '../../lib/custom-auth'
+import { directAuth } from '../../lib/direct-auth'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import { Label } from '../../components/ui/label'
@@ -43,10 +43,10 @@ export default function Login() {
     setError('')
 
     try {
-      console.log('🔐 Tentando login customizado...')
+      console.log('🔐 Tentando login direto...')
       
-      // Usar sistema de login customizado
-      const response = await customAuth.signIn(formData.email, formData.password)
+      // Usar sistema de login direto (sem RPC)
+      const response = await directAuth.signIn(formData.email, formData.password)
       
       if (response.success && response.user && response.profile) {
         toast.success(`Bem-vindo(a), ${response.profile.nome_completo}!`)
@@ -61,7 +61,7 @@ export default function Login() {
         setError(response.error || 'Erro ao fazer login')
       }
     } catch (error: any) {
-      console.error('Erro no login customizado:', error)
+      console.error('Erro no login direto:', error)
       setError('Erro interno do sistema. Tente novamente.')
     } finally {
       setLoading(false)

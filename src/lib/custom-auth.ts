@@ -63,18 +63,18 @@ export class CustomAuthService {
     try {
       console.log('🔐 Tentando login customizado para:', email)
       
-      // Chamar função SQL customizada
-      const { data, error } = await supabase.rpc('custom_login', {
+      // Chamar função SQL simplificada
+      const { data, error } = await supabase.rpc('simple_login', {
         user_email: email,
         user_password: password
       })
 
       if (error) {
-        console.error('❌ Erro na função custom_login:', error)
+        console.error('❌ Erro na função simple_login:', error)
         throw new Error(error.message)
       }
 
-      console.log('📋 Resposta da função custom_login:', data)
+      console.log('📋 Resposta da função simple_login:', data)
 
       const response = data as CustomLoginResponse
 
