@@ -122,41 +122,34 @@ jobs:
     - name: 🔑 Configurar SSH
       run: |
         echo "🔑 Configurando SSH para deploy..."
+        
+        # Instalar sshpass para autenticação por senha
+        sudo apt-get update -qq
+        sudo apt-get install -y sshpass
+        
+        # Configurar SSH para aceitar conexões por senha
         mkdir -p ~/.ssh
-        
-        # Escrever a chave SSH de forma segura
-        echo "${{ secrets.VPS_PASSWORD }}" | tr -d '\r' > ~/.ssh/id_rsa
-        
-        # Verificar se a chave foi escrita corretamente
-        if [ ! -s ~/.ssh/id_rsa ]; then
-          echo "❌ Erro: Chave SSH vazia ou não encontrada"
-          exit 1
-        fi
-        
-        # Definir permissões corretas
-        chmod 600 ~/.ssh/id_rsa
         chmod 700 ~/.ssh
         
-        # Verificar formato da chave
-        if ! grep -q "BEGIN.*PRIVATE KEY" ~/.ssh/id_rsa; then
-          echo "❌ Erro: Formato de chave SSH inválido"
-          head -2 ~/.ssh/id_rsa
+        # Adicionar host conhecido para evitar prompt de verificação
+        ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+        
+        # Testar conexão SSH com senha
+        echo "🔍 Testando conexão SSH com senha..."
+        if sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "echo 'Conexão SSH bem-sucedida'"; then
+          echo "✅ SSH configurado e testado com sucesso"
+        else
+          echo "❌ Falha na conexão SSH. Verifique se:"
+          echo "  1. A secret VPS_PASSWORD contém a senha correta"
+          echo "  2. O servidor ${{ env.VPS_HOST }} está acessível"
+          echo "  3. O usuário ${{ env.VPS_USER }} existe e aceita autenticação por senha"
           exit 1
         fi
-        
-        # Adicionar host conhecido
-        ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
-        
-        # Testar conexão SSH
-        echo "🔍 Testando conexão SSH..."
-        ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "echo 'Conexão SSH bem-sucedida'"
-        
-        echo "✅ SSH configurado e testado"
 
     - name: 🔍 Verificar estado atual da VPS
       run: |
         echo "🔍 Verificando estado atual..."
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
+        sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
           echo '=== Estado Atual da VPS ==='
           echo 'Docker version:'
           docker --version || echo 'Docker não encontrado'
@@ -173,7 +166,7 @@ jobs:
     - name: 🚀 Deploy usando Docker
       run: |
         echo "🚀 Executando deploy com Docker..."
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
+        sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
           # Garantir que o diretório existe
           mkdir -p ${{ env.APP_DIR }}
           cd ${{ env.APP_DIR }}
@@ -264,7 +257,7 @@ jobs:
     - name: 🔍 Verificação Final
       run: |
         echo "🔍 Verificação final..."
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
+        sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
           cd ${{ env.APP_DIR }}
           
           # Verificar status do container
@@ -293,7 +286,7 @@ jobs:
       run: |
         echo "📊 RELATÓRIO DO DEPLOY DOCKER"
         echo "============================="
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
+        sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ env.VPS_USER }}@${{ env.VPS_HOST }} "
           echo 'Tipo de Deploy: ${{ needs.analyze-changes.outputs.deploy_type }}'
           echo 'Restart Executado: ${{ needs.analyze-changes.outputs.needs_restart }}'
           echo 'Dependências Atualizadas: ${{ needs.analyze-changes.outputs.has_package_changes }}'
