@@ -3,40 +3,27 @@
 -- Criar usuário "prefeito" com acesso total ao sistema
 -- =====================================================
 
--- IMPORTANTE: Este script deve ser executado APÓS o usuário "prefeito" 
--- ter sido criado via Supabase Auth (registro normal no sistema)
--- Substitua 'USER_UUID_AQUI' pelo UUID real do usuário criado
+-- INSTRUÇÕES:
+-- 1. Primeiro execute a busca abaixo para encontrar o UUID do usuário prefeito
+-- 2. Depois execute os comandos de configuração substituindo o UUID
 
 -- =====================================================
--- CRIAR PERFIL ESPECÍFICO PARA O PREFEITO
+-- PASSO 1: ENCONTRAR O UUID DO USUÁRIO PREFEITO
 -- =====================================================
 
--- Verificar se já existe um perfil específico para prefeito
+-- Execute esta consulta primeiro para encontrar o UUID:
+-- SELECT id, email FROM auth.users WHERE email = 'prefeito@municipio.gov.br';
+-- OU se o email for diferente:
+-- SELECT id, email FROM auth.users WHERE email ILIKE '%prefeito%';
+
+-- =====================================================
+-- PASSO 2: CRIAR PERFIL ESPECÍFICO PARA O PREFEITO
+-- =====================================================
+
+-- Criar perfil específico (execute sempre)
 INSERT INTO perfis_acesso (nome, descricao, tipo_usuario, nivel_hierarquico)
 VALUES ('Prefeito Municipal', 'Chefe do Executivo Municipal - Acesso Total', 'super_admin', 0)
 ON CONFLICT (nome) DO NOTHING;
-
--- =====================================================
--- ATUALIZAR PERFIL DO USUÁRIO PREFEITO
--- =====================================================
-
--- SUBSTITUA 'USER_UUID_AQUI' pelo UUID real do usuário prefeito
--- Exemplo: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
-
-UPDATE user_profiles 
-SET 
-    nome_completo = 'Prefeito Municipal',
-    tipo_usuario = 'super_admin',
-    perfil_acesso_id = (SELECT id FROM perfis_acesso WHERE nome = 'Prefeito Municipal'),
-    secretaria_id = (SELECT id FROM secretarias WHERE codigo = 'GAB'),
-    cargo = 'Prefeito',
-    status = 'ativo',
-    primeiro_acesso = false
-WHERE id = 'USER_UUID_AQUI'; -- SUBSTITUA PELO UUID REAL
-
--- =====================================================
--- GARANTIR TODAS AS PERMISSÕES PARA O PREFEITO
--- =====================================================
 
 -- Adicionar todas as permissões ao perfil do prefeito
 INSERT INTO perfil_permissoes (perfil_id, permissao_id, concedida)
@@ -48,23 +35,78 @@ FROM permissoes p
 ON CONFLICT (perfil_id, permissao_id) DO UPDATE SET concedida = true;
 
 -- =====================================================
--- CONFIGURAR COMO RESPONSÁVEL DO GABINETE
+-- PASSO 3: CONFIGURAR USUÁRIO ESPECÍFICO
 -- =====================================================
 
--- Definir o prefeito como responsável do Gabinete
-UPDATE secretarias 
-SET responsavel_id = 'USER_UUID_AQUI' -- SUBSTITUA PELO UUID REAL
-WHERE codigo = 'GAB';
+-- IMPORTANTE: SUBSTITUA o email 'prefeito@municipio.gov.br' pelo email real do usuário
+-- Este comando irá configurar o usuário baseado no email
+
+DO $$
+DECLARE
+    usuario_email TEXT := 'prefeito@municipio.gov.br'; -- ALTERE ESTE EMAIL
+    usuario_uuid UUID;
+BEGIN
+    -- Buscar o UUID do usuário pelo email
+    SELECT au.id INTO usuario_uuid
+    FROM auth.users au
+    WHERE au.email = usuario_email;
+    
+    -- Verificar se o usuário foi encontrado
+    IF usuario_uuid IS NULL THEN
+        RAISE NOTICE 'ERRO: Usuário com email % não encontrado!', usuario_email;
+        RAISE NOTICE 'Verifique se o usuário foi criado no Supabase Auth';
+        RETURN;
+    END IF;
+    
+    RAISE NOTICE 'Configurando usuário: % (UUID: %)', usuario_email, usuario_uuid;
+    
+    -- Inserir ou atualizar o perfil do usuário
+    INSERT INTO user_profiles (
+        id,
+        email,
+        nome_completo,
+        tipo_usuario,
+        perfil_acesso_id,
+        secretaria_id,
+        cargo,
+        status,
+        primeiro_acesso
+    ) VALUES (
+        usuario_uuid,
+        usuario_email,
+        'Prefeito Municipal',
+        'super_admin',
+        (SELECT id FROM perfis_acesso WHERE nome = 'Prefeito Municipal'),
+        (SELECT id FROM secretarias WHERE codigo = 'GAB'),
+        'Prefeito',
+        'ativo',
+        false
+    )
+    ON CONFLICT (id) DO UPDATE SET
+        nome_completo = 'Prefeito Municipal',
+        tipo_usuario = 'super_admin',
+        perfil_acesso_id = (SELECT id FROM perfis_acesso WHERE nome = 'Prefeito Municipal'),
+        secretaria_id = (SELECT id FROM secretarias WHERE codigo = 'GAB'),
+        cargo = 'Prefeito',
+        status = 'ativo',
+        primeiro_acesso = false;
+    
+    -- Definir como responsável do Gabinete
+    UPDATE secretarias 
+    SET responsavel_id = usuario_uuid
+    WHERE codigo = 'GAB';
+    
+    RAISE NOTICE 'Usuário prefeito configurado com sucesso!';
+    
+END $$;
 
 -- =====================================================
--- VERIFICAÇÃO
+-- PASSO 4: VERIFICAÇÃO
 -- =====================================================
 
--- Script para verificar se tudo foi configurado corretamente
--- Execute este SELECT para confirmar as configurações
-
+-- Execute esta consulta para verificar se tudo foi configurado corretamente
 SELECT 
-    'Configuração do Usuário Prefeito' as verificacao,
+    'VERIFICAÇÃO: Configuração do Usuário Prefeito' as status,
     up.nome_completo,
     up.email,
     up.tipo_usuario,
@@ -72,34 +114,14 @@ SELECT
     s.nome as secretaria_nome,
     up.cargo,
     up.status,
-    COUNT(pp.permissao_id) as total_permissoes
+    COUNT(pp.permissao_id) as total_permissoes,
+    CASE 
+        WHEN s.responsavel_id = up.id THEN 'SIM' 
+        ELSE 'NÃO' 
+    END as responsavel_gabinete
 FROM user_profiles up
 LEFT JOIN perfis_acesso pa ON pa.id = up.perfil_acesso_id
 LEFT JOIN secretarias s ON s.id = up.secretaria_id
 LEFT JOIN perfil_permissoes pp ON pp.perfil_id = up.perfil_acesso_id AND pp.concedida = true
-WHERE up.id = 'USER_UUID_AQUI' -- SUBSTITUA PELO UUID REAL
-GROUP BY up.nome_completo, up.email, up.tipo_usuario, pa.nome, s.nome, up.cargo, up.status;
-
--- =====================================================
--- INSTRUÇÕES DE USO
--- =====================================================
-
-/*
-COMO USAR ESTE SCRIPT:
-
-1. Primeiro, crie o usuário "prefeito" via interface do Supabase ou registro normal
-   Email sugerido: prefeito@municipio.gov.br
-
-2. Copie o UUID do usuário criado (pode ser obtido na tabela auth.users)
-
-3. Substitua TODAS as ocorrências de 'USER_UUID_AQUI' neste script pelo UUID real
-
-4. Execute este script no editor SQL do Supabase
-
-5. Execute o SELECT de verificação no final para confirmar
-
-EXEMPLO de como encontrar o UUID:
-SELECT id, email FROM auth.users WHERE email = 'prefeito@municipio.gov.br';
-
-Depois substitua 'USER_UUID_AQUI' pelo ID retornado.
-*/
+WHERE up.email = 'prefeito@municipio.gov.br' -- ALTERE ESTE EMAIL SE NECESSÁRIO
+GROUP BY up.id, up.nome_completo, up.email, up.tipo_usuario, pa.nome, s.nome, up.cargo, up.status, s.responsavel_id;
