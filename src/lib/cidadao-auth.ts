@@ -40,77 +40,46 @@ export interface ServicoPublico {
 }
 
 export const cidadaoAuthService = {
-  // Login do cidadão usando autenticação direta
+  // Login do cidadão usando Supabase Auth nativo
   async signIn(email: string, password: string) {
     try {
-      console.log('🔐 Iniciando login do cidadão...')
+      console.log('🔐 Iniciando login do cidadão com Supabase Auth...')
       
-      // ETAPA 1: Verificar credenciais na tabela temporária
-      const { data: credentialData, error: credentialError } = await supabase
-        .from('temp_credentials')
-        .select('email, password')
-        .eq('email', email)
-        .single()
+      // ETAPA 1: Autenticar com Supabase Auth
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
 
-      if (credentialError || !credentialData) {
-        throw new Error('Email não encontrado')
+      if (error) {
+        console.error('❌ Erro na autenticação:', error)
+        throw new Error(error.message)
       }
 
-      // ETAPA 2: Verificar senha
-      if (credentialData.password !== password) {
-        throw new Error('Senha incorreta')
+      if (!data.user) {
+        throw new Error('Dados de usuário não retornados')
       }
 
-      // ETAPA 3: Buscar perfil do cidadão
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select(`
-          id,
-          email,
-          nome_completo,
-          tipo_usuario,
-          status,
-          cpf,
-          telefone
-        `)
-        .eq('email', email)
-        .eq('tipo_usuario', 'cidadao')
-        .single()
+      console.log('✅ Autenticação Supabase bem-sucedida!')
 
-      if (profileError || !profileData) {
+      // ETAPA 2: Buscar perfil do cidadão
+      const profile = await this.getCidadaoProfile(data.user.id)
+      
+      if (!profile) {
+        // Fazer logout se perfil não encontrado
+        await supabase.auth.signOut()
         throw new Error('Perfil de cidadão não encontrado')
       }
 
-      // Criar objetos de resposta
-      const user = {
-        id: profileData.id,
-        email: profileData.email,
-        role: 'authenticated'
-      }
-
-      const profile = {
-        id: profileData.id,
-        email: profileData.email,
-        nome_completo: profileData.nome_completo,
-        cpf: profileData.cpf,
-        telefone: profileData.telefone,
-        endereco: null,
-        data_nascimento: null,
-        status: profileData.status,
-        primeiro_acesso: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }
-
-      // Salvar sessão do cidadão
+      // ETAPA 3: Salvar sessão do cidadão
       localStorage.setItem('cidadao_session', JSON.stringify({
-        user,
+        user: data.user,
         profile,
         timestamp: Date.now()
       }))
 
-      console.log('✅ Login do cidadão bem-sucedido!')
-      return { user, profile }
+      console.log('✅ Login do cidadão completo!')
+      return { user: data.user, profile }
 
     } catch (error: any) {
       console.error('❌ Erro no login do cidadão:', error)
@@ -118,7 +87,7 @@ export const cidadaoAuthService = {
     }
   },
 
-  // Registro público de cidadão
+  // Registro público de cidadão usando Supabase Auth nativo
   async signUp(
     email: string, 
     password: string, 
@@ -126,58 +95,76 @@ export const cidadaoAuthService = {
     cpf: string, 
     telefone?: string
   ) {
-    // Verificar se CPF já está cadastrado
-    const existingCitizen = await this.getCidadaoByCPF(cpf)
-    if (existingCitizen) {
-      throw new Error('CPF já cadastrado no sistema')
-    }
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          nome_completo: nomeCompleto,
-          cpf,
-          telefone: telefone || null,
-          tipo_usuario: 'cidadao'
-        }
+    try {
+      console.log('📝 Iniciando registro de cidadão...')
+      
+      // Verificar se CPF já está cadastrado
+      const existingCitizen = await this.getCidadaoByCPF(cpf)
+      if (existingCitizen) {
+        throw new Error('CPF já cadastrado no sistema')
       }
-    })
-    
-    if (error) throw error
-    
-    // Criar perfil do cidadão
-    if (data.user) {
-      await this.createCidadaoProfile({
-        id: data.user.id,
+
+      // Criar usuário no Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
         email,
-        nome_completo: nomeCompleto,
-        cpf,
-        telefone: telefone || null,
-        status: 'ativo',
-        primeiro_acesso: true
+        password,
+        options: {
+          data: {
+            nome_completo: nomeCompleto,
+            cpf,
+            telefone: telefone || null,
+            tipo_usuario: 'cidadao'
+          }
+        }
       })
       
-      // Criar também um registro básico em user_profiles para compatibilidade
-      await supabase
-        .from('user_profiles')
-        .insert([{
-          id: data.user.id,
-          email,
-          nome_completo: nomeCompleto,
-          tipo_usuario: 'cidadao',
-          status: 'ativo',
-          primeiro_acesso: true
-        }])
+      if (error) {
+        console.error('❌ Erro no registro:', error)
+        throw error
+      }
+
+      console.log('✅ Usuário criado no Supabase Auth!')
+
+      // O trigger handle_new_user() deve criar automaticamente os perfis
+      // Mas vamos verificar se funcionou
+      if (data.user && data.user.email_confirmed_at) {
+        console.log('📧 Email confirmado automaticamente')
+        
+        // Aguardar um momento para o trigger processar
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        // Verificar se o perfil foi criado
+        const profile = await this.getCidadaoProfile(data.user.id)
+        if (!profile) {
+          console.log('⚠️ Perfil não foi criado pelo trigger, criando manualmente...')
+          await this.createCidadaoProfile({
+            id: data.user.id,
+            email,
+            nome_completo: nomeCompleto,
+            cpf,
+            telefone: telefone || null,
+            status: 'ativo',
+            primeiro_acesso: true
+          })
+        }
+      }
+      
+      return data
+      
+    } catch (error: any) {
+      console.error('❌ Erro no registro do cidadão:', error)
+      throw error
     }
-    
-    return data
   },
 
   // Logout do cidadão
   async signOut() {
     localStorage.removeItem('cidadao_session')
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error('❌ Erro no logout:', error)
+      throw error
+    }
     console.log('🚪 Logout do cidadão realizado')
   },
 

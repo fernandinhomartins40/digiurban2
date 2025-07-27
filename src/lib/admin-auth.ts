@@ -33,84 +33,53 @@ export interface Permissao {
 }
 
 export const adminAuthService = {
-  // Login administrativo usando autenticação direta
+  // Login administrativo usando Supabase Auth nativo
   async signIn(email: string, password: string) {
     try {
-      console.log('🔐 Iniciando login administrativo...')
+      console.log('🔐 Iniciando login administrativo com Supabase Auth...')
       
-      // ETAPA 1: Verificar credenciais na tabela temporária
-      const { data: credentialData, error: credentialError } = await supabase
-        .from('temp_credentials')
-        .select('email, password')
-        .eq('email', email)
-        .single()
+      // ETAPA 1: Autenticar com Supabase Auth
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
 
-      if (credentialError || !credentialData) {
-        throw new Error('Email não encontrado')
+      if (error) {
+        console.error('❌ Erro na autenticação:', error)
+        throw new Error(error.message)
       }
 
-      // ETAPA 2: Verificar senha
-      if (credentialData.password !== password) {
-        throw new Error('Senha incorreta')
+      if (!data.user) {
+        throw new Error('Dados de usuário não retornados')
       }
 
-      // ETAPA 3: Buscar perfil administrativo
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select(`
-          id,
-          email,
-          nome_completo,
-          tipo_usuario,
-          perfil_acesso_id,
-          secretaria_id,
-          cargo,
-          status,
-          cpf,
-          telefone
-        `)
-        .eq('email', email)
-        .neq('tipo_usuario', 'cidadao')
-        .single()
+      console.log('✅ Autenticação Supabase bem-sucedida!')
 
-      if (profileError || !profileData) {
+      // ETAPA 2: Buscar perfil do usuário
+      const profile = await this.getAdminProfile(data.user.id)
+      
+      if (!profile) {
+        // Fazer logout se perfil não encontrado
+        await supabase.auth.signOut()
         throw new Error('Perfil administrativo não encontrado')
       }
 
-      // Verificar se é usuário administrativo
-      if (profileData.tipo_usuario === 'cidadao') {
+      // ETAPA 3: Verificar se é usuário administrativo
+      if (profile.tipo_usuario === 'cidadao') {
+        // Fazer logout se for cidadão
+        await supabase.auth.signOut()
         throw new Error('Acesso negado. Este portal é exclusivo para servidores públicos.')
       }
 
-      // Criar objetos de resposta
-      const user = {
-        id: profileData.id,
-        email: profileData.email,
-        role: 'authenticated'
-      }
-
-      const profile = {
-        id: profileData.id,
-        email: profileData.email,
-        nome_completo: profileData.nome_completo,
-        tipo_usuario: profileData.tipo_usuario,
-        perfil_acesso_id: profileData.perfil_acesso_id,
-        secretaria_id: profileData.secretaria_id,
-        cargo: profileData.cargo,
-        status: profileData.status,
-        cpf: profileData.cpf,
-        telefone: profileData.telefone
-      }
-
-      // Salvar sessão administrativa
+      // ETAPA 4: Salvar sessão administrativa
       localStorage.setItem('admin_session', JSON.stringify({
-        user,
+        user: data.user,
         profile,
         timestamp: Date.now()
       }))
 
-      console.log('✅ Login administrativo bem-sucedido!')
-      return { user, profile }
+      console.log('✅ Login administrativo completo!')
+      return { user: data.user, profile }
 
     } catch (error: any) {
       console.error('❌ Erro no login administrativo:', error)
@@ -121,6 +90,11 @@ export const adminAuthService = {
   // Logout administrativo
   async signOut() {
     localStorage.removeItem('admin_session')
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error('❌ Erro no logout:', error)
+      throw error
+    }
     console.log('🚪 Logout administrativo realizado')
   },
 
