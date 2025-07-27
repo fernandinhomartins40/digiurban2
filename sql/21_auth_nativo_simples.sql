@@ -70,7 +70,7 @@ BEGIN
         NEW.email,
         COALESCE(NEW.raw_user_meta_data->>'nome_completo', NEW.email),
         COALESCE(NEW.raw_user_meta_data->>'tipo_usuario', 'cidadao')::user_type,
-        'ativo'::status_type,
+        'ativo',
         true
     );
     RETURN NEW;
@@ -105,7 +105,7 @@ SELECT
     au.email,
     COALESCE(au.raw_user_meta_data->>'nome_completo', au.email),
     COALESCE(au.raw_user_meta_data->>'tipo_usuario', 'cidadao')::user_type,
-    'ativo'::status_type,
+    'ativo',
     true
 FROM auth.users au
 WHERE NOT EXISTS (
