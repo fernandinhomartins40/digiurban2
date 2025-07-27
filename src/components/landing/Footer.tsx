@@ -1,8 +1,28 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Footer: FC = () => {
+  const { user, profile, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAdminAccess = () => {
+    if (user && profile && profile.tipo_usuario !== 'cidadao') {
+      navigate('/admin/dashboard');
+    } else {
+      navigate('/admin/login');
+    }
+  };
+
+  const handleCidadaoAccess = () => {
+    if (user && profile && profile.tipo_usuario === 'cidadao') {
+      navigate('/cidadao/dashboard');
+    } else {
+      navigate('/cidadao/login');
+    }
+  };
+
   return (
     <footer id="contact" className="gradient-primary text-white py-24 relative overflow-hidden">
       {/* Animated background elements */}
@@ -38,14 +58,14 @@ export const Footer: FC = () => {
                 Módulos
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-300 to-cyan-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
               </a></li>
-              <li><Link to="/admin/login" className="hover:text-yellow-300 transition-all duration-300 hover-lift text-lg relative group">
-                Portal Admin
+              <li><button onClick={handleAdminAccess} disabled={loading} className="hover:text-yellow-300 transition-all duration-300 hover-lift text-lg relative group disabled:opacity-50">
+                {user && profile && profile.tipo_usuario !== 'cidadao' ? 'Ir para Painel Admin' : 'Portal Admin'}
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-300 to-cyan-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-              </Link></li>
-              <li><Link to="/cidadao/login" className="hover:text-yellow-300 transition-all duration-300 hover-lift text-lg relative group">
-                Portal Cidadão
+              </button></li>
+              <li><button onClick={handleCidadaoAccess} disabled={loading} className="hover:text-yellow-300 transition-all duration-300 hover-lift text-lg relative group disabled:opacity-50">
+                {user && profile && profile.tipo_usuario === 'cidadao' ? 'Ir para Meus Serviços' : 'Portal Cidadão'}
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-300 to-cyan-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-              </Link></li>
+              </button></li>
             </ul>
           </div>
           
@@ -79,11 +99,22 @@ export const Footer: FC = () => {
             <a href="#" className="hover:text-yellow-300 transition-all duration-300 hover-lift">Cookies</a>
           </div>
           <div className="mt-6 sm:mt-0 flex gap-4">
-            <Button variant="outline" size="lg" asChild className="hover-lift bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 hover:text-white hover:border-white/50 text-lg px-6 py-3 transition-all">
-              <Link to="/admin/login">Portal Admin</Link>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              onClick={handleAdminAccess}
+              disabled={loading}
+              className="hover-lift bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 hover:text-white hover:border-white/50 text-lg px-6 py-3 transition-all disabled:opacity-50"
+            >
+              {user && profile && profile.tipo_usuario !== 'cidadao' ? 'Ir para Painel Admin' : 'Portal Admin'}
             </Button>
-            <Button size="lg" asChild className="hover-lift glow-primary text-lg px-6 py-3 bg-white text-purple-600 hover:bg-white/90 shadow-glow">
-              <Link to="/cidadao/login">Portal Cidadão</Link>
+            <Button 
+              size="lg" 
+              onClick={handleCidadaoAccess}
+              disabled={loading}
+              className="hover-lift glow-primary text-lg px-6 py-3 bg-white text-purple-600 hover:bg-white/90 shadow-glow disabled:opacity-50"
+            >
+              {user && profile && profile.tipo_usuario === 'cidadao' ? 'Ir para Meus Serviços' : 'Portal Cidadão'}
             </Button>
           </div>
         </div>

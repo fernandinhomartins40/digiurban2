@@ -10,8 +10,11 @@ import {
   FileText,
   Star,
   Home,
-  Search
+  Search,
+  User,
+  Settings
 } from "lucide-react";
+import { SidebarSubmenu } from "./SidebarMenu";
 
 export const CidadaoSidebar: FC = () => {
   const { sidebarRef, setMenuItemRef } = useSidebarScroll();
@@ -77,6 +80,25 @@ export const CidadaoSidebar: FC = () => {
             >
               Minhas Avaliações
             </SidebarMenuItem>
+
+            <SidebarSubmenu 
+              title="Configurações" 
+              icon={<Settings className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
+              basePath="/configuracoes"
+            >
+              <SidebarMenuItem href="/cidadao/configuracoes/meu-perfil" onSetRef={setMenuItemRef}>
+                Meu Perfil
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/cidadao/configuracoes/trocar-senha" onSetRef={setMenuItemRef}>
+                Trocar Senha
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/cidadao/configuracoes/preferencias-notificacao" onSetRef={setMenuItemRef}>
+                Preferências de Notificação
+              </SidebarMenuItem>
+              <SidebarMenuItem href="/cidadao/configuracoes/idioma-acessibilidade" onSetRef={setMenuItemRef}>
+                Idioma e Acessibilidade
+              </SidebarMenuItem>
+            </SidebarSubmenu>
           </SidebarMenuGroup>
         </div>
         

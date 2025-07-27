@@ -1,11 +1,34 @@
 
 import { FC, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const PublicNavbar: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, profile, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAdminAccess = () => {
+    if (user && profile && profile.tipo_usuario !== 'cidadao') {
+      // Usuário já logado como admin/servidor, vai para dashboard
+      navigate('/admin/dashboard');
+    } else {
+      // Usuário não logado ou é cidadão, vai para login admin
+      navigate('/admin/login');
+    }
+  };
+
+  const handleCidadaoAccess = () => {
+    if (user && profile && profile.tipo_usuario === 'cidadao') {
+      // Usuário já logado como cidadão, vai para dashboard
+      navigate('/cidadao/dashboard');
+    } else {
+      // Usuário não logado ou é admin, vai para login cidadão
+      navigate('/cidadao/login');
+    }
+  };
   
   return (
     <nav className="bg-white/95 backdrop-blur-sm shadow-elegant border-b border-purple-100 sticky top-0 z-50">
@@ -39,11 +62,20 @@ export const PublicNavbar: FC = () => {
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" asChild className="hover-lift text-lg px-6 py-3 border-purple-200 text-purple-600 hover:bg-purple-50 shadow-sm">
-              <Link to="/admin/login">Portal Admin</Link>
+            <Button 
+              variant="outline" 
+              onClick={handleAdminAccess}
+              disabled={loading}
+              className="hover-lift text-lg px-6 py-3 border-purple-200 text-purple-600 hover:bg-purple-50 shadow-sm"
+            >
+              {user && profile && profile.tipo_usuario !== 'cidadao' ? 'Ir para Painel Admin' : 'Portal Admin'}
             </Button>
-            <Button asChild className="hover-lift glow-primary text-lg px-6 py-3 gradient-primary text-white shadow-elegant">
-              <Link to="/cidadao/login">Portal Cidadão</Link>
+            <Button 
+              onClick={handleCidadaoAccess}
+              disabled={loading}
+              className="hover-lift glow-primary text-lg px-6 py-3 gradient-primary text-white shadow-elegant"
+            >
+              {user && profile && profile.tipo_usuario === 'cidadao' ? 'Ir para Meus Serviços' : 'Portal Cidadão'}
             </Button>
           </div>
           
@@ -75,12 +107,20 @@ export const PublicNavbar: FC = () => {
                 Contato
               </a>
               <div className="pt-4 border-t border-purple-100 space-y-3">
-                <Link to="/admin/login" className="block px-4 py-3 text-base font-medium text-purple-600 border border-purple-200 rounded-lg text-center hover:bg-purple-50 transition-all">
-                  Portal Admin
-                </Link>
-                <Link to="/cidadao/login" className="block px-4 py-3 text-base font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg text-center hover:shadow-lg transition-all">
-                  Portal Cidadão
-                </Link>
+                <button
+                  onClick={handleAdminAccess}
+                  disabled={loading}
+                  className="block w-full px-4 py-3 text-base font-medium text-purple-600 border border-purple-200 rounded-lg text-center hover:bg-purple-50 transition-all disabled:opacity-50"
+                >
+                  {user && profile && profile.tipo_usuario !== 'cidadao' ? 'Ir para Painel Admin' : 'Portal Admin'}
+                </button>
+                <button
+                  onClick={handleCidadaoAccess}
+                  disabled={loading}
+                  className="block w-full px-4 py-3 text-base font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg text-center hover:shadow-lg transition-all disabled:opacity-50"
+                >
+                  {user && profile && profile.tipo_usuario === 'cidadao' ? 'Ir para Meus Serviços' : 'Portal Cidadão'}
+                </button>
               </div>
             </div>
           </div>

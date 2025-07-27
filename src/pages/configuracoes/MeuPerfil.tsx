@@ -11,6 +11,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect } from "react";
+import { User } from "lucide-react";
+import { toast } from "sonner";
 
 const profileFormSchema = z.object({
   name: z.string().min(2, {
@@ -27,29 +31,43 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-const defaultValues: Partial<ProfileFormValues> = {
-  name: "João Silva",
-  email: "joao.silva@prefeitura.gov.br",
-  bio: "Analista de sistemas na Secretaria de Administração",
-  role: "analista",
-  department: "tecnologia",
-  phone: "(11) 98765-4321",
-};
-
 const MeuPerfil = () => {
-  const { toast } = useToast();
+  const { user, profile, isCitizen } = useAuth();
+  
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
     mode: "onChange",
   });
 
+  // Carregar dados do usuário atual
+  useEffect(() => {
+    if (profile && user) {
+      const tipoFormatado = {
+        'super_admin': 'super_admin',
+        'admin': 'admin',
+        'secretario': 'secretario',
+        'diretor': 'diretor',
+        'coordenador': 'coordenador',
+        'funcionario': 'funcionario',
+        'atendente': 'atendente',
+        'cidadao': 'cidadao'
+      }[profile.tipo_usuario] || profile.tipo_usuario;
+
+      form.reset({
+        name: profile.nome_completo,
+        email: user.email || '',
+        bio: '',
+        role: tipoFormatado,
+        department: '', // Será implementado quando tivermos dados da secretaria
+        phone: '',
+      });
+    }
+  }, [profile, user, form]);
+
   function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: "Perfil atualizado",
-      description: "Suas informações foram atualizadas com sucesso.",
-    });
-    console.log(data);
+    // TODO: Implementar atualização real do perfil no Supabase
+    toast.success('Perfil atualizado com sucesso!');
+    console.log('Dados para atualizar:', data);
   }
 
   return (
@@ -68,10 +86,9 @@ const MeuPerfil = () => {
           <Card>
             <CardHeader>
               <div className="flex items-center gap-4">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src="https://i.pravatar.cc/200" alt="Avatar" />
-                  <AvatarFallback>JS</AvatarFallback>
-                </Avatar>
+                <div className="h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <User className="w-12 h-12 text-white" />
+                </div>
                 <div>
                   <CardTitle className="mb-1">Foto de Perfil</CardTitle>
                   <CardDescription>
@@ -149,11 +166,14 @@ const MeuPerfil = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="analista">Analista de Sistemas</SelectItem>
-                              <SelectItem value="coordenador">Coordenador</SelectItem>
-                              <SelectItem value="diretor">Diretor</SelectItem>
+                              <SelectItem value="super_admin">Super Administrador</SelectItem>
+                              <SelectItem value="admin">Administrador</SelectItem>
                               <SelectItem value="secretario">Secretário</SelectItem>
-                              <SelectItem value="tecnico">Técnico Administrativo</SelectItem>
+                              <SelectItem value="diretor">Diretor</SelectItem>
+                              <SelectItem value="coordenador">Coordenador</SelectItem>
+                              <SelectItem value="funcionario">Funcionário</SelectItem>
+                              <SelectItem value="atendente">Atendente</SelectItem>
+                              <SelectItem value="cidadao">Cidadão</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />

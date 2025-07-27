@@ -19,6 +19,12 @@ import CidadaoDashboard from '../pages/cidadao/dashboard/CidadaoDashboard';
 // Auth pages do cidadão
 import CidadaoLogin from '../pages/cidadao/auth/CidadaoLogin';
 
+// Configurações
+import MeuPerfil from '../pages/configuracoes/MeuPerfil';
+import TrocarSenha from '../pages/configuracoes/TrocarSenha';
+import PreferenciasNotificacao from '../pages/configuracoes/PreferenciasNotificacao';
+import IdiomaAcessibilidade from '../pages/configuracoes/IdiomaAcessibilidade';
+
 function CidadaoApp() {
   return (
     <Routes>
@@ -90,6 +96,28 @@ function CidadaoApp() {
       <Route path="/minhas-avaliacoes" element={
         <ProtectedRoute>
           <MinhasAvaliacoes />
+        </ProtectedRoute>
+      } />
+
+      {/* Configurações */}
+      <Route path="/configuracoes/meu-perfil" element={
+        <ProtectedRoute>
+          <MeuPerfil />
+        </ProtectedRoute>
+      } />
+      <Route path="/configuracoes/trocar-senha" element={
+        <ProtectedRoute>
+          <TrocarSenha />
+        </ProtectedRoute>
+      } />
+      <Route path="/configuracoes/preferencias-notificacao" element={
+        <ProtectedRoute>
+          <PreferenciasNotificacao />
+        </ProtectedRoute>
+      } />
+      <Route path="/configuracoes/idioma-acessibilidade" element={
+        <ProtectedRoute>
+          <IdiomaAcessibilidade />
         </ProtectedRoute>
       } />
 
