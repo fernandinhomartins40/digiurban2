@@ -47,12 +47,14 @@ export default function CidadaoLogin() {
       const response = await signIn(formData.email, formData.password)
       
       if (response.user) {
-        // O AuthContext já vai gerenciar o profile automaticamente
         toast.success('Login realizado com sucesso!')
         console.log('✅ Login do cidadão realizado com sucesso')
         
-        // Redirecionar para dashboard do cidadão
-        navigate('/cidadao/dashboard')
+        // Aguardar um pequeno delay para o AuthContext atualizar o estado
+        // antes de navegar (evita race condition com ProtectedRoute)
+        setTimeout(() => {
+          navigate('/cidadao/dashboard')
+        }, 100)
       } else {
         throw new Error('Dados de autenticação inválidos')
       }

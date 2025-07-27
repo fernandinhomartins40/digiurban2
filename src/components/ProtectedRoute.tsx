@@ -43,9 +43,10 @@ export function ProtectedRoute({
     return <>{children}</>
   }
 
-  // Se não tem perfil (mesmo estando logado), redirecionar
+  // Se não tem perfil (mesmo estando logado), redirecionar para logout
   if (requireAuth && user && !profile) {
-    return <Navigate to="/auth/profile-setup" replace />
+    console.warn('Usuário autenticado mas sem perfil, redirecionando para logout')
+    return <Navigate to={fallbackPath} replace />
   }
 
   // Verificar tipos de usuário permitidos
@@ -73,7 +74,7 @@ export function AdminRoute({ children }: { children: React.ReactNode }) {
   return (
     <ProtectedRoute
       allowedUserTypes={['super_admin', 'admin', 'secretario', 'diretor', 'coordenador', 'funcionario', 'atendente']}
-      fallbackPath="/auth/login"
+      fallbackPath="/admin/login"
     >
       {children}
     </ProtectedRoute>
@@ -109,7 +110,7 @@ export function CitizenRoute({ children }: { children: React.ReactNode }) {
   return (
     <ProtectedRoute
       allowedUserTypes={['cidadao']}
-      fallbackPath="/auth/login"
+      fallbackPath="/cidadao/login"
     >
       {children}
     </ProtectedRoute>
