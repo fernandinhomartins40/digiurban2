@@ -30,7 +30,7 @@ export const CidadaoSidebar: FC = () => {
           {/* Portal do Cidadão */}
           <SidebarMenuGroup title="Portal do Cidadão" icon="🔷">
             <SidebarMenuItem 
-              href="/cidadao" 
+              href="/cidadao/" 
               exactMatch={true}
               onSetRef={setMenuItemRef}
               icon={<Home className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400" />}
