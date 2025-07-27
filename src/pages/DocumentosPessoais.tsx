@@ -134,7 +134,7 @@ const DocumentosPessoais: FC = () => {
 
   return (
     <CidadaoLayout>
-      <div className="h-full flex flex-col p-4">
+      <div className="h-full flex flex-col">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div>
             <h1 className="text-2xl font-bold">Documentos Pessoais</h1>
