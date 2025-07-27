@@ -4,6 +4,9 @@
 
 Execute os scripts na seguinte ordem no SQL Editor do Supabase:
 
+### 0. Diagnóstico (Recomendado)
+- `00_diagnostico_banco.sql` - Analisa estado atual do banco
+
 ### 1. Estrutura Base (Obrigatório)
 - `01_estrutura_base.sql` - Cria tabelas básicas do sistema
 - `02_auth_profiles.sql` - Configura autenticação e perfis de usuário
@@ -14,15 +17,11 @@ Execute os scripts na seguinte ordem no SQL Editor do Supabase:
 - `05_chat_sistema.sql` - Sistema de chat seguro
 - `06_storage_setup.sql` - Configuração de storage para uploads
 
-### 3. Políticas de Segurança (Obrigatório)
-- `07_rls_policies.sql` - Row Level Security para todas as tabelas
-- `08_functions_triggers.sql` - Funções e triggers do sistema
-
-### 4. Dados Iniciais (Recomendado)
-- `09_seed_data.sql` - Dados iniciais e usuários de teste
-
-### 5. Verificação (Opcional)
-- `10_verify_setup.sql` - Verifica se tudo foi configurado corretamente
+### 3. Correções Específicas (Se Necessário)
+- `07_fix_upload_imagem.sql` - Corrige problemas de upload de foto de perfil
+- `08_fix_rls_storage.sql` - Corrige políticas RLS do storage
+- `09_fix_rls_storage_emergency.sql` - Solução emergencial para RLS
+- `10_verify_storage_setup.sql` - Verifica configuração do storage
 
 ## Scripts Antigos (Não Usar)
 
