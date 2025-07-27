@@ -23,6 +23,7 @@ export function ProtectedRoute({
 
   // Mostrar loading enquanto carrega autenticação
   if (loading) {
+    console.log('🔒 ProtectedRoute: Carregando autenticação...')
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -35,22 +36,25 @@ export function ProtectedRoute({
 
   // Se requer autenticação mas não está logado
   if (requireAuth && !user) {
+    console.warn('🔒 ProtectedRoute: Usuário não autenticado, redirecionando para:', fallbackPath)
     return <Navigate to={fallbackPath} state={{ from: location }} replace />
   }
 
   // Se não requer autenticação, deixar passar
   if (!requireAuth) {
+    console.log('🔒 ProtectedRoute: Rota pública, permitindo acesso')
     return <>{children}</>
   }
 
   // Se não tem perfil (mesmo estando logado), redirecionar para logout
   if (requireAuth && user && !profile) {
-    console.warn('Usuário autenticado mas sem perfil, redirecionando para logout')
+    console.warn('🔒 ProtectedRoute: Usuário autenticado mas sem perfil, redirecionando para:', fallbackPath)
     return <Navigate to={fallbackPath} replace />
   }
 
   // Verificar tipos de usuário permitidos
   if (allowedUserTypes && profile && !allowedUserTypes.includes(profile.tipo_usuario)) {
+    console.warn('🔒 ProtectedRoute: Tipo de usuário não permitido:', profile.tipo_usuario, 'Permitidos:', allowedUserTypes)
     return <Navigate to="/unauthorized" replace />
   }
 
@@ -61,11 +65,13 @@ export function ProtectedRoute({
     )
     
     if (!hasAllPermissions) {
+      console.warn('🔒 ProtectedRoute: Usuário não tem todas as permissões necessárias')
       return <Navigate to="/unauthorized" replace />
     }
   }
 
   // Se passou por todas as verificações, renderizar componente
+  console.log('✅ ProtectedRoute: Acesso autorizado para:', user?.email, profile?.tipo_usuario)
   return <>{children}</>
 }
 

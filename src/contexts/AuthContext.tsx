@@ -46,28 +46,58 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('🔧 AuthContext: Iniciando listener de autenticação')
+    
+    // Verificar sessão atual primeiro
+    const initializeAuth = async () => {
+      try {
+        console.log('🔧 AuthContext: Verificando sessão existente...')
+        const currentUser = await authService.getCurrentUser()
+        if (currentUser) {
+          console.log('✅ AuthContext: Sessão existente encontrada:', currentUser.email)
+        } else {
+          console.log('ℹ️ AuthContext: Nenhuma sessão ativa encontrada')
+        }
+      } catch (error) {
+        console.error('❌ AuthContext: Erro ao verificar sessão:', error)
+      }
+    }
+    
+    initializeAuth()
+    
     // Listener para mudanças de autenticação
     const { data: { subscription } } = authService.onAuthStateChange(async (user, profile) => {
+      console.log('🔧 AuthContext: Mudança de estado de auth detectada:', {
+        user: user ? user.email : null,
+        profile: profile ? profile.tipo_usuario : null
+      })
+      
       setUser(user)
       setProfile(profile)
       
       if (user && profile) {
+        console.log('✅ AuthContext: Usuário autenticado, carregando permissões...')
         // Carregar permissões
         try {
           const userPermissions = await authService.getUserPermissions(user.id)
           setPermissions(userPermissions)
+          console.log('✅ AuthContext: Permissões carregadas:', userPermissions.length)
         } catch (error) {
-          console.error('Erro ao carregar permissões:', error)
+          console.error('❌ AuthContext: Erro ao carregar permissões:', error)
           setPermissions([])
         }
       } else {
+        console.log('ℹ️ AuthContext: Usuário não autenticado, limpando estado')
         setPermissions([])
       }
       
       setLoading(false)
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      console.log('🔧 AuthContext: Removendo listener de autenticação')
+      subscription.unsubscribe()
+    }
   }, [])
 
   const signIn = async (email: string, password: string) => {

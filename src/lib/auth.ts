@@ -233,10 +233,24 @@ export const authService = {
   // Listener para mudanças de autenticação
   onAuthStateChange(callback: (user: any, profile: UserProfile | null) => void) {
     return supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('🔧 AuthService: Evento de auth detectado:', event)
+      
       if (session?.user) {
-        const profile = await this.getUserProfile(session.user.id)
-        callback(session.user, profile)
+        console.log('🔧 AuthService: Usuário na sessão:', session.user.email)
+        try {
+          const profile = await this.getUserProfile(session.user.id)
+          if (profile) {
+            console.log('✅ AuthService: Perfil carregado:', profile.tipo_usuario)
+          } else {
+            console.warn('⚠️ AuthService: Usuário sem perfil no banco')
+          }
+          callback(session.user, profile)
+        } catch (error) {
+          console.error('❌ AuthService: Erro ao carregar perfil:', error)
+          callback(session.user, null)
+        }
       } else {
+        console.log('ℹ️ AuthService: Nenhuma sessão ativa')
         callback(null, null)
       }
     })
