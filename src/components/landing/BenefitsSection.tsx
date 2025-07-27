@@ -45,7 +45,7 @@ export const BenefitsSection: FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20 animate-slide-up">
           <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Por que escolher <span className="text-gradient">DigiUrbis</span>?
+            Por que escolher <span className="text-gradient">Digiurban</span>?
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             Transforme sua administração municipal com tecnologia moderna e processos otimizados 

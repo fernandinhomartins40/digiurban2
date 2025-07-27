@@ -14,7 +14,7 @@ export const PublicNavbar: FC = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <h1 className="text-3xl font-bold text-gradient gradient-primary bg-clip-text text-transparent">
-                DigiUrbis
+                Digiurban
               </h1>
             </div>
             <div className="hidden md:block ml-12">

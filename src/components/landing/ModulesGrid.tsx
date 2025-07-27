@@ -82,7 +82,7 @@ export const ModulesGrid: FC = () => {
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             Cada área da administração municipal tem suas especificidades. 
-            O DigiUrbis oferece módulos dedicados para atender todas as demandas com eficiência.
+            O Digiurban oferece módulos dedicados para atender todas as demandas com eficiência.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">

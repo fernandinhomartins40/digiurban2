@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: "Maria Silva",
     role: "Prefeita de Cidade Nova",
-    content: "O DigiUrbis revolucionou nossa gestão. Agora conseguimos atender os cidadãos com muito mais eficiência e transparência.",
+    content: "O Digiurban revolucionou nossa gestão. Agora conseguimos atender os cidadãos com muito mais eficiência e transparência.",
     rating: 5
   },
   {
@@ -36,7 +36,7 @@ export const TestimonialsSection: FC = () => {
             O que nossos <span className="text-gradient">clientes dizem</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Depoimentos reais de gestores públicos que já transformaram suas cidades com DigiUrbis 
+            Depoimentos reais de gestores públicos que já transformaram suas cidades com Digiurban 
             e vivem a experiência da modernização municipal
           </p>
         </div>

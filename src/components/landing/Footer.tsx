@@ -15,14 +15,14 @@ export const Footer: FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2 animate-slide-up">
             <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
-              DigiUrbis
+              Digiurban
             </h3>
             <p className="text-gray-300 mb-8 max-w-md text-lg leading-relaxed">
               A plataforma completa para modernizar a gestão municipal e conectar 
               cidadãos com os serviços públicos de forma eficiente e transparente.
             </p>
             <div className="text-gray-400 text-lg">
-              <p>© 2024 DigiUrbis. Todos os direitos reservados.</p>
+              <p>© 2024 Digiurban. Todos os direitos reservados.</p>
             </div>
           </div>
           

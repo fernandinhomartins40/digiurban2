@@ -24,7 +24,7 @@ export const StatsSection: FC = () => {
             Resultados que <span className="bg-gradient-to-r from-yellow-200 via-pink-200 to-cyan-200 bg-clip-text text-transparent drop-shadow-lg">Transformam</span>
           </h2>
           <p className="text-xl text-white/95 max-w-4xl mx-auto leading-relaxed drop-shadow-md">
-            Números que comprovam a eficácia do DigiUrbis na modernização municipal e satisfação dos cidadãos
+            Números que comprovam a eficácia do Digiurban na modernização municipal e satisfação dos cidadãos
           </p>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">

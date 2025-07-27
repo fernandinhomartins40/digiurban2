@@ -59,7 +59,7 @@ export const HeroSection: FC = () => {
               <div className="absolute inset-0 gradient-accent rounded-3xl opacity-20 animate-glow"></div>
               <img
                 src={heroImage}
-                alt="Gestão Municipal Digital - Dashboard DigiUrbis"
+                alt="Gestão Municipal Digital - Dashboard Digiurban"
                 className="relative rounded-3xl shadow-glow hover-lift"
               />
               <div className="absolute -bottom-8 -right-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-card animate-float">
