@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { cidadaoAuthService } from '../../../lib/cidadao-auth'
+import { useAuth } from '../../../contexts/AuthContext'
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Label } from '../../../components/ui/label'
@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 
 export default function CidadaoLogin() {
   const navigate = useNavigate()
+  const { signIn } = useAuth()
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -43,10 +44,11 @@ export default function CidadaoLogin() {
     try {
       console.log('🔐 Login do cidadão...')
       
-      const response = await cidadaoAuthService.signIn(formData.email, formData.password)
+      const response = await signIn(formData.email, formData.password)
       
-      if (response.user && response.profile) {
-        toast.success(`Bem-vindo, ${response.profile.nome_completo}!`)
+      if (response.user) {
+        // O AuthContext já vai gerenciar o profile automaticamente
+        toast.success('Login realizado com sucesso!')
         console.log('✅ Login do cidadão realizado com sucesso')
         
         // Redirecionar para dashboard do cidadão

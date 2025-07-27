@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { adminAuthService } from '../../../lib/admin-auth'
+import { useAuth } from '../../../contexts/AuthContext'
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Label } from '../../../components/ui/label'
@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
+  const { signIn } = useAuth()
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -43,10 +44,11 @@ export default function AdminLogin() {
     try {
       console.log('🔐 Login administrativo...')
       
-      const response = await adminAuthService.signIn(formData.email, formData.password)
+      const response = await signIn(formData.email, formData.password)
       
-      if (response.user && response.profile) {
-        toast.success(`Bem-vindo, ${response.profile.nome_completo}!`)
+      if (response.user) {
+        // O AuthContext já vai gerenciar o profile automaticamente
+        toast.success('Login realizado com sucesso!')
         console.log('✅ Login administrativo realizado com sucesso')
         
         // Redirecionar para dashboard administrativo

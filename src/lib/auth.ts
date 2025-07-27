@@ -35,20 +35,30 @@ export interface Permissao {
 export const authService = {
   // Login
   async signIn(email: string, password: string) {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
-    
-    if (error) throw error
-    
-    // Buscar perfil do usuário
-    if (data.user) {
-      const profile = await this.getUserProfile(data.user.id)
-      return { user: data.user, profile }
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+      
+      if (error) throw error
+      
+      // Buscar perfil do usuário
+      if (data.user) {
+        try {
+          const profile = await this.getUserProfile(data.user.id)
+          return { user: data.user, profile }
+        } catch (profileError) {
+          console.warn('Erro ao buscar perfil, mas login ok:', profileError)
+          return { user: data.user, profile: null }
+        }
+      }
+      
+      return { user: data.user, profile: null }
+    } catch (error) {
+      console.error('Erro no login:', error)
+      throw error
     }
-    
-    return { user: data.user, profile: null }
   },
 
   // Logout
