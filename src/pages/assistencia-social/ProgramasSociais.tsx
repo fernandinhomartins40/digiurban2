@@ -35,11 +35,75 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ProgramaSocial } from "@/types/assistencia-social";
-import { Search, Plus, File, Edit, Target, Users, Calendar, CheckCircle, AlertTriangle, Clock } from "lucide-react";
+import { Search, Plus, File, Edit, Target, Users, Calendar, CheckCircle, AlertTriangle, Clock, BarChart3, Heart, Home, Baby, MapPin, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ResponsiveBar } from "@nivo/bar";
+import { ResponsiveLine } from "@nivo/line";
+
+// Dados mockados para equipamentos CRAS
+const equipamentosCRAS = [
+  {
+    id: "cras-001",
+    nome: "CRAS Centro",
+    endereco: "Rua Principal, 123 - Centro",
+    telefone: "(11) 3456-7890",
+    responsavel: "Fernanda Oliveira",
+    familias_atendidas: 456,
+    capacidade: 500,
+    servicos: ["PAIF", "SCFV", "Cadastro Único", "BPC"],
+    status: "funcionando",
+    horario: "7h às 17h"
+  },
+  {
+    id: "cras-002",
+    nome: "CRAS Vila Nova",
+    endereco: "Av. das Flores, 567 - Vila Nova",
+    telefone: "(11) 3456-7891",
+    responsavel: "Roberto Santos",
+    familias_atendidas: 389,
+    capacidade: 450,
+    servicos: ["PAIF", "SCFV", "Cadastro Único"],
+    status: "funcionando",
+    horario: "8h às 18h"
+  }
+];
+
+// Dados mockados para equipamentos CREAS
+const equipamentosCREAS = [
+  {
+    id: "creas-001",
+    nome: "CREAS Municipal",
+    endereco: "Rua dos Direitos, 45 - Centro",
+    telefone: "(11) 3456-7893",
+    responsavel: "Dr. Paulo Ferreira",
+    casos_ativos: 89,
+    capacidade: 120,
+    servicos: ["PAEFI", "MSE", "Abordagem Social", "Plantão Social"],
+    status: "funcionando",
+    especialidades: ["Psicólogo", "Assistente Social", "Advogado"]
+  }
+];
+
+// Dados para analytics
+const atendimentosData = [
+  { mes: "Jan", total: 2145, novos: 423, renovacoes: 1722 },
+  { mes: "Fev", total: 2289, novos: 456, renovacoes: 1833 },
+  { mes: "Mar", total: 2134, novos: 398, renovacoes: 1736 },
+  { mes: "Abr", total: 2387, novos: 512, renovacoes: 1875 },
+  { mes: "Mai", total: 2456, novos: 534, renovacoes: 1922 }
+];
+
+const beneficiosPorCategoria = [
+  { categoria: "Transferência Renda", quantidade: 1247, percentual: 42 },
+  { categoria: "Segurança Alimentar", quantidade: 892, percentual: 30 },
+  { categoria: "Habitação", quantidade: 156, percentual: 5 },
+  { categoria: "Primeira Infância", quantidade: 423, percentual: 14 },
+  { categoria: "Idosos", quantidade: 267, percentual: 9 }
+];
 
 // Mock data
 const mockProgramasSociais: ProgramaSocial[] = [
@@ -200,11 +264,19 @@ export default function ProgramasSociais() {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   };
 
+  const totalBeneficiarios = mockProgramasSociais.reduce((acc, prog) => acc + prog.atendidos, 0);
+  const totalFamiliasCRAS = equipamentosCRAS.reduce((acc, cras) => acc + cras.familias_atendidas, 0);
+
   return (
     <Layout>
       <div className="container mx-auto py-6 space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold tracking-tight">Programas Sociais</h1>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Secretaria de Assistência Social</h1>
+            <p className="text-sm text-muted-foreground">
+              Gestão integral dos programas sociais e equipamentos SUAS
+            </p>
+          </div>
           <div className="flex items-center gap-4">
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
@@ -244,6 +316,41 @@ export default function ProgramasSociais() {
           </div>
         </div>
 
+        {/* Métricas Principais */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-4 text-center">
+              <Users className="h-8 w-8 mx-auto mb-2 text-blue-500" />
+              <div className="text-2xl font-bold">{totalBeneficiarios.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">Total Beneficiários</div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4 text-center">
+              <Home className="h-8 w-8 mx-auto mb-2 text-green-500" />
+              <div className="text-2xl font-bold">{totalFamiliasCRAS.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">Famílias CRAS</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4 text-center">
+              <Heart className="h-8 w-8 mx-auto mb-2 text-red-500" />
+              <div className="text-2xl font-bold">{equipamentosCREAS[0].casos_ativos}</div>
+              <div className="text-xs text-muted-foreground">Casos CREAS</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4 text-center">
+              <BarChart3 className="h-8 w-8 mx-auto mb-2 text-purple-500" />
+              <div className="text-2xl font-bold">R$ 1.2M</div>
+              <div className="text-xs text-muted-foreground">Orçamento Total</div>
+            </CardContent>
+          </Card>
+        </div>
+
         <Card className="mb-6">
           <CardHeader className="pb-3">
             <CardTitle>Filtros de Busca</CardTitle>
@@ -278,7 +385,16 @@ export default function ProgramasSociais() {
           </CardHeader>
         </Card>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Tabs defaultValue="programas" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="programas">Programas Sociais</TabsTrigger>
+            <TabsTrigger value="cras">CRAS</TabsTrigger>
+            <TabsTrigger value="creas">CREAS</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="programas" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {programas.length === 0 ? (
             <div className="col-span-full text-center py-8">
               Nenhum programa social encontrado com os critérios de busca.
@@ -504,6 +620,295 @@ export default function ProgramasSociais() {
             </Button>
           </CardFooter>
         </Card>
+          </TabsContent>
+
+          {/* Aba CRAS */}
+          <TabsContent value="cras" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Centros de Referência de Assistência Social</CardTitle>
+                <CardDescription>Equipamentos de proteção social básica</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {equipamentosCRAS.map((cras) => (
+                    <Card key={cras.id} className="hover:shadow-md transition-shadow">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg">{cras.nome}</CardTitle>
+                            <Badge variant={cras.status === "funcionando" ? "default" : "destructive"}>
+                              {cras.status}
+                            </Badge>
+                          </div>
+                          <Home className="h-6 w-6 text-blue-500" />
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 text-sm">
+                            <MapPin className="h-4 w-4 text-muted-foreground" />
+                            <span>{cras.endereco}</span>
+                          </div>
+                          
+                          <div className="flex items-center gap-2 text-sm">
+                            <Phone className="h-4 w-4 text-muted-foreground" />
+                            <span>{cras.telefone}</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground">Famílias atendidas:</span>
+                              <p className="font-medium">{cras.familias_atendidas}</p>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Capacidade:</span>
+                              <p className="font-medium">{cras.capacidade}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>Taxa de ocupação:</span>
+                              <span className="font-medium">{Math.round((cras.familias_atendidas / cras.capacidade) * 100)}%</span>
+                            </div>
+                            <Progress value={(cras.familias_atendidas / cras.capacidade) * 100} className="h-2" />
+                          </div>
+                          
+                          <div className="text-sm">
+                            <span className="text-muted-foreground">Serviços:</span>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {cras.servicos.map((servico, index) => (
+                                <Badge key={index} variant="outline" className="text-xs">
+                                  {servico}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Aba CREAS */}
+          <TabsContent value="creas" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Centro de Referência Especializado de Assistência Social</CardTitle>
+                <CardDescription>Equipamento de proteção social especial</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {equipamentosCREAS.map((creas) => (
+                    <Card key={creas.id} className="hover:shadow-md transition-shadow">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg">{creas.nome}</CardTitle>
+                            <Badge variant={creas.status === "funcionando" ? "default" : "destructive"}>
+                              {creas.status}
+                            </Badge>
+                          </div>
+                          <Heart className="h-6 w-6 text-red-500" />
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 text-sm">
+                            <MapPin className="h-4 w-4 text-muted-foreground" />
+                            <span>{creas.endereco}</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground">Casos ativos:</span>
+                              <p className="font-medium">{creas.casos_ativos}</p>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Capacidade:</span>
+                              <p className="font-medium">{creas.capacidade}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span>Taxa de ocupação:</span>
+                              <span className="font-medium">{Math.round((creas.casos_ativos / creas.capacidade) * 100)}%</span>
+                            </div>
+                            <Progress value={(creas.casos_ativos / creas.capacidade) * 100} className="h-2" />
+                          </div>
+                          
+                          <div className="text-sm">
+                            <span className="text-muted-foreground">Serviços:</span>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {creas.servicos.map((servico, index) => (
+                                <Badge key={index} variant="outline" className="text-xs">
+                                  {servico}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Aba Analytics */}
+          <TabsContent value="analytics" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Evolução dos Atendimentos</CardTitle>
+                  <CardDescription>Total de atendimentos por mês</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80">
+                    <ResponsiveLine
+                      data={[
+                        {
+                          id: "Total",
+                          color: "hsl(210, 70%, 50%)",
+                          data: atendimentosData.map(d => ({ x: d.mes, y: d.total })),
+                        },
+                        {
+                          id: "Novos",
+                          color: "hsl(142, 70%, 45%)",
+                          data: atendimentosData.map(d => ({ x: d.mes, y: d.novos })),
+                        }
+                      ]}
+                      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+                      xScale={{ type: "point" }}
+                      yScale={{ type: "linear", min: "auto", max: "auto" }}
+                      curve="cardinal"
+                      axisTop={null}
+                      axisRight={null}
+                      axisBottom={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: "Mês",
+                        legendOffset: 36,
+                        legendPosition: "middle",
+                      }}
+                      axisLeft={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: "Atendimentos",
+                        legendOffset: -40,
+                        legendPosition: "middle",
+                      }}
+                      pointSize={10}
+                      pointColor={{ theme: "background" }}
+                      pointBorderWidth={2}
+                      pointBorderColor={{ from: "serieColor" }}
+                      useMesh={true}
+                      legends={[
+                        {
+                          anchor: "bottom-right",
+                          direction: "column",
+                          justify: false,
+                          translateX: 100,
+                          translateY: 0,
+                          itemsSpacing: 0,
+                          itemDirection: "left-to-right",
+                          itemWidth: 80,
+                          itemHeight: 20,
+                          itemOpacity: 0.75,
+                          symbolSize: 12,
+                          symbolShape: "circle",
+                        },
+                      ]}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Distribuição por Categoria</CardTitle>
+                  <CardDescription>Tipos de benefícios mais demandados</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80">
+                    <ResponsiveBar
+                      data={beneficiosPorCategoria}
+                      keys={["quantidade"]}
+                      indexBy="categoria"
+                      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                      padding={0.3}
+                      colors={["hsl(210, 70%, 50%)"]}
+                      borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+                      axisTop={null}
+                      axisRight={null}
+                      axisBottom={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: -45,
+                        legend: "Categoria",
+                        legendPosition: "middle",
+                        legendOffset: 32,
+                      }}
+                      axisLeft={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: "Quantidade",
+                        legendPosition: "middle",
+                        legendOffset: -40,
+                      }}
+                      labelSkipWidth={12}
+                      labelSkipHeight={12}
+                      labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-600">94.2%</div>
+                  <div className="text-sm text-muted-foreground">Taxa de Satisfação</div>
+                  <Progress value={94.2} className="mt-2" />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-green-600">1.8 dias</div>
+                  <div className="text-sm text-muted-foreground">Tempo Médio Resposta</div>
+                  <Progress value={85} className="mt-2" />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-purple-600">87.5%</div>
+                  <div className="text-sm text-muted-foreground">Taxa Ocupação CRAS</div>
+                  <Progress value={87.5} className="mt-2" />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-orange-600">74.2%</div>
+                  <div className="text-sm text-muted-foreground">Taxa Ocupação CREAS</div>
+                  <Progress value={74.2} className="mt-2" />
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </Layout>
   );
