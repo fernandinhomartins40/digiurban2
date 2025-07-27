@@ -4,115 +4,97 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FC } from "react";
-import { Search, FileText, Heart, Bus, School, Building, Home, Leaf, Construction, Shield, CreditCard, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FC, useState, useMemo } from "react";
+import { Search, FileText, Heart, Bus, School, Building, Home, Leaf, Construction, Shield, CreditCard, User, Clock, DollarSign } from "lucide-react";
+import { useServicos, servicosUtils } from "../lib/services";
+import { useNavigate } from "react-router-dom";
 
-// Dummy data for services
-const services = [
-  { 
-    id: 1, 
-    title: "Certidão Negativa de Débitos", 
-    description: "Solicite a certidão que comprova a inexistência de débitos municipais.",
-    icon: FileText,
-    category: "financas",
-    popular: true
-  },
-  { 
-    id: 2, 
-    title: "Agendamento de Consultas", 
-    description: "Agende consultas médicas nas unidades de saúde do município.",
-    icon: Heart,
-    category: "saude",
-    popular: true
-  },
-  { 
-    id: 3, 
-    title: "Solicitação de Transporte", 
-    description: "Solicite transporte para consultas e exames fora do município.",
-    icon: Bus,
-    category: "saude"
-  },
-  { 
-    id: 4, 
-    title: "Matrícula Online", 
-    description: "Faça a matrícula escolar online para a rede municipal de ensino.",
-    icon: School,
-    category: "educacao",
-    popular: true
-  },
-  { 
-    id: 5, 
-    title: "Alvarás e Licenças", 
-    description: "Solicite a emissão de alvarás e licenças para seu negócio.",
-    icon: Building,
-    category: "obras"
-  },
-  { 
-    id: 6, 
-    title: "Aprovação de Projetos", 
-    description: "Submeta projetos de construção para aprovação da prefeitura.",
-    icon: Home,
-    category: "obras"
-  },
-  { 
-    id: 7, 
-    title: "Licença Ambiental", 
-    description: "Solicite licenças ambientais para atividades específicas.",
-    icon: Leaf,
-    category: "meio-ambiente"
-  },
-  { 
-    id: 8, 
-    title: "Solicitação de Reparos", 
-    description: "Solicite reparos em vias públicas, iluminação e outros serviços.",
-    icon: Construction,
-    category: "obras",
-    popular: true
-  },
-  { 
-    id: 9, 
-    title: "Boletim de Ocorrência", 
-    description: "Registre ocorrências de segurança pública e vigilância.",
-    icon: Shield,
-    category: "seguranca"
-  },
-  { 
-    id: 10, 
-    title: "Segunda Via de IPTU", 
-    description: "Solicite a segunda via do seu boleto de IPTU.",
-    icon: CreditCard,
-    category: "financas",
-    popular: true
-  },
-  { 
-    id: 11, 
-    title: "Cadastro Único", 
-    description: "Faça seu cadastro para programas sociais do governo.",
-    icon: User,
-    category: "assistencia-social"
-  },
-  { 
-    id: 12, 
-    title: "Solicitação de Poda de Árvores", 
-    description: "Solicite serviço de poda ou remoção de árvores em vias públicas.",
-    icon: Leaf,
-    category: "meio-ambiente"
-  },
-];
-
-const categories = [
-  { id: "todos", label: "Todos" },
-  { id: "populares", label: "Populares" },
-  { id: "financas", label: "Finanças" },
-  { id: "saude", label: "Saúde" },
-  { id: "educacao", label: "Educação" },
-  { id: "obras", label: "Obras e Urbanismo" },
-  { id: "meio-ambiente", label: "Meio Ambiente" },
-  { id: "seguranca", label: "Segurança" },
-  { id: "assistencia-social", label: "Assistência Social" },
-];
+// Ícones para categorias
+const categoryIcons: Record<string, any> = {
+  'financas': CreditCard,
+  'saude': Heart,
+  'educacao': School,
+  'obras': Construction,
+  'meio-ambiente': Leaf,
+  'seguranca': Shield,
+  'assistencia-social': User,
+  'cultura': FileText,
+  'esportes': FileText,
+  'turismo': FileText,
+  'agricultura': Leaf,
+  'habitacao': Home
+};
 
 const CatalogoServicos: FC = () => {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("todos");
+  
+  const { servicos, loading, error } = useServicos();
+
+  // Extrair categorias únicas dos serviços
+  const categories = useMemo(() => {
+    const categoriasUnicas = [...new Set(servicos.map(s => s.categoria))];
+    return [
+      { id: "todos", label: "Todos" },
+      ...categoriasUnicas.map(cat => ({
+        id: cat,
+        label: servicosUtils.formatarCategoria(cat)
+      }))
+    ];
+  }, [servicos]);
+
+  // Filtrar serviços baseado na categoria e busca
+  const servicosFiltrados = useMemo(() => {
+    let filtrados = servicos;
+
+    // Filtrar por categoria
+    if (selectedCategory !== "todos") {
+      filtrados = filtrados.filter(s => s.categoria === selectedCategory);
+    }
+
+    // Filtrar por termo de busca
+    if (searchTerm) {
+      filtrados = filtrados.filter(s =>
+        s.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        servicosUtils.formatarCategoria(s.categoria).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return filtrados;
+  }, [servicos, selectedCategory, searchTerm]);
+
+  const handleSolicitarServico = (servicoId: string) => {
+    // Navegar para formulário de criação de protocolo
+    navigate(`/cidadao/protocolo/novo?servico=${servicoId}`);
+  };
+
+  if (error) {
+    return (
+      <CidadaoLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="text-red-500 mb-2">
+              <FileText className="h-12 w-12 mx-auto" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+              Erro ao carregar serviços
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-4">
+              {error}
+            </p>
+            <Button onClick={() => window.location.reload()}>
+              Tentar Novamente
+            </Button>
+          </div>
+        </div>
+      </CidadaoLayout>
+    );
+  }
+
   return (
     <CidadaoLayout>
       <div className="h-full flex flex-col">
@@ -125,12 +107,17 @@ const CatalogoServicos: FC = () => {
           </div>
           
           <div className="relative w-full md:w-96">
-            <Input placeholder="Pesquisar serviços..." className="pl-10" />
+            <Input 
+              placeholder="Pesquisar serviços..." 
+              className="pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           </div>
         </div>
 
-        <Tabs defaultValue="todos" className="w-full">
+        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
           <TabsList className="mb-4 overflow-x-auto flex flex-nowrap w-full justify-start">
             {categories.map((category) => (
               <TabsTrigger key={category.id} value={category.id} className="whitespace-nowrap">
@@ -145,42 +132,114 @@ const CatalogoServicos: FC = () => {
               value={category.id} 
               className="mt-0"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {services
-                  .filter(service => 
-                    category.id === "todos" || 
-                    (category.id === "populares" && service.popular) || 
-                    service.category === category.id
-                  )
-                  .map((service) => (
-                    <Card key={service.id} className="h-full">
+              {loading ? (
+                // Loading skeleton
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <Card key={index} className="h-full">
                       <CardHeader className="pb-2">
                         <div className="flex items-start justify-between">
-                          <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
-                            <service.icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                          </div>
+                          <Skeleton className="h-10 w-10 rounded-lg" />
                         </div>
-                        <CardTitle className="text-lg mt-2">{service.title}</CardTitle>
-                        <CardDescription className="line-clamp-2">{service.description}</CardDescription>
+                        <Skeleton className="h-6 w-3/4 mt-2" />
+                        <Skeleton className="h-4 w-full mt-1" />
+                        <Skeleton className="h-4 w-2/3" />
                       </CardHeader>
                       <CardFooter>
-                        <Button variant="default" className="w-full">
-                          Solicitar Serviço
-                        </Button>
+                        <Skeleton className="h-10 w-full" />
                       </CardFooter>
                     </Card>
                   ))}
-              </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {servicosFiltrados.map((servico) => {
+                    const IconComponent = categoryIcons[servico.categoria] || FileText;
+                    
+                    return (
+                      <Card key={servico.id} className="h-full hover:shadow-md transition-shadow">
+                        <CardHeader className="pb-2">
+                          <div className="flex items-start justify-between">
+                            <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
+                              <IconComponent className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            {servico.requer_aprovacao_admin && (
+                              <Badge variant="outline" className="text-xs">
+                                Requer Aprovação
+                              </Badge>
+                            )}
+                          </div>
+                          <CardTitle className="text-lg mt-2">{servico.nome}</CardTitle>
+                          <CardDescription className="line-clamp-2">
+                            {servico.descricao}
+                          </CardDescription>
+                          
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            <div className="flex items-center text-xs text-gray-500">
+                              <Clock className="h-3 w-3 mr-1" />
+                              {servico.prazo_resposta_dias} dias
+                            </div>
+                            <div className="flex items-center text-xs text-gray-500">
+                              <DollarSign className="h-3 w-3 mr-1" />
+                              {servicosUtils.formatarTaxa(servico.taxa_servico)}
+                            </div>
+                          </div>
+
+                          {servico.requer_documentos && servico.documentos_necessarios.length > 0 && (
+                            <div className="mt-2">
+                              <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                                Documentos necessários:
+                              </p>
+                              <div className="flex flex-wrap gap-1">
+                                {servico.documentos_necessarios.slice(0, 2).map((doc, index) => (
+                                  <Badge key={index} variant="secondary" className="text-xs">
+                                    {doc}
+                                  </Badge>
+                                ))}
+                                {servico.documentos_necessarios.length > 2 && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    +{servico.documentos_necessarios.length - 2} mais
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </CardHeader>
+                        
+                        <CardFooter>
+                          <Button 
+                            variant="default" 
+                            className="w-full"
+                            onClick={() => handleSolicitarServico(servico.id)}
+                          >
+                            Solicitar Serviço
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
               
-              {services.filter(service => 
-                category.id === "todos" || 
-                (category.id === "populares" && service.popular) || 
-                service.category === category.id
-              ).length === 0 && (
+              {!loading && servicosFiltrados.length === 0 && (
                 <div className="text-center py-8">
+                  <FileText className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+                  <h3 className="text-lg font-medium mb-1">Nenhum serviço encontrado</h3>
                   <p className="text-gray-500 dark:text-gray-400">
-                    Nenhum serviço encontrado nesta categoria.
+                    {searchTerm 
+                      ? `Nenhum serviço encontrado para "${searchTerm}"`
+                      : "Nenhum serviço encontrado nesta categoria."
+                    }
                   </p>
+                  {searchTerm && (
+                    <Button 
+                      variant="outline" 
+                      className="mt-4"
+                      onClick={() => setSearchTerm("")}
+                    >
+                      Limpar busca
+                    </Button>
+                  )}
                 </div>
               )}
             </TabsContent>
