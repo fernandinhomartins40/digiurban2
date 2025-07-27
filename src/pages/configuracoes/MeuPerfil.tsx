@@ -17,6 +17,7 @@ import { User, Key, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import ProfileImageUpload from "@/components/ProfileImageUpload";
 
 const profileFormSchema = z.object({
   name: z.string().min(2, {
@@ -55,6 +56,7 @@ const MeuPerfil = () => {
   const { user, profile, isCitizen } = useAuth();
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState<string>('');
   
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -93,6 +95,9 @@ const MeuPerfil = () => {
         department: '', // Será implementado quando tivermos dados da secretaria
         phone: '',
       });
+
+      // Carregar foto de perfil atual
+      setProfileImageUrl(profile.foto_perfil || '');
     }
   }, [profile, user, form]);
 
@@ -147,6 +152,12 @@ const MeuPerfil = () => {
     }
   }
 
+  // Callback para atualizar foto de perfil
+  const handleImageUpdate = (newImageUrl: string) => {
+    setProfileImageUrl(newImageUrl);
+    // Também pode atualizar o contexto de autenticação se necessário
+  };
+
   return (
     <Layout>
       <div className="mx-auto max-w-5xl p-4 md:p-6 lg:p-8 space-y-6">
@@ -162,22 +173,18 @@ const MeuPerfil = () => {
         <div className="grid gap-6">
           <Card>
             <CardHeader>
-              <div className="flex items-center gap-4">
-                <div className="h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <User className="w-12 h-12 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="mb-1">Foto de Perfil</CardTitle>
-                  <CardDescription>
-                    Esta foto será exibida em seu perfil e em algumas áreas do sistema.
-                  </CardDescription>
-                  <div className="mt-2 flex gap-2">
-                    <Button size="sm" variant="outline">Alterar foto</Button>
-                    <Button size="sm" variant="outline" className="text-destructive">Remover</Button>
-                  </div>
-                </div>
-              </div>
+              <CardTitle className="mb-1">Foto de Perfil</CardTitle>
+              <CardDescription>
+                Esta foto será exibida em seu perfil e em algumas áreas do sistema.
+                Tamanho recomendado: 200x200px, formato WebP, máximo 100KB.
+              </CardDescription>
             </CardHeader>
+            <CardContent>
+              <ProfileImageUpload 
+                currentImageUrl={profileImageUrl}
+                onImageUpdate={handleImageUpdate}
+              />
+            </CardContent>
           </Card>
 
           <Card>
