@@ -40,34 +40,82 @@ export interface ServicoPublico {
 }
 
 export const cidadaoAuthService = {
-  // Login do cidadão
+  // Login do cidadão usando autenticação direta
   async signIn(email: string, password: string) {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
-    
-    if (error) throw error
-    
-    // Verificar se é usuário cidadão
-    if (data.user) {
-      const profile = await this.getCidadaoProfile(data.user.id)
-      if (!profile) {
-        await supabase.auth.signOut()
-        throw new Error('Acesso negado. Perfil de cidadão não encontrado.')
-      }
+    try {
+      console.log('🔐 Iniciando login do cidadão...')
       
+      // ETAPA 1: Verificar credenciais na tabela temporária
+      const { data: credentialData, error: credentialError } = await supabase
+        .from('temp_credentials')
+        .select('email, password')
+        .eq('email', email)
+        .single()
+
+      if (credentialError || !credentialData) {
+        throw new Error('Email não encontrado')
+      }
+
+      // ETAPA 2: Verificar senha
+      if (credentialData.password !== password) {
+        throw new Error('Senha incorreta')
+      }
+
+      // ETAPA 3: Buscar perfil do cidadão
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select(`
+          id,
+          email,
+          nome_completo,
+          tipo_usuario,
+          status,
+          cpf,
+          telefone
+        `)
+        .eq('email', email)
+        .eq('tipo_usuario', 'cidadao')
+        .single()
+
+      if (profileError || !profileData) {
+        throw new Error('Perfil de cidadão não encontrado')
+      }
+
+      // Criar objetos de resposta
+      const user = {
+        id: profileData.id,
+        email: profileData.email,
+        role: 'authenticated'
+      }
+
+      const profile = {
+        id: profileData.id,
+        email: profileData.email,
+        nome_completo: profileData.nome_completo,
+        cpf: profileData.cpf,
+        telefone: profileData.telefone,
+        endereco: null,
+        data_nascimento: null,
+        status: profileData.status,
+        primeiro_acesso: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+
       // Salvar sessão do cidadão
       localStorage.setItem('cidadao_session', JSON.stringify({
-        user: data.user,
+        user,
         profile,
         timestamp: Date.now()
       }))
-      
-      return { user: data.user, profile }
+
+      console.log('✅ Login do cidadão bem-sucedido!')
+      return { user, profile }
+
+    } catch (error: any) {
+      console.error('❌ Erro no login do cidadão:', error)
+      throw error
     }
-    
-    return { user: data.user, profile: null }
   },
 
   // Registro público de cidadão
@@ -130,8 +178,7 @@ export const cidadaoAuthService = {
   // Logout do cidadão
   async signOut() {
     localStorage.removeItem('cidadao_session')
-    const { error } = await supabase.auth.signOut()
-    if (error) throw error
+    console.log('🚪 Logout do cidadão realizado')
   },
 
   // Buscar perfil do cidadão
