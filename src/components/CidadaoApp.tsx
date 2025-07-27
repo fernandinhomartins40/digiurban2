@@ -3,6 +3,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 // Páginas do cidadão (transferidas do dashboard principal)
 import CatalogoServicos from '../pages/CatalogoServicos';
+import SolicitarServico from '../pages/SolicitarServico';
 import MeusProtocolos from '../pages/MeusProtocolos';
 import DocumentosPessoais from '../pages/DocumentosPessoais';
 import MinhasAvaliacoes from '../pages/MinhasAvaliacoes';
@@ -63,6 +64,12 @@ function CidadaoApp() {
       <Route path="/catalogo-servicos" element={
         <ProtectedRoute>
           <CatalogoServicos />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/solicitar-servico" element={
+        <ProtectedRoute>
+          <SolicitarServico />
         </ProtectedRoute>
       } />
       

@@ -219,6 +219,66 @@ export const authService = {
     return permissions.some(p => p.codigo === permissionCode)
   },
 
+  // Verificar múltiplas permissões
+  async hasAnyPermission(userId: string, permissionCodes: string[]): Promise<boolean> {
+    const permissions = await this.getUserPermissions(userId)
+    return permissionCodes.some(code => permissions.some(p => p.codigo === code))
+  },
+
+  // Verificar todas as permissões
+  async hasAllPermissions(userId: string, permissionCodes: string[]): Promise<boolean> {
+    const permissions = await this.getUserPermissions(userId)
+    return permissionCodes.every(code => permissions.some(p => p.codigo === code))
+  },
+
+  // Verificar permissões por módulo
+  async getModulePermissions(userId: string, moduleId: string): Promise<Permissao[]> {
+    const allPermissions = await this.getUserPermissions(userId)
+    return allPermissions.filter(p => p.modulo_id === moduleId)
+  },
+
+  // Verificar se pode acessar setor específico
+  async canAccessSector(userId: string, sectorId?: string): Promise<boolean> {
+    const profile = await this.getUserProfile(userId)
+    if (!profile) return false
+
+    // Super admin e admin podem acessar tudo
+    if (['super_admin', 'admin'].includes(profile.tipo_usuario)) {
+      return true
+    }
+
+    // Secretários podem acessar setores da sua secretaria
+    if (profile.tipo_usuario === 'secretario') {
+      if (!sectorId) return true // Pode ver geral da secretaria
+      
+      // Verificar se o setor pertence à sua secretaria
+      const { data } = await supabase
+        .from('setores')
+        .select('secretaria_id')
+        .eq('id', sectorId)
+        .single()
+      
+      return data?.secretaria_id === profile.secretaria_id
+    }
+
+    // Funcionários só podem acessar seu próprio setor
+    return profile.setor_id === sectorId
+  },
+
+  // Verificar se pode acessar secretaria específica
+  async canAccessSecretariat(userId: string, secretariatId?: string): Promise<boolean> {
+    const profile = await this.getUserProfile(userId)
+    if (!profile) return false
+
+    // Super admin e admin podem acessar tudo
+    if (['super_admin', 'admin'].includes(profile.tipo_usuario)) {
+      return true
+    }
+
+    // Outros usuários só podem acessar sua própria secretaria
+    return profile.secretaria_id === secretariatId
+  },
+
   // Buscar secretarias (para formulário de registro)
   async getSecretarias(): Promise<Secretaria[]> {
     const { data, error } = await supabase

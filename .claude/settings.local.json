@@ -14,7 +14,8 @@
       "Bash(git push:*)",
       "Bash(npm install:*)",
       "Bash(npm run dev:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npx supabase:*)"
     ],
     "deny": []
   }

@@ -6,53 +6,62 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FC, useState, useMemo } from "react";
-import { Search, FileText, Heart, Bus, School, Building, Home, Leaf, Construction, Shield, CreditCard, User, Clock, DollarSign } from "lucide-react";
-import { useServicos, servicosUtils } from "../lib/services";
+import { FC, useState, useEffect } from "react";
+import { Search, FileText, Heart, Bus, School, Building, Home, Leaf, Construction, Shield, CreditCard, User, Clock, DollarSign, GraduationCap, Trophy, Users } from "lucide-react";
+import { protocolService, type CategoriaServico, type ServicoMunicipal } from "../lib/protocols";
 import { useNavigate } from "react-router-dom";
 
 // Ícones para categorias
 const categoryIcons: Record<string, any> = {
-  'financas': CreditCard,
-  'saude': Heart,
-  'educacao': School,
-  'obras': Construction,
-  'meio-ambiente': Leaf,
-  'seguranca': Shield,
-  'assistencia-social': User,
-  'cultura': FileText,
-  'esportes': FileText,
-  'turismo': FileText,
-  'agricultura': Leaf,
-  'habitacao': Home
+  'Administração': FileText,
+  'Saúde': Heart,
+  'Educação': GraduationCap,
+  'Infraestrutura': Construction,
+  'Meio Ambiente': Leaf,
+  'Assistência Social': Users,
+  'Cultura e Esporte': Trophy,
+  'Segurança': Shield,
+  'Habitação': Home,
+  'Transporte': Bus
 };
 
 const CatalogoServicos: FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("todos");
-  
-  const { servicos, loading, error } = useServicos();
+  const [categorias, setCategorias] = useState<CategoriaServico[]>([]);
+  const [servicos, setServicos] = useState<ServicoMunicipal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Extrair categorias únicas dos serviços
-  const categories = useMemo(() => {
-    const categoriasUnicas = [...new Set(servicos.map(s => s.categoria))];
-    return [
-      { id: "todos", label: "Todos" },
-      ...categoriasUnicas.map(cat => ({
-        id: cat,
-        label: servicosUtils.formatarCategoria(cat)
-      }))
-    ];
-  }, [servicos]);
+  // Carregar categorias e serviços
+  useEffect(() => {
+    const carregarDados = async () => {
+      try {
+        setLoading(true);
+        const [categoriasData, servicosData] = await Promise.all([
+          protocolService.getCategorias(),
+          protocolService.getServicosPublicos()
+        ]);
+        setCategorias(categoriasData);
+        setServicos(servicosData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Erro ao carregar dados');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    carregarDados();
+  }, []);
 
   // Filtrar serviços baseado na categoria e busca
-  const servicosFiltrados = useMemo(() => {
+  const servicosFiltrados = (() => {
     let filtrados = servicos;
 
     // Filtrar por categoria
     if (selectedCategory !== "todos") {
-      filtrados = filtrados.filter(s => s.categoria === selectedCategory);
+      filtrados = filtrados.filter(s => s.categoria?.nome === selectedCategory);
     }
 
     // Filtrar por termo de busca
@@ -60,16 +69,22 @@ const CatalogoServicos: FC = () => {
       filtrados = filtrados.filter(s =>
         s.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        servicosUtils.formatarCategoria(s.categoria).toLowerCase().includes(searchTerm.toLowerCase())
+        s.categoria?.nome.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     return filtrados;
-  }, [servicos, selectedCategory, searchTerm]);
+  })();
+
+  // Lista de categorias para as tabs
+  const categoriasComTodos = [
+    { id: "todos", nome: "Todos", icone: "", cor: "" },
+    ...categorias
+  ];
 
   const handleSolicitarServico = (servicoId: string) => {
     // Navegar para formulário de criação de protocolo
-    navigate(`/cidadao/protocolo/novo?servico=${servicoId}`);
+    navigate(`/cidadao/solicitar-servico?servico=${servicoId}`);
   };
 
   if (error) {
@@ -119,17 +134,17 @@ const CatalogoServicos: FC = () => {
 
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
           <TabsList className="mb-4 overflow-x-auto flex flex-nowrap w-full justify-start">
-            {categories.map((category) => (
-              <TabsTrigger key={category.id} value={category.id} className="whitespace-nowrap">
-                {category.label}
+            {categoriasComTodos.map((categoria) => (
+              <TabsTrigger key={categoria.id} value={categoria.id} className="whitespace-nowrap">
+                {categoria.nome}
               </TabsTrigger>
             ))}
           </TabsList>
           
-          {categories.map((category) => (
+          {categoriasComTodos.map((categoria) => (
             <TabsContent 
-              key={category.id} 
-              value={category.id} 
+              key={categoria.id} 
+              value={categoria.id} 
               className="mt-0"
             >
               {loading ? (
@@ -154,7 +169,7 @@ const CatalogoServicos: FC = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {servicosFiltrados.map((servico) => {
-                    const IconComponent = categoryIcons[servico.categoria] || FileText;
+                    const IconComponent = categoryIcons[servico.categoria?.nome || ''] || FileText;
                     
                     return (
                       <Card key={servico.id} className="h-full hover:shadow-md transition-shadow">
@@ -163,9 +178,9 @@ const CatalogoServicos: FC = () => {
                             <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
                               <IconComponent className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                             </div>
-                            {servico.requer_aprovacao_admin && (
+                            {servico.taxa_servico > 0 && (
                               <Badge variant="outline" className="text-xs">
-                                Requer Aprovação
+                                Pago
                               </Badge>
                             )}
                           </div>
@@ -181,11 +196,11 @@ const CatalogoServicos: FC = () => {
                             </div>
                             <div className="flex items-center text-xs text-gray-500">
                               <DollarSign className="h-3 w-3 mr-1" />
-                              {servicosUtils.formatarTaxa(servico.taxa_servico)}
+                              {servico.taxa_servico > 0 ? `R$ ${servico.taxa_servico.toFixed(2)}` : 'Gratuito'}
                             </div>
                           </div>
 
-                          {servico.requer_documentos && servico.documentos_necessarios.length > 0 && (
+                          {servico.requer_documentos && servico.documentos_necessarios && servico.documentos_necessarios.length > 0 && (
                             <div className="mt-2">
                               <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
                                 Documentos necessários:

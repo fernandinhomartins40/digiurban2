@@ -3,8 +3,33 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { FileText, MessageSquare, User, Star, Clock, CheckCircle, AlertCircle, Search } from "lucide-react";
+import { useState, useEffect } from "react";
+import { protocolService } from "../../../lib/protocols";
 
 const CidadaoDashboard = () => {
+  const [estatisticas, setEstatisticas] = useState({
+    abertos: 0,
+    em_andamento: 0,
+    concluidos: 0,
+    total: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const carregarEstatisticas = async () => {
+      try {
+        const stats = await protocolService.getEstatisticasUsuario();
+        setEstatisticas(stats);
+      } catch (error) {
+        console.error('Erro ao carregar estatísticas:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    carregarEstatisticas();
+  }, []);
+
   return (
     <CidadaoLayout>
       <div className="space-y-6">
@@ -27,7 +52,7 @@ const CidadaoDashboard = () => {
                 Explore todos os serviços disponíveis
               </p>
               <Button asChild className="w-full">
-                <Link to="/cidadao/servicos">Acessar Catálogo</Link>
+                <Link to="/cidadao/catalogo-servicos">Acessar Catálogo</Link>
               </Button>
             </CardContent>
           </Card>
@@ -42,7 +67,7 @@ const CidadaoDashboard = () => {
                 Acompanhe suas solicitações
               </p>
               <Button asChild variant="outline" className="w-full">
-                <Link to="/cidadao/protocolos">Ver Protocolos</Link>
+                <Link to="/cidadao/meus-protocolos">Ver Protocolos</Link>
               </Button>
             </CardContent>
           </Card>
@@ -57,7 +82,7 @@ const CidadaoDashboard = () => {
                 Acesse seus documentos pessoais
               </p>
               <Button asChild variant="outline" className="w-full">
-                <Link to="/cidadao/documentos">Meus Documentos</Link>
+                <Link to="/cidadao/documentos-pessoais">Meus Documentos</Link>
               </Button>
             </CardContent>
           </Card>
@@ -72,7 +97,7 @@ const CidadaoDashboard = () => {
                 Avalie os serviços utilizados
               </p>
               <Button asChild variant="outline" className="w-full">
-                <Link to="/cidadao/avaliacoes">Minhas Avaliações</Link>
+                <Link to="/cidadao/minhas-avaliacoes">Minhas Avaliações</Link>
               </Button>
             </CardContent>
           </Card>
@@ -86,9 +111,26 @@ const CidadaoDashboard = () => {
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">3</div>
+              <div className="text-2xl font-bold text-orange-600">
+                {loading ? '...' : estatisticas.abertos}
+              </div>
               <p className="text-xs text-muted-foreground">
-                Em andamento
+                Aguardando atendimento
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Em Andamento</CardTitle>
+              <AlertCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">
+                {loading ? '...' : estatisticas.em_andamento}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Sendo processados
               </p>
             </CardContent>
           </Card>
@@ -99,22 +141,11 @@ const CidadaoDashboard = () => {
               <CheckCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">12</div>
+              <div className="text-2xl font-bold text-green-600">
+                {loading ? '...' : estatisticas.concluidos}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Finalizados
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Aguardando Resposta</CardTitle>
-              <AlertCircle className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">1</div>
-              <p className="text-xs text-muted-foreground">
-                Necessita ação
               </p>
             </CardContent>
           </Card>

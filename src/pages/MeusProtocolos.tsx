@@ -7,9 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { FC, useState, useMemo } from "react";
+import { FC, useState, useEffect } from "react";
 import { Search, FileText, ChevronDown, ChevronUp, Calendar, Clock, AlertCircle, CheckCircle, Clock3, FilterX, Star, Eye, Download, MessageSquare } from "lucide-react";
-import { useProtocolos, protocolosService, StatusProtocolo } from "../lib/protocolos";
+import { protocolService, type Protocolo } from "../lib/protocols";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -30,29 +30,52 @@ const MeusProtocolos: FC = () => {
   const [expandedProtocol, setExpandedProtocol] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("todos");
-  
-  const { protocolos, loading, error, recarregar } = useProtocolos(
-    selectedStatus !== "todos" ? selectedStatus as StatusProtocolo : undefined
-  );
+  const [protocolos, setProtocolos] = useState<Protocolo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Carregar protocolos
+  useEffect(() => {
+    const carregarProtocolos = async () => {
+      try {
+        setLoading(true);
+        const status = selectedStatus !== "todos" ? selectedStatus : undefined;
+        const dados = await protocolService.getProtocolosUsuario(status);
+        setProtocolos(dados);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Erro ao carregar protocolos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    carregarProtocolos();
+  }, [selectedStatus]);
 
   // Filtrar protocolos por termo de busca
-  const protocolosFiltrados = useMemo(() => {
+  const protocolosFiltrados = (() => {
     if (!searchTerm) return protocolos;
     
     return protocolos.filter(protocolo =>
-      protocolo.numero_protocolo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      protocolo.numero.toLowerCase().includes(searchTerm.toLowerCase()) ||
       protocolo.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       protocolo.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (protocolo.servico?.nome || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [protocolos, searchTerm]);
+  })();
+
+  const recarregar = () => {
+    // Força reload dos dados
+    setSelectedStatus(prev => prev); // Trigger useEffect
+  };
 
   const toggleProtocol = (id: string) => {
     setExpandedProtocol(expandedProtocol === id ? null : id);
   };
 
-  const getStatusBadge = (status: StatusProtocolo) => {
-    const config = statusConfig[status];
+  const getStatusBadge = (status: string) => {
+    const config = statusConfig[status as keyof typeof statusConfig];
     if (!config) return <Badge variant="outline">Status Desconhecido</Badge>;
     
     return (
@@ -62,8 +85,8 @@ const MeusProtocolos: FC = () => {
     );
   };
 
-  const getStatusIcon = (status: StatusProtocolo) => {
-    const config = statusConfig[status];
+  const getStatusIcon = (status: string) => {
+    const config = statusConfig[status as keyof typeof statusConfig];
     if (!config) return <FileText className="h-5 w-5" />;
     
     const Icon = config.icon;
@@ -196,18 +219,18 @@ const MeusProtocolos: FC = () => {
                           <div className="flex flex-wrap gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400">
                             <span className="flex items-center">
                               <FileText className="h-3.5 w-3.5 mr-1" /> 
-                              {protocolo.numero_protocolo}
+                              {protocolo.numero}
                             </span>
                             <span className="flex items-center">
                               <Calendar className="h-3.5 w-3.5 mr-1" /> 
-                              {formatarData(protocolo.created_at)}
+                              {formatarData(protocolo.data_abertura)}
                             </span>
                             <span>
                               {protocolo.servico?.nome || 'Serviço não informado'}
                             </span>
                             <span className="flex items-center">
                               <Clock className="h-3.5 w-3.5 mr-1" />
-                              {calcularDiasDesde(protocolo.created_at)} dias
+                              {calcularDiasDesde(protocolo.data_abertura)} dias
                             </span>
                           </div>
                         </div>
@@ -231,25 +254,23 @@ const MeusProtocolos: FC = () => {
                           {protocolo.descricao}
                         </p>
                         
-                        {protocolo.endereco_referencia && (
+                        {protocolo.localizacao && (
                           <div className="mb-4">
-                            <h4 className="font-medium mb-2">Local de Referência</h4>
+                            <h4 className="font-medium mb-2">Localização</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {[
-                                protocolo.endereco_referencia.logradouro,
-                                protocolo.endereco_referencia.numero,
-                                protocolo.endereco_referencia.bairro,
-                                protocolo.endereco_referencia.cidade
-                              ].filter(Boolean).join(', ')}
+                              {protocolo.localizacao.endereco}
+                              {protocolo.localizacao.ponto_referencia && (
+                                <span className="block">Referência: {protocolo.localizacao.ponto_referencia}</span>
+                              )}
                             </p>
                           </div>
                         )}
 
-                        {protocolo.prazo_resposta && (
+                        {protocolo.data_prazo && (
                           <div className="mb-4">
                             <h4 className="font-medium mb-2">Prazo de Resposta</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {formatarData(protocolo.prazo_resposta)}
+                              {formatarData(protocolo.data_prazo)}
                             </p>
                           </div>
                         )}
@@ -276,7 +297,7 @@ const MeusProtocolos: FC = () => {
                             </Button>
                           )}
                           
-                          {protocolo.status === 'concluido' && !protocolo.avaliacao_nota && (
+                          {protocolo.status === 'concluido' && !protocolo.avaliacao && (
                             <Button 
                               size="sm"
                               onClick={() => handleAvaliarProtocolo(protocolo.id)}
@@ -286,10 +307,10 @@ const MeusProtocolos: FC = () => {
                             </Button>
                           )}
 
-                          {protocolo.avaliacao_nota && (
+                          {protocolo.avaliacao && (
                             <Badge variant="outline" className="flex items-center gap-1">
                               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                              Avaliado: {protocolo.avaliacao_nota}/5
+                              Avaliado: {protocolo.avaliacao}/5
                             </Badge>
                           )}
                         </div>
@@ -308,7 +329,7 @@ const MeusProtocolos: FC = () => {
                   {searchTerm 
                     ? `Nenhum protocolo encontrado para "${searchTerm}"`
                     : selectedStatus !== "todos" 
-                      ? `Você não possui protocolos com status "${statusConfig[selectedStatus as StatusProtocolo]?.label || selectedStatus}"`
+                      ? `Você não possui protocolos com status "${statusConfig[selectedStatus as keyof typeof statusConfig]?.label || selectedStatus}"`
                       : "Você ainda não possui protocolos registrados."
                   }
                 </p>
