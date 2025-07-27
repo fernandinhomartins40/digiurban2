@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -9,8 +9,7 @@ import ReactCrop, {
   Crop, 
   PixelCrop, 
   centerCrop, 
-  makeAspectCrop,
-  type ReactCropProps 
+  makeAspectCrop
 } from 'react-image-crop';
 import imageCompression from 'browser-image-compression';
 import { supabase } from "@/lib/supabase";
