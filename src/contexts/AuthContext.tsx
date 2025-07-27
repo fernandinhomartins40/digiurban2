@@ -20,6 +20,7 @@ interface AuthContextType {
     secretariaId: string,
     cargo: string
   ) => Promise<any>
+  refreshProfile: () => Promise<void>
   hasPermission: (permissionCode: string) => boolean
   isAdmin: () => boolean
   isCitizen: () => boolean
@@ -161,6 +162,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return profile?.tipo_usuario === 'cidadao'
   }
 
+  const refreshProfile = async (): Promise<void> => {
+    if (!user) return
+    
+    try {
+      console.log('🔄 AuthContext: Recarregando perfil do usuário...')
+      const updatedProfile = await authService.getUserProfile(user.id)
+      setProfile(updatedProfile)
+      console.log('✅ AuthContext: Perfil atualizado:', updatedProfile)
+    } catch (error) {
+      console.error('❌ AuthContext: Erro ao recarregar perfil:', error)
+    }
+  }
+
   const value = {
     user,
     profile,
@@ -170,6 +184,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signOut,
     signUpCitizen,
     signUpServer,
+    refreshProfile,
     hasPermission,
     isAdmin,
     isCitizen

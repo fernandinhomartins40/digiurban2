@@ -70,8 +70,24 @@ export const UserProfile: FC = () => {
     <div className="flex flex-col space-y-3">
       <div className="flex items-center space-x-3">
         <div className="relative">
-          {/* Avatar padrão usando ícone */}
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-blue-500">
+          {/* Avatar com foto de perfil ou ícone padrão */}
+          {profile?.foto_perfil ? (
+            <img 
+              src={profile.foto_perfil} 
+              alt="Foto de perfil"
+              className="w-10 h-10 rounded-full object-cover border-2 border-blue-500"
+              onError={(e) => {
+                // Se houver erro ao carregar a imagem, mostrar avatar padrão
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const fallback = target.nextElementSibling as HTMLElement;
+                if (fallback) fallback.style.display = 'flex';
+              }}
+            />
+          ) : null}
+          <div 
+            className={`w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-blue-500 ${profile?.foto_perfil ? 'hidden' : 'flex'}`}
+          >
             <User className="w-5 h-5 text-white" />
           </div>
           <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>

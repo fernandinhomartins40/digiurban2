@@ -35,7 +35,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
   currentImageUrl,
   onImageUpdate
 }) => {
-  const { user } = useAuth();
+  const { user, refreshProfile } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [imgSrc, setImgSrc] = useState('');
   const [crop, setCrop] = useState<Crop>();
@@ -261,6 +261,9 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
       // Chamar callback para atualizar UI
       onImageUpdate(publicUrl);
       
+      // Recarregar perfil no contexto para atualizar sidebar
+      await refreshProfile();
+      
       // Fechar modal
       handleClose();
 
@@ -295,6 +298,9 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
       
       // Chamar callback para atualizar UI
       onImageUpdate('');
+      
+      // Recarregar perfil no contexto para atualizar sidebar
+      await refreshProfile();
       
       // Fechar modal
       handleClose();
