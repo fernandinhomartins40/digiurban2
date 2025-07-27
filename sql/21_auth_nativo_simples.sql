@@ -69,8 +69,8 @@ BEGIN
         NEW.id,
         NEW.email,
         COALESCE(NEW.raw_user_meta_data->>'nome_completo', NEW.email),
-        COALESCE(NEW.raw_user_meta_data->>'tipo_usuario', 'cidadao'),
-        'ativo',
+        COALESCE(NEW.raw_user_meta_data->>'tipo_usuario', 'cidadao')::user_type,
+        'ativo'::status_type,
         true
     );
     RETURN NEW;
@@ -104,8 +104,8 @@ SELECT
     au.id,
     au.email,
     COALESCE(au.raw_user_meta_data->>'nome_completo', au.email),
-    COALESCE(au.raw_user_meta_data->>'tipo_usuario', 'cidadao'),
-    'ativo',
+    COALESCE(au.raw_user_meta_data->>'tipo_usuario', 'cidadao')::user_type,
+    'ativo'::status_type,
     true
 FROM auth.users au
 WHERE NOT EXISTS (
