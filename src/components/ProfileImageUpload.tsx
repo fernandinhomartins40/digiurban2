@@ -142,11 +142,23 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
 
   // Função para fazer upload da imagem
   const uploadImage = async () => {
-    if (!imgRef.current || !completedCrop || !user) return;
+    if (!imgRef.current || !completedCrop || !user) {
+      console.error('❌ Pré-requisitos não atendidos:', {
+        imgRef: !!imgRef.current,
+        completedCrop: !!completedCrop,
+        user: !!user,
+        userId: user?.id
+      });
+      toast.error('Erro: dados necessários para upload não estão disponíveis');
+      return;
+    }
 
     setIsUploading(true);
     
     try {
+      console.log('🚀 Iniciando upload de imagem...');
+      console.log('👤 Usuário:', { id: user.id, email: user.email });
+      console.log('📁 Configuração:', PROFILE_IMAGE_CONFIG);
       const canvas = previewCanvasRef.current;
       if (!canvas) throw new Error('Canvas não encontrado');
 
@@ -172,7 +184,10 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
       const fileName = `profile-${user.id}-${timestamp}.webp`;
       const filePath = `profiles/${fileName}`;
 
+      console.log('📂 Arquivo:', { fileName, filePath, size: compressedFile.size });
+
       // Fazer upload para Supabase Storage
+      console.log('⬆️ Fazendo upload para Supabase Storage...');
       const { data, error } = await supabase.storage
         .from('user-uploads')
         .upload(filePath, compressedFile, {
@@ -180,8 +195,27 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
           upsert: true
         });
 
+      console.log('📦 Resultado do upload:', { data, error });
+
       if (error) {
         console.error('❌ Erro no upload:', error);
+        console.error('❌ Detalhes do erro:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        
+        // Mostrar erro específico para o usuário
+        if (error.message.includes('Bucket not found')) {
+          toast.error('Bucket de storage não encontrado. Verifique a configuração.');
+        } else if (error.message.includes('policy')) {
+          toast.error('Erro de permissão. Verifique as políticas RLS do storage.');
+        } else if (error.message.includes('size')) {
+          toast.error('Arquivo muito grande. Máximo permitido: 1MB');
+        } else {
+          toast.error(`Erro no upload: ${error.message}`);
+        }
         throw error;
       }
 
@@ -203,6 +237,21 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
 
       if (updateError) {
         console.error('❌ Erro ao atualizar perfil:', updateError);
+        console.error('❌ Detalhes do erro do banco:', {
+          message: updateError.message,
+          details: updateError.details,
+          hint: updateError.hint,
+          code: updateError.code
+        });
+        
+        // Mostrar erro específico para o usuário
+        if (updateError.message.includes('column') && updateError.message.includes('foto_perfil')) {
+          toast.error('Coluna foto_perfil não existe. Execute o script de migração do banco.');
+        } else if (updateError.message.includes('permission')) {
+          toast.error('Erro de permissão no banco de dados.');
+        } else {
+          toast.error(`Erro ao salvar no banco: ${updateError.message}`);
+        }
         throw updateError;
       }
 
