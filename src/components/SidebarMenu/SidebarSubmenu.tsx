@@ -1,6 +1,7 @@
 
-import { FC, ReactNode, useState, useEffect } from "react";
+import { FC, ReactNode } from "react";
 import { useLocation } from "react-router-dom";
+import { useSidebar } from "../../contexts/SidebarContext";
 
 type SidebarSubmenuProps = {
   title: string;
@@ -16,22 +17,22 @@ export const SidebarSubmenu: FC<SidebarSubmenuProps> = ({
   basePath
 }) => {
   const location = useLocation();
-  const isActiveSection = location.pathname.startsWith(basePath);
-  const [isOpen, setIsOpen] = useState(isActiveSection);
-
-  useEffect(() => {
-    if (isActiveSection && !isOpen) {
-      setIsOpen(true);
-    }
-  }, [isActiveSection, isOpen]);
+  const { isMenuOpen, toggleMenu, shouldMenuBeOpen } = useSidebar();
+  
+  const isActiveSection = shouldMenuBeOpen(basePath);
+  const isOpen = isMenuOpen(basePath) || isActiveSection;
 
   return (
     <details className="mt-1 group" open={isOpen}>
       <summary
-        className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer ${
+          isActiveSection 
+            ? "text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40"
+            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+        }`}
         onClick={(e) => {
           e.preventDefault();
-          setIsOpen(!isOpen);
+          toggleMenu(basePath);
         }}
       >
         {icon}

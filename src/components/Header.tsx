@@ -2,16 +2,20 @@
 import { FC } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileSidebar } from "./MobileSidebar";
+import { Breadcrumb } from "./Breadcrumb";
 
 export const Header: FC = () => {
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm">
       <div className="px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center flex-1">
           <MobileSidebar />
           <h2 className="ml-2 text-xl font-medium text-gray-800 dark:text-white md:hidden">
             DigiUrbis
           </h2>
+          <div className="hidden md:block ml-4">
+            <Breadcrumb />
+          </div>
         </div>
         <div className="flex items-center space-x-3">
           <div className="relative">

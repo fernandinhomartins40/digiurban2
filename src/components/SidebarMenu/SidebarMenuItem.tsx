@@ -21,9 +21,40 @@ export const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
   const location = useLocation();
   const itemRef = useRef<HTMLLIElement>(null);
   
-  const isActive = exactMatch 
-    ? location.pathname === href 
-    : location.pathname.startsWith(href);
+  // Melhor lógica para detectar item ativo
+  const isActive = (() => {
+    const currentPath = location.pathname;
+    
+    if (exactMatch) {
+      return currentPath === href;
+    }
+    
+    // Para rotas que começam com /admin/ ou /cidadao/, normalizar para comparação
+    const normalizeRoute = (route: string) => {
+      // Se a rota atual tem prefixo admin/cidadao mas o href não tem, normalizar
+      if (currentPath.startsWith('/admin/') && !href.startsWith('/admin/')) {
+        return currentPath.replace('/admin', '');
+      }
+      if (currentPath.startsWith('/cidadao/') && !href.startsWith('/cidadao/')) {
+        return currentPath.replace('/cidadao', '');
+      }
+      return currentPath;
+    };
+    
+    const normalizedPath = normalizeRoute(currentPath);
+    
+    // Verificação direta
+    if (normalizedPath === href || currentPath === href) {
+      return true;
+    }
+    
+    // Verificação por prefixo (para subpáginas)
+    if (normalizedPath.startsWith(href) || currentPath.startsWith(href)) {
+      return true;
+    }
+    
+    return false;
+  })();
 
   useEffect(() => {
     if (onSetRef && itemRef.current) {
