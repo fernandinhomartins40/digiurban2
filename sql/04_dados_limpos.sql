@@ -1,9 +1,14 @@
 -- =============================================
--- Script 02: Dados Iniciais para Nova Instância  
--- Execute SEGUNDO (após Script 01)
+-- Script 04: Dados Limpos para Instância Existente
 -- =============================================
 
--- 1. Inserir secretarias padrão
+-- 1. Limpar dados existentes (opcional - remover se quiser manter)
+DELETE FROM public.perfil_permissoes;
+DELETE FROM public.permissoes;
+DELETE FROM public.perfis_acesso;
+DELETE FROM public.secretarias;
+
+-- 2. Inserir secretarias
 INSERT INTO public.secretarias (codigo, nome, sigla, descricao, cor, icone) VALUES
 ('GABINETE', 'Gabinete do Prefeito', 'GAB', 'Gabinete do Prefeito Municipal', '#8B5CF6', 'crown'),
 ('ADMINISTRACAO', 'Secretaria de Administração', 'ADM', 'Administração e Recursos Humanos', '#3B82F6', 'briefcase'),
@@ -20,10 +25,9 @@ INSERT INTO public.secretarias (codigo, nome, sigla, descricao, cor, icone) VALU
 ('HABITACAO', 'Secretaria de Habitação', 'HAB', 'Habitação e Desenvolvimento Urbano', '#0EA5E9', 'home'),
 ('SERVICOS', 'Secretaria de Serviços Públicos', 'SER', 'Serviços Públicos e Limpeza Urbana', '#64748B', 'truck'),
 ('PLANEJAMENTO', 'Secretaria de Planejamento', 'PLA', 'Planejamento Urbano e Desenvolvimento', '#7C3AED', 'map'),
-('TURISMO', 'Secretaria de Turismo', 'TUR', 'Turismo e Desenvolvimento Econômico', '#EC4899', 'camera')
-ON CONFLICT (codigo) DO NOTHING;
+('TURISMO', 'Secretaria de Turismo', 'TUR', 'Turismo e Desenvolvimento Econômico', '#EC4899', 'camera');
 
--- 2. Inserir perfis de acesso
+-- 3. Inserir perfis de acesso
 INSERT INTO public.perfis_acesso (nome, descricao, nivel_acesso) VALUES
 ('Super Administrador', 'Acesso total ao sistema', 10),
 ('Administrador', 'Acesso administrativo geral', 9),
@@ -32,10 +36,9 @@ INSERT INTO public.perfis_acesso (nome, descricao, nivel_acesso) VALUES
 ('Coordenador', 'Acesso de coordenação', 6),
 ('Funcionário', 'Acesso funcional básico', 5),
 ('Atendente', 'Acesso para atendimento público', 4),
-('Cidadão', 'Acesso público aos serviços', 1)
-ON CONFLICT (nome) DO NOTHING;
+('Cidadão', 'Acesso público aos serviços', 1);
 
--- 3. Inserir permissões por módulo
+-- 4. Inserir permissões
 INSERT INTO public.permissoes (codigo, nome, descricao, modulo) VALUES
 -- Gabinete
 ('GAB_VIEW', 'Visualizar Gabinete', 'Visualizar informações do gabinete', 'gabinete'),
@@ -72,10 +75,9 @@ INSERT INTO public.permissoes (codigo, nome, descricao, modulo) VALUES
 ('CID_SERVICES', 'Serviços Públicos', 'Acessar catálogo de serviços', 'cidadao'),
 ('CID_PROTOCOLS', 'Protocolos', 'Gerenciar protocolos pessoais', 'cidadao'),
 ('CID_DOCUMENTS', 'Documentos', 'Acessar documentos pessoais', 'cidadao'),
-('CID_EVALUATIONS', 'Avaliações', 'Avaliar serviços utilizados', 'cidadao')
-ON CONFLICT (codigo) DO NOTHING;
+('CID_EVALUATIONS', 'Avaliações', 'Avaliar serviços utilizados', 'cidadao');
 
--- 4. Criar relacionamentos perfil x permissões
+-- 5. Relacionamentos perfil x permissões
 
 -- Super Admin - Todas as permissões
 INSERT INTO public.perfil_permissoes (perfil_id, permissao_id, concedida)
@@ -85,8 +87,7 @@ SELECT
     true
 FROM public.perfis_acesso pa
 CROSS JOIN public.permissoes p
-WHERE pa.nome = 'Super Administrador'
-ON CONFLICT (perfil_id, permissao_id) DO NOTHING;
+WHERE pa.nome = 'Super Administrador';
 
 -- Admin - Permissões administrativas
 INSERT INTO public.perfil_permissoes (perfil_id, permissao_id, concedida)
@@ -97,8 +98,7 @@ SELECT
 FROM public.perfis_acesso pa
 CROSS JOIN public.permissoes p
 WHERE pa.nome = 'Administrador'
-AND p.codigo IN ('GAB_VIEW', 'GAB_EDIT', 'GAB_REPORTS', 'ADM_USERS', 'ADM_PROFILES', 'ADM_CONFIG')
-ON CONFLICT (perfil_id, permissao_id) DO NOTHING;
+AND p.codigo IN ('GAB_VIEW', 'GAB_EDIT', 'GAB_REPORTS', 'ADM_USERS', 'ADM_PROFILES', 'ADM_CONFIG');
 
 -- Secretário - Permissões de sua área
 INSERT INTO public.perfil_permissoes (perfil_id, permissao_id, concedida)
@@ -109,8 +109,7 @@ SELECT
 FROM public.perfis_acesso pa
 CROSS JOIN public.permissoes p
 WHERE pa.nome = 'Secretário Municipal'
-AND (p.codigo LIKE 'SAU_%' OR p.codigo LIKE 'EDU_%' OR p.codigo LIKE 'ASS_%')
-ON CONFLICT (perfil_id, permissao_id) DO NOTHING;
+AND (p.codigo LIKE 'SAU_%' OR p.codigo LIKE 'EDU_%' OR p.codigo LIKE 'ASS_%');
 
 -- Funcionário - Permissões básicas
 INSERT INTO public.perfil_permissoes (perfil_id, permissao_id, concedida)
@@ -121,8 +120,7 @@ SELECT
 FROM public.perfis_acesso pa
 CROSS JOIN public.permissoes p
 WHERE pa.nome = 'Funcionário'
-AND p.codigo LIKE '%_VIEW'
-ON CONFLICT (perfil_id, permissao_id) DO NOTHING;
+AND p.codigo LIKE '%_VIEW';
 
 -- Cidadão - Apenas serviços públicos
 INSERT INTO public.perfil_permissoes (perfil_id, permissao_id, concedida)
@@ -133,10 +131,9 @@ SELECT
 FROM public.perfis_acesso pa
 CROSS JOIN public.permissoes p
 WHERE pa.nome = 'Cidadão'
-AND p.codigo LIKE 'CID_%'
-ON CONFLICT (perfil_id, permissao_id) DO NOTHING;
+AND p.codigo LIKE 'CID_%';
 
--- 5. Verificar dados inseridos
+-- 6. Verificar dados inseridos
 SELECT 'Secretarias criadas' as item, COUNT(*) as total FROM public.secretarias
 UNION ALL
 SELECT 'Perfis de acesso' as item, COUNT(*) as total FROM public.perfis_acesso
@@ -145,5 +142,4 @@ SELECT 'Permissões criadas' as item, COUNT(*) as total FROM public.permissoes
 UNION ALL
 SELECT 'Relacionamentos perfil-permissão' as item, COUNT(*) as total FROM public.perfil_permissoes;
 
--- Script 02 concluído
-SELECT 'Script 02 - Dados Iniciais executado com sucesso!' as resultado;
+SELECT 'Script 04 - Dados Limpos executado com sucesso!' as resultado;
