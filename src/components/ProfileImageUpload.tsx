@@ -233,7 +233,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
           foto_perfil: publicUrl,
           updated_at: new Date().toISOString()
         })
-        .eq('user_id', user.id);
+        .eq('id', user.id);
 
       if (updateError) {
         console.error('❌ Erro ao atualizar perfil:', updateError);
@@ -286,7 +286,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
           foto_perfil: null,
           updated_at: new Date().toISOString()
         })
-        .eq('user_id', user.id);
+        .eq('id', user.id);
 
       if (error) throw error;
 
