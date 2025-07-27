@@ -38,9 +38,9 @@ async function main() {
     await client.connect()
     console.log('✅ Conectado com sucesso!')
     
-    // Executar apenas o script de autenticação adaptado
+    // Executar correção do trigger
     const scripts = [
-      'sql/05_auth_adaptado.sql'
+      'sql/06_fix_trigger.sql'
     ]
     
     // Executar cada script
