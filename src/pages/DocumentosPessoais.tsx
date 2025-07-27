@@ -1,5 +1,5 @@
 
-import { Layout } from "@/components/Layout";
+import { CidadaoLayout } from "../components/CidadaoLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -133,7 +133,7 @@ const DocumentosPessoais: FC = () => {
   };
 
   return (
-    <Layout>
+    <CidadaoLayout>
       <div className="h-full flex flex-col p-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div>
@@ -253,7 +253,7 @@ const DocumentosPessoais: FC = () => {
           </CardContent>
         </Card>
       </div>
-    </Layout>
+    </CidadaoLayout>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Layout } from "@/components/Layout";
+import { CidadaoLayout } from "../../../components/CidadaoLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { FileText, MessageSquare, User, Star, Clock, CheckCircle, AlertCircle, S
 
 const CidadaoDashboard = () => {
   return (
-    <Layout>
+    <CidadaoLayout>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Portal do Cidadão</h1>
@@ -187,7 +187,7 @@ const CidadaoDashboard = () => {
           </CardContent>
         </Card>
       </div>
-    </Layout>
+    </CidadaoLayout>
   );
 };
 

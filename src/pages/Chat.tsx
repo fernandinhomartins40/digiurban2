@@ -1,5 +1,5 @@
 
-import { Layout } from "@/components/Layout";
+import { CidadaoLayout } from "../components/CidadaoLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -170,7 +170,7 @@ const Chat: FC = () => {
   };
 
   return (
-    <Layout>
+    <CidadaoLayout>
       <div className="h-full flex flex-col p-4">
         <div className="flex items-center mb-4">
           <MessageSquare className="mr-2 h-6 w-6 text-blue-600" />
@@ -275,7 +275,7 @@ const Chat: FC = () => {
           </Card>
         </div>
       </div>
-    </Layout>
+    </CidadaoLayout>
   );
 };
 

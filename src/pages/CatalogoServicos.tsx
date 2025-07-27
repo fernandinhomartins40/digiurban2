@@ -1,5 +1,5 @@
 
-import { Layout } from "@/components/Layout";
+import { CidadaoLayout } from "../components/CidadaoLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -114,7 +114,7 @@ const categories = [
 
 const CatalogoServicos: FC = () => {
   return (
-    <Layout>
+    <CidadaoLayout>
       <div className="h-full flex flex-col p-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div>
@@ -187,7 +187,7 @@ const CatalogoServicos: FC = () => {
           ))}
         </Tabs>
       </div>
-    </Layout>
+    </CidadaoLayout>
   );
 };
 
