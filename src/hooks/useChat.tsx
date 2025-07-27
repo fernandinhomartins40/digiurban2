@@ -1,9 +1,19 @@
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { chatService, ChatRoom, ChatMessage, ChatParticipant } from '../lib/chat';
+import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'sonner';
 
-import { useState, useEffect, useCallback } from 'react';
-import { ChatRoom, ChatMessage, ChatParticipant, ChatState, SendMessageRequest } from '@/types/chat';
-import { toast } from '@/hooks/use-toast';
+interface ChatState {
+  rooms: ChatRoom[];
+  activeRoom: ChatRoom | null;
+  messages: ChatMessage[];
+  participants: ChatParticipant[];
+  isLoading: boolean;
+  error: string | null;
+}
 
 export const useChat = () => {
+  const { user, profile } = useAuth();
   const [state, setState] = useState<ChatState>({
     rooms: [],
     activeRoom: null,
@@ -13,25 +23,30 @@ export const useChat = () => {
     error: null
   });
 
-  // Fetch chat rooms
+  const subscriptionRef = useRef<any>(null);
+
+  // Buscar salas do usuário
   const fetchRooms = useCallback(async () => {
+    if (!user || !profile) return;
+
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
       console.log('🔄 Fetching chat rooms...');
-      const response = await fetch('/api/chat/rooms', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
       
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
-        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+      let rooms: ChatRoom[] = [];
+
+      if (profile.tipo_usuario === 'cidadao') {
+        // Para cidadãos: buscar ou criar sala de suporte
+        const supportRoom = await chatService.getOrCreateSupportRoom(user.id);
+        rooms = [supportRoom];
+      } else {
+        // Para servidores: buscar salas gerais e de suporte
+        const generalRooms = await chatService.getUserRooms(user.id, profile.tipo_usuario);
+        const supportRooms = await chatService.getSupportRooms();
+        rooms = [...generalRooms, ...supportRooms];
       }
       
-      const rooms: ChatRoom[] = await response.json();
       console.log('✅ Chat rooms fetched:', rooms.length, 'rooms');
       
       setState(prev => ({ 
@@ -52,35 +67,20 @@ export const useChat = () => {
         isLoading: false 
       }));
 
-      toast({
-        variant: "destructive",
-        title: "Erro de Conexão",
-        description: "Não foi possível carregar as salas de chat. Verifique se o backend está executando."
-      });
+      toast.error("Não foi possível carregar as salas de chat.");
       
       throw error;
     }
-  }, []);
+  }, [user, profile]);
 
-  // Fetch messages for a room
-  const fetchMessages = useCallback(async (roomId: number, page = 1) => {
+  // Buscar mensagens de uma sala
+  const fetchMessages = useCallback(async (roomId: string) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
       console.log(`🔄 Fetching messages for room ${roomId}...`);
-      const response = await fetch(`/api/chat/rooms/${roomId}/messages?page=${page}&limit=50`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const messages = await chatService.getRoomMessages(roomId);
       
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
-        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const messages: ChatMessage[] = await response.json();
       console.log('✅ Messages fetched:', messages.length, 'messages');
       
       setState(prev => ({ 
@@ -101,33 +101,18 @@ export const useChat = () => {
         isLoading: false 
       }));
       
-      toast({
-        variant: "destructive",
-        title: "Erro ao Carregar Mensagens",
-        description: errorMessage
-      });
+      toast.error("Erro ao carregar mensagens");
       
       throw error;
     }
   }, []);
 
-  // Fetch participants for a room
-  const fetchParticipants = useCallback(async (roomId: number) => {
+  // Buscar participantes de uma sala
+  const fetchParticipants = useCallback(async (roomId: string) => {
     try {
       console.log(`🔄 Fetching participants for room ${roomId}...`);
-      const response = await fetch(`/api/chat/rooms/${roomId}/participants`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const participants = await chatService.getRoomParticipants(roomId);
       
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
-        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const participants: ChatParticipant[] = await response.json();
       console.log('✅ Participants fetched:', participants.length, 'participants');
       
       setState(prev => ({ 
@@ -146,38 +131,26 @@ export const useChat = () => {
         error: errorMessage
       }));
       
-      // Don't show toast for participants error as it's not critical
       throw error;
     }
   }, []);
 
-  // Send a message
-  const sendMessage = useCallback(async (roomId: number, messageData: Omit<SendMessageRequest, 'room_id'>) => {
+  // Enviar mensagem
+  const sendMessage = useCallback(async (roomId: string, messageData: { message: string; reply_to?: string }) => {
+    if (!user) throw new Error('Usuário não autenticado');
+
     try {
       console.log(`🔄 Sending message to room ${roomId}...`);
-      const response = await fetch(`/api/chat/rooms/${roomId}/messages`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ...messageData, room_id: roomId })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Network error' }));
-        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
-      }
+      const newMessage = await chatService.sendMessage(
+        roomId, 
+        messageData.message, 
+        user.id, 
+        messageData.reply_to
+      );
       
-      const newMessage: ChatMessage = await response.json();
       console.log('✅ Message sent successfully');
       
-      // Add the new message to the current messages
-      setState(prev => ({
-        ...prev,
-        messages: [...prev.messages, newMessage],
-        error: null
-      }));
-
+      // A mensagem será adicionada via subscription em tempo real
       return newMessage;
     } catch (error) {
       console.error('❌ Failed to send message:', error);
@@ -188,64 +161,74 @@ export const useChat = () => {
         error: errorMessage
       }));
       
-      toast({
-        variant: "destructive",
-        title: "Erro ao Enviar Mensagem",
-        description: errorMessage
-      });
+      toast.error("Erro ao enviar mensagem");
       
       throw error;
     }
-  }, []);
+  }, [user]);
 
-  // Set active room
+  // Definir sala ativa
   const setActiveRoom = useCallback((room: ChatRoom | null) => {
     console.log('🔄 Setting active room:', room?.name || 'none');
+    
+    // Cancelar subscription anterior
+    if (subscriptionRef.current) {
+      subscriptionRef.current.unsubscribe();
+      subscriptionRef.current = null;
+    }
+
     setState(prev => ({ 
       ...prev, 
       activeRoom: room,
-      messages: [], // Clear messages when switching rooms
-      participants: [], // Clear participants when switching rooms
-      error: null // Clear any previous errors
+      messages: [],
+      participants: [],
+      error: null
     }));
     
-    if (room) {
-      // Fetch data for the new room
+    if (room && user) {
+      // Buscar dados da nova sala
       Promise.all([
         fetchMessages(room.id).catch(console.error),
         fetchParticipants(room.id).catch(console.error),
-        markAsRead(room.id).catch(console.error)
+        chatService.markMessagesAsRead(room.id, user.id).catch(console.error)
       ]);
-    }
-  }, [fetchMessages, fetchParticipants, markAsRead]);
 
-  // Mark messages as read
-  const markAsRead = useCallback(async (roomId: number) => {
-    try {
-      const response = await fetch(`/api/chat/rooms/${roomId}/mark-read`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      // Subscribir para mensagens em tempo real
+      subscriptionRef.current = chatService.subscribeToRoom(room.id, (newMessage) => {
+        setState(prev => ({
+          ...prev,
+          messages: [...prev.messages, newMessage]
+        }));
       });
-      
-      if (!response.ok) {
-        console.warn('Failed to mark messages as read:', response.status);
-        return;
-      }
-      
+    }
+  }, [fetchMessages, fetchParticipants, user]);
+
+  // Marcar mensagens como lidas
+  const markAsRead = useCallback(async (roomId: string) => {
+    if (!user) return;
+
+    try {
+      await chatService.markMessagesAsRead(roomId, user.id);
       console.log('✅ Messages marked as read for room', roomId);
     } catch (error) {
       console.warn('❌ Failed to mark messages as read:', error);
-      // Don't throw or show toast for this non-critical operation
     }
-  }, []);
+  }, [user]);
 
-  // Initialize chat
+  // Inicializar chat
   useEffect(() => {
-    console.log('🔄 Initializing chat...');
-    fetchRooms().catch(console.error);
-  }, [fetchRooms]);
+    if (user && profile) {
+      console.log('🔄 Initializing chat...');
+      fetchRooms().catch(console.error);
+    }
+
+    // Cleanup subscription ao desmontar
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+      }
+    };
+  }, [fetchRooms, user, profile]);
 
   return {
     ...state,

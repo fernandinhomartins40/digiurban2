@@ -7,8 +7,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Send, Clock, Circle, Users, Search, Phone, Video } from "lucide-react";
 import { FC, useState, useEffect, useRef } from "react";
-import { useChat } from "@/hooks/useChat";
-import { ChatRoom, ChatMessage } from "@/types/chat";
+import { useChat } from "../hooks/useChat";
+import { useAuth } from "../contexts/AuthContext";
+import { ChatRoom, ChatMessage } from "../lib/chat";
 
 const ChatRoomItem: FC<{ 
   room: ChatRoom; 
@@ -20,6 +21,7 @@ const ChatRoomItem: FC<{
       case 'general': return 'bg-green-500';
       case 'department': return 'bg-blue-500';
       case 'support': return 'bg-orange-500';
+      case 'citizen_support': return 'bg-purple-500';
       default: return 'bg-gray-400';
     }
   };
@@ -42,24 +44,15 @@ const ChatRoomItem: FC<{
       <div className="ml-3 flex-1">
         <div className="flex items-center justify-between">
           <p className="font-medium text-sm">{room.name}</p>
-          <div className="flex items-center gap-1">
-            {room.unread_count && room.unread_count > 0 && (
-              <Badge variant="destructive" className="text-xs">
-                {room.unread_count}
-              </Badge>
-            )}
-          </div>
         </div>
         <div className="flex items-center justify-between">
           <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-            {room.last_message?.message || "Nenhuma mensagem"}
+            {room.description || room.type === 'citizen_support' ? 'Suporte ao Cidadão' : 'Sem mensagens'}
           </p>
-          {room.participants_count && (
-            <span className="text-xs text-gray-400 flex items-center">
-              <Users className="h-3 w-3 mr-1" />
-              {room.participants_count}
-            </span>
-          )}
+          <span className="text-xs text-gray-400 flex items-center">
+            <Users className="h-3 w-3 mr-1" />
+            Online
+          </span>
         </div>
       </div>
     </div>
@@ -81,7 +74,7 @@ const MessageBubble: FC<{ message: ChatMessage; isOwnMessage: boolean }> = ({
     <div className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4`}>
       <div className={`max-w-[70%] ${isOwnMessage ? "order-2" : "order-1"}`}>
         {!isOwnMessage && (
-          <p className="text-xs text-gray-500 mb-1 ml-1">{message.user?.name}</p>
+          <p className="text-xs text-gray-500 mb-1 ml-1">{message.user?.nome_completo}</p>
         )}
         {message.reply_to && (
           <div className="bg-gray-100 dark:bg-gray-800 p-2 rounded-md mb-1 border-l-2 border-blue-500">
@@ -126,6 +119,7 @@ const MessageBubble: FC<{ message: ChatMessage; isOwnMessage: boolean }> = ({
 };
 
 const Chat: FC = () => {
+  const { user } = useAuth();
   const {
     rooms,
     activeRoom,
@@ -160,8 +154,7 @@ const Chat: FC = () => {
 
     try {
       await sendMessage(activeRoom.id, {
-        message: newMessage.trim(),
-        message_type: 'text'
+        message: newMessage.trim()
       });
       setNewMessage("");
     } catch (error) {
@@ -239,7 +232,7 @@ const Chat: FC = () => {
                       <MessageBubble
                         key={message.id}
                         message={message}
-                        isOwnMessage={message.user_id === 1} // TODO: Replace with actual current user ID
+                        isOwnMessage={message.user_id === user?.id}
                       />
                     ))}
                     <div ref={messagesEndRef} />
