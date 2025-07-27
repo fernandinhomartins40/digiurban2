@@ -35,7 +35,7 @@ export const HeroSection: FC = () => {
                   <ArrowRight className="ml-2 h-6 w-6" />
                 </a>
               </Button>
-              <Button variant="outline" size="lg" asChild className="hover-lift text-lg px-8 py-4 border-white/30 text-white hover:bg-white/10">
+              <Button variant="outline" size="lg" asChild className="hover-lift text-lg px-8 py-4 border-white/50 text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all">
                 <a href="#modules">Conhecer Módulos</a>
               </Button>
             </div>
