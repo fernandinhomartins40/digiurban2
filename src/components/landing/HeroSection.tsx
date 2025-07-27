@@ -7,65 +7,71 @@ import heroImage from "@/assets/hero-municipal-management.jpg";
 
 export const HeroSection: FC = () => {
   return (
-    <section className="relative bg-gradient-to-br from-blue-600 to-indigo-700 py-20">
-      <div className="absolute inset-0 bg-blue-800/20"></div>
+    <section className="relative overflow-hidden gradient-primary py-24">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-32 w-80 h-80 gradient-accent rounded-full opacity-20 animate-float"></div>
+        <div className="absolute -bottom-40 -left-32 w-96 h-96 gradient-secondary rounded-full opacity-20 animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 gradient-warm rounded-full opacity-10 animate-float" style={{animationDelay: '4s'}}></div>
+      </div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <div className="animate-slide-up">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight drop-shadow-lg">
               Transforme sua
-              <span className="block text-yellow-300">
+              <span className="block bg-gradient-to-r from-yellow-300 via-pink-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-lg">
                 Gestão Municipal
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+            <p className="text-xl text-white/95 mb-10 leading-relaxed drop-shadow-md">
               A plataforma completa para modernizar a administração pública, 
               conectar cidadãos e otimizar processos com tecnologia de ponta.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <Button size="lg" asChild className="text-base px-6 py-3 bg-white text-blue-600 hover:bg-gray-100 transition-colors">
+            <div className="flex flex-col sm:flex-row gap-6 mb-12">
+              <Button size="lg" variant="secondary" asChild className="hover-lift glow-primary text-lg px-8 py-4 bg-white text-purple-600 hover:bg-white/90">
                 <a href="#contact">
                   Entre em Contato
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-6 w-6" />
                 </a>
               </Button>
-              <Button variant="outline" size="lg" asChild className="text-base px-6 py-3 border-white/30 text-white hover:bg-white/10 transition-colors">
+              <Button variant="outline" size="lg" asChild className="hover-lift text-lg px-8 py-4 border-white/30 text-white hover:bg-white/10">
                 <a href="#modules">Conhecer Módulos</a>
               </Button>
             </div>
-            <div className="grid grid-cols-1 gap-3">
-              <div className="flex items-center text-white">
-                <CheckCircle className="h-5 w-5 text-green-300 mr-3 flex-shrink-0" />
-                <span className="text-sm">Implementação rápida e suporte completo</span>
+            <div className="grid grid-cols-1 gap-4 animate-fade-in-delay">
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-md rounded-lg p-4 border border-white/30">
+                <CheckCircle className="h-6 w-6 text-green-300 mr-4 flex-shrink-0 drop-shadow-sm" />
+                <span className="text-lg font-medium drop-shadow-sm">Implementação rápida e suporte completo</span>
               </div>
-              <div className="flex items-center text-white">
-                <CheckCircle className="h-5 w-5 text-green-300 mr-3 flex-shrink-0" />
-                <span className="text-sm">Interface intuitiva para cidadãos e servidores</span>
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-md rounded-lg p-4 border border-white/30">
+                <CheckCircle className="h-6 w-6 text-green-300 mr-4 flex-shrink-0 drop-shadow-sm" />
+                <span className="text-lg font-medium drop-shadow-sm">Interface intuitiva para cidadãos e servidores</span>
               </div>
-              <div className="flex items-center text-white">
-                <CheckCircle className="h-5 w-5 text-green-300 mr-3 flex-shrink-0" />
-                <span className="text-sm">Segurança e transparência garantidas</span>
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-md rounded-lg p-4 border border-white/30">
+                <CheckCircle className="h-6 w-6 text-green-300 mr-4 flex-shrink-0 drop-shadow-sm" />
+                <span className="text-lg font-medium drop-shadow-sm">Segurança e transparência garantidas</span>
               </div>
             </div>
           </div>
-          <div className="hidden lg:block">
+          <div className="animate-scale-in">
             <div className="relative">
+              <div className="absolute inset-0 gradient-accent rounded-3xl opacity-20 animate-glow"></div>
               <img
                 src={heroImage}
                 alt="Gestão Municipal Digital - Dashboard DigiUrbis"
-                className="relative rounded-2xl shadow-lg"
+                className="relative rounded-3xl shadow-glow hover-lift"
               />
-              <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-lg shadow-lg">
+              <div className="absolute -bottom-8 -right-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-card animate-float">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600 mb-1">98%</div>
-                  <div className="text-gray-600 text-sm font-medium">Satisfação</div>
+                  <div className="text-4xl font-bold text-gradient mb-2">98%</div>
+                  <div className="text-gray-600 font-medium">Satisfação dos Usuários</div>
                 </div>
               </div>
-              <div className="absolute -top-4 -left-4 bg-green-500 p-4 rounded-lg shadow-lg">
+              <div className="absolute -top-6 -left-6 bg-gradient-to-r from-green-400 to-blue-500 p-6 rounded-2xl shadow-card animate-float" style={{animationDelay: '1s'}}>
                 <div className="text-center">
-                  <div className="text-xl font-bold text-white mb-1">50+</div>
-                  <div className="text-white/90 text-xs font-medium">Cidades</div>
+                  <div className="text-2xl font-bold text-white mb-1">50+</div>
+                  <div className="text-white/90 text-sm font-medium">Cidades</div>
                 </div>
               </div>
             </div>

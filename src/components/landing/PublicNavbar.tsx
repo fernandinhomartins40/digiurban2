@@ -8,37 +8,41 @@ export const PublicNavbar: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-white/95 backdrop-blur-sm shadow-elegant border-b border-purple-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-gray-800">
+              <h1 className="text-3xl font-bold text-gradient gradient-primary bg-clip-text text-transparent">
                 DigiUrbis
               </h1>
             </div>
             <div className="hidden md:block ml-12">
-              <div className="flex items-baseline space-x-6">
-                <a href="#benefits" className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+              <div className="flex items-baseline space-x-8">
+                <a href="#benefits" className="text-gray-700 hover:text-purple-600 px-4 py-3 text-lg font-medium transition-all duration-300 hover-lift relative group">
                   Benefícios
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </a>
-                <a href="#modules" className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                <a href="#modules" className="text-gray-700 hover:text-purple-600 px-4 py-3 text-lg font-medium transition-all duration-300 hover-lift relative group">
                   Módulos
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </a>
-                <a href="#testimonials" className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                <a href="#testimonials" className="text-gray-700 hover:text-purple-600 px-4 py-3 text-lg font-medium transition-all duration-300 hover-lift relative group">
                   Depoimentos
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </a>
-                <a href="#contact" className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                <a href="#contact" className="text-gray-700 hover:text-purple-600 px-4 py-3 text-lg font-medium transition-all duration-300 hover-lift relative group">
                   Contato
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </a>
               </div>
             </div>
           </div>
-          <div className="hidden md:flex items-center space-x-3">
-            <Button variant="outline" asChild className="text-sm px-4 py-2 border-blue-200 text-blue-600 hover:bg-blue-50 transition-colors">
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="outline" asChild className="hover-lift text-lg px-6 py-3 border-purple-200 text-purple-600 hover:bg-purple-50 shadow-sm">
               <Link to="/admin/login">Portal Admin</Link>
             </Button>
-            <Button asChild className="text-sm px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition-colors">
+            <Button asChild className="hover-lift glow-primary text-lg px-6 py-3 gradient-primary text-white shadow-elegant">
               <Link to="/cidadao/login">Portal Cidadão</Link>
             </Button>
           </div>
@@ -57,24 +61,24 @@ export const PublicNavbar: FC = () => {
         {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
-              <a href="#benefits" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-blue-600">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-purple-100 bg-white/95 backdrop-blur-sm">
+              <a href="#benefits" className="block px-4 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all">
                 Benefícios
               </a>
-              <a href="#modules" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-blue-600">
+              <a href="#modules" className="block px-4 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all">
                 Módulos
               </a>
-              <a href="#testimonials" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-blue-600">
+              <a href="#testimonials" className="block px-4 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all">
                 Depoimentos
               </a>
-              <a href="#contact" className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-blue-600">
+              <a href="#contact" className="block px-4 py-3 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all">
                 Contato
               </a>
-              <div className="pt-3 border-t border-gray-200 space-y-2">
-                <Link to="/admin/login" className="block px-3 py-2 text-sm font-medium text-blue-600 border border-blue-200 rounded-md text-center">
+              <div className="pt-4 border-t border-purple-100 space-y-3">
+                <Link to="/admin/login" className="block px-4 py-3 text-base font-medium text-purple-600 border border-purple-200 rounded-lg text-center hover:bg-purple-50 transition-all">
                   Portal Admin
                 </Link>
-                <Link to="/cidadao/login" className="block px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-md text-center">
+                <Link to="/cidadao/login" className="block px-4 py-3 text-base font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg text-center hover:shadow-lg transition-all">
                   Portal Cidadão
                 </Link>
               </div>
