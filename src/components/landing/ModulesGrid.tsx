@@ -85,23 +85,23 @@ export const ModulesGrid: FC = () => {
             O Digiurban oferece módulos dedicados para atender todas as demandas com eficiência.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {modules.map((module, index) => (
             <div
               key={index}
-              className="group bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-card hover:shadow-glow hover-lift transition-all duration-500 border border-gray-100/50 relative overflow-hidden"
+              className="group bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-card hover:shadow-glow hover-lift transition-all duration-500 border border-gray-100/50 relative overflow-hidden"
               style={{animationDelay: `${index * 0.05}s`}}
             >
               {/* Hover gradient background */}
               <div className="absolute inset-0 gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
               
-              <div className={`relative w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${module.color}`}>
-                <module.icon className="h-8 w-8" />
+              <div className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 ${module.color}`}>
+                <module.icon className="h-7 w-7 sm:h-8 sm:w-8" />
               </div>
-              <h3 className="relative text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">
+              <h3 className="relative text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-purple-600 transition-colors duration-300">
                 {module.title}
               </h3>
-              <p className="relative text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+              <p className="relative text-sm sm:text-base text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
                 {module.description}
               </p>
               
