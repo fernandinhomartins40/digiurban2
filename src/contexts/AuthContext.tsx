@@ -163,15 +163,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const refreshProfile = async (): Promise<void> => {
-    if (!user) return
+    if (!user) {
+      console.log('⚠️ AuthContext: Não há usuário para recarregar perfil')
+      return
+    }
     
     try {
-      console.log('🔄 AuthContext: Recarregando perfil do usuário...')
+      console.log('🔄 AuthContext: Recarregando perfil do usuário...', user.id)
       const updatedProfile = await authService.getUserProfile(user.id)
-      setProfile(updatedProfile)
-      console.log('✅ AuthContext: Perfil atualizado:', updatedProfile)
+      if (updatedProfile) {
+        setProfile(updatedProfile)
+        console.log('✅ AuthContext: Perfil atualizado com sucesso')
+        console.log('📸 Foto de perfil:', updatedProfile.foto_perfil ? 'PRESENTE' : 'AUSENTE')
+      } else {
+        console.log('⚠️ AuthContext: Perfil não encontrado')
+      }
     } catch (error) {
       console.error('❌ AuthContext: Erro ao recarregar perfil:', error)
+      console.error('❌ Detalhes do erro:', error)
     }
   }
 

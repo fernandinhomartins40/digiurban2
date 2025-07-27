@@ -261,8 +261,12 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
       // Chamar callback para atualizar UI
       onImageUpdate(publicUrl);
       
-      // Recarregar perfil no contexto para atualizar sidebar
-      await refreshProfile();
+      // Recarregar perfil no contexto para atualizar sidebar (não bloquear se der erro)
+      try {
+        await refreshProfile();
+      } catch (refreshError) {
+        console.warn('⚠️ Erro ao recarregar perfil (não crítico):', refreshError);
+      }
       
       // Fechar modal
       handleClose();
@@ -299,8 +303,12 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
       // Chamar callback para atualizar UI
       onImageUpdate('');
       
-      // Recarregar perfil no contexto para atualizar sidebar
-      await refreshProfile();
+      // Recarregar perfil no contexto para atualizar sidebar (não bloquear se der erro)
+      try {
+        await refreshProfile();
+      } catch (refreshError) {
+        console.warn('⚠️ Erro ao recarregar perfil (não crítico):', refreshError);
+      }
       
       // Fechar modal
       handleClose();
