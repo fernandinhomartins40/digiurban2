@@ -4,7 +4,7 @@ import { ProtectedRoute, AdminRoute, AdminOnlyRoute } from './ProtectedRoute';
 
 // Import all existing admin pages
 import Index from '../pages/Index';
-import Chat from '../pages/Chat';
+import AdminChat from '../pages/AdminChat';
 
 // Gabinete
 import GabineteAtendimentos from '../pages/gabinete/Atendimentos';
@@ -185,7 +185,7 @@ function AdminApp() {
       } />
       <Route path="/chat" element={
         <ProtectedRoute>
-          <Chat />
+          <AdminChat />
         </ProtectedRoute>
       } />
 

@@ -1,5 +1,4 @@
-
-import { CidadaoLayout } from "../components/CidadaoLayout";
+import { Layout } from "../components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -26,6 +25,16 @@ const ChatRoomItem: FC<{
     }
   };
 
+  const getRoomTypeLabel = (type: string) => {
+    switch (type) {
+      case 'general': return 'Geral';
+      case 'department': return 'Departamental';
+      case 'support': return 'Suporte';
+      case 'citizen_support': return 'Suporte ao Cidadão';
+      default: return 'Chat';
+    }
+  };
+
   return (
     <div
       className={`p-3 rounded-md flex items-center cursor-pointer transition-colors ${
@@ -44,10 +53,13 @@ const ChatRoomItem: FC<{
       <div className="ml-3 flex-1">
         <div className="flex items-center justify-between">
           <p className="font-medium text-sm">{room.name}</p>
+          <Badge variant="outline" className="text-xs">
+            {getRoomTypeLabel(room.type)}
+          </Badge>
         </div>
         <div className="flex items-center justify-between">
           <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-            {room.description || room.type === 'citizen_support' ? 'Suporte ao Cidadão' : 'Sem mensagens'}
+            {room.description || 'Sem mensagens'}
           </p>
           <span className="text-xs text-gray-400 flex items-center">
             <Users className="h-3 w-3 mr-1" />
@@ -74,7 +86,14 @@ const MessageBubble: FC<{ message: ChatMessage; isOwnMessage: boolean }> = ({
     <div className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4`}>
       <div className={`max-w-[70%] ${isOwnMessage ? "order-2" : "order-1"}`}>
         {!isOwnMessage && (
-          <p className="text-xs text-gray-500 mb-1 ml-1">{message.user?.nome_completo}</p>
+          <p className="text-xs text-gray-500 mb-1 ml-1">
+            {message.user?.nome_completo} 
+            {message.user?.tipo_usuario && message.user.tipo_usuario !== 'cidadao' && (
+              <Badge variant="outline" className="ml-2 text-xs">
+                {message.user.tipo_usuario}
+              </Badge>
+            )}
+          </p>
         )}
         {message.reply_to && (
           <div className="bg-gray-100 dark:bg-gray-800 p-2 rounded-md mb-1 border-l-2 border-blue-500">
@@ -118,7 +137,7 @@ const MessageBubble: FC<{ message: ChatMessage; isOwnMessage: boolean }> = ({
   );
 };
 
-const Chat: FC = () => {
+const AdminChat: FC = () => {
   const { user, profile } = useAuth();
   const {
     rooms,
@@ -131,18 +150,18 @@ const Chat: FC = () => {
     sendMessage
   } = useChat();
 
-  // Verificar se o usuário tem acesso ao chat do cidadão
-  useEffect(() => {
-    if (profile && profile.tipo_usuario !== 'cidadao') {
-      console.warn('Servidor tentando acessar chat do cidadão');
-      // Redirecionar servidor para seu chat
-      window.location.href = '/admin/chat';
-    }
-  }, [profile]);
-
   const [newMessage, setNewMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Verificar se o usuário tem acesso ao chat administrativo
+  useEffect(() => {
+    if (profile && profile.tipo_usuario === 'cidadao') {
+      console.warn('Cidadão tentando acessar chat administrativo');
+      // Redirecionar cidadão para seu chat
+      window.location.href = '/cidadao/chat';
+    }
+  }, [profile]);
 
   const filteredRooms = rooms.filter(room =>
     room.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -171,20 +190,22 @@ const Chat: FC = () => {
     }
   };
 
-  // Não renderizar se não for cidadão
-  if (profile?.tipo_usuario !== 'cidadao') {
+  // Não renderizar se for cidadão
+  if (profile?.tipo_usuario === 'cidadao') {
     return null;
   }
 
   return (
-    <CidadaoLayout>
+    <Layout>
       <div className="h-full flex flex-col">
         <div className="flex items-center mb-4">
           <MessageSquare className="mr-2 h-6 w-6 text-blue-600" />
-          <h1 className="text-2xl font-bold">Chat Municipal</h1>
-          <Badge variant="outline" className="ml-4">
-            Cidadão
-          </Badge>
+          <h1 className="text-2xl font-bold">Chat Administrativo</h1>
+          {profile && (
+            <Badge variant="outline" className="ml-4">
+              {profile.tipo_usuario}
+            </Badge>
+          )}
         </div>
 
         <div className="flex flex-1 gap-4 h-[calc(100vh-180px)]">
@@ -230,6 +251,11 @@ const Chat: FC = () => {
                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                       <Circle className="h-2 w-2 fill-green-500 text-green-500 mr-1" />
                       <span>{participants.length} participantes</span>
+                      <Badge variant="outline" className="ml-2 text-xs">
+                        {activeRoom.type === 'citizen_support' ? 'Suporte ao Cidadão' : 
+                         activeRoom.type === 'general' ? 'Geral' :
+                         activeRoom.type === 'department' ? 'Departamental' : 'Chat'}
+                      </Badge>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -285,8 +311,8 @@ const Chat: FC = () => {
           </Card>
         </div>
       </div>
-    </CidadaoLayout>
+    </Layout>
   );
 };
 
-export default Chat;
+export default AdminChat;

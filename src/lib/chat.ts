@@ -88,30 +88,48 @@ export const chatService = {
 
   // Buscar salas do usuário
   async getUserRooms(userId: string, userType: string): Promise<ChatRoom[]> {
-    let query = supabase
-      .from('chat_rooms')
-      .select(`
-        *,
-        chat_participants!inner(user_id)
-      `)
-      .eq('is_active', true)
-
+    console.log(`🔍 Buscando salas para usuário ${userId} do tipo ${userType}`);
+    
     if (userType === 'cidadao') {
       // Cidadãos veem apenas suas salas de suporte
-      query = query.eq('created_by', userId)
+      const { data, error } = await supabase
+        .from('chat_rooms')
+        .select('*')
+        .eq('is_active', true)
+        .eq('type', 'citizen_support')
+        .eq('created_by', userId)
+        .order('updated_at', { ascending: false });
+
+      if (error) {
+        console.error('❌ Erro ao buscar salas do cidadão:', error);
+        throw error;
+      }
+      
+      console.log(`✅ Encontradas ${data?.length || 0} salas para cidadão`);
+      return data || [];
     } else {
-      // Servidores veem salas gerais, departamentais e de suporte
-      query = query.or(`type.eq.general,type.eq.department,type.eq.citizen_support`)
+      // Servidores veem salas gerais, departamentais e de suporte a cidadãos
+      const { data, error } = await supabase
+        .from('chat_rooms')
+        .select('*')
+        .eq('is_active', true)
+        .in('type', ['general', 'department', 'citizen_support'])
+        .order('updated_at', { ascending: false });
+
+      if (error) {
+        console.error('❌ Erro ao buscar salas do servidor:', error);
+        throw error;
+      }
+      
+      console.log(`✅ Encontradas ${data?.length || 0} salas para servidor`);
+      return data || [];
     }
-
-    const { data, error } = await query.order('updated_at', { ascending: false })
-
-    if (error) throw error
-    return data || []
   },
 
   // Buscar mensagens de uma sala
   async getRoomMessages(roomId: string, limit = 50): Promise<ChatMessage[]> {
+    console.log(`🔍 Buscando mensagens da sala ${roomId}`);
+    
     const { data, error } = await supabase
       .from('chat_messages')
       .select(`
@@ -127,12 +145,42 @@ export const chatService = {
       .order('created_at', { ascending: true })
       .limit(limit)
 
-    if (error) throw error
+    if (error) {
+      console.error('❌ Erro ao buscar mensagens:', error);
+      throw error;
+    }
+    
+    console.log(`✅ Encontradas ${data?.length || 0} mensagens`);
     return data || []
   },
 
   // Enviar mensagem
   async sendMessage(roomId: string, message: string, userId: string, replyTo?: string): Promise<ChatMessage> {
+    console.log(`📤 Enviando mensagem para sala ${roomId} do usuário ${userId}`);
+    
+    // Verificar se o usuário tem permissão para enviar mensagens nesta sala
+    const { data: participant, error: participantError } = await supabase
+      .from('chat_participants')
+      .select('*')
+      .eq('room_id', roomId)
+      .eq('user_id', userId)
+      .single();
+
+    if (participantError || !participant) {
+      // Se não é participante, tentar adicionar (apenas para salas de suporte)
+      const { data: room } = await supabase
+        .from('chat_rooms')
+        .select('type, created_by')
+        .eq('id', roomId)
+        .single();
+
+      if (room?.type === 'citizen_support' && room.created_by === userId) {
+        await this.addParticipant(roomId, userId, 'participant');
+      } else {
+        throw new Error('Usuário não tem permissão para enviar mensagens nesta sala');
+      }
+    }
+
     const { data, error } = await supabase
       .from('chat_messages')
       .insert([{
@@ -148,7 +196,10 @@ export const chatService = {
       `)
       .single()
 
-    if (error) throw error
+    if (error) {
+      console.error('❌ Erro ao enviar mensagem:', error);
+      throw error;
+    }
     if (!data) throw new Error('Erro ao enviar mensagem')
 
     // Atualizar timestamp da sala
@@ -157,6 +208,7 @@ export const chatService = {
       .update({ updated_at: new Date().toISOString() })
       .eq('id', roomId)
 
+    console.log('✅ Mensagem enviada com sucesso');
     return data
   },
 
