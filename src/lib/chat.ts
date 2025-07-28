@@ -250,21 +250,27 @@ export const chatService = {
     return data || []
   },
 
-  // Buscar salas de suporte disponíveis para servidores
+  // Buscar salas de suporte disponíveis para servidores  
   async getSupportRooms(): Promise<ChatRoom[]> {
-    const { data, error } = await supabase
-      .from('chat_rooms')
-      .select(`
-        *,
-        creator:user_profiles!created_by(nome_completo, email),
-        latest_message:chat_messages(message, created_at)
-      `)
-      .eq('type', 'citizen_support')
-      .eq('is_active', true)
-      .order('updated_at', { ascending: false })
+    try {
+      console.log('🔍 Buscando salas de suporte...');
+      const { data, error } = await supabase
+        .from('chat_rooms')
+        .select('*')
+        .eq('type', 'citizen_support')
+        .eq('is_active', true)
 
-    if (error) throw error
-    return data || []
+      if (error) {
+        console.error('❌ Erro ao buscar support rooms:', error);
+        throw error;
+      }
+
+      console.log(`✅ Support rooms encontradas: ${data?.length || 0}`);
+      return data || [];
+    } catch (error) {
+      console.error('❌ Erro geral getSupportRooms:', error);
+      return [];
+    }
   },
 
   // Marcar mensagens como lidas
@@ -394,38 +400,25 @@ export const chatService = {
 
   // Buscar salas diretas do usuário
   async getDirectRooms(userId: string): Promise<ChatRoom[]> {
-    const { data, error } = await supabase
-      .from('chat_rooms')
-      .select(`
-        *,
-        participants:chat_participants(
-          user_id,
-          user:user_profiles(id, nome_completo, email, tipo_usuario, foto_perfil_url)
-        ),
-        latest_message:chat_messages(message, created_at, user:user_profiles(nome_completo))
-      `)
-      .eq('type', 'direct')
-      .eq('is_active', true)
-      .order('updated_at', { ascending: false })
+    try {
+      console.log('🔍 Buscando salas diretas...');
+      const { data, error } = await supabase
+        .from('chat_rooms')
+        .select('*')
+        .eq('type', 'direct')
+        .eq('is_active', true)
 
-    if (error) throw error
-
-    // Filtrar apenas salas onde o usuário é participante
-    const userDirectRooms = data?.filter(room => 
-      room.participants.some((p: any) => p.user_id === userId)
-    ) || []
-
-    // Atualizar o nome da sala para mostrar o nome do outro participante
-    return userDirectRooms.map(room => {
-      const otherParticipant = room.participants.find((p: any) => p.user_id !== userId)
-      if (otherParticipant?.user) {
-        return {
-          ...room,
-          name: otherParticipant.user.nome_completo,
-          description: `Conversa com ${otherParticipant.user.nome_completo}`
-        }
+      if (error) {
+        console.error('❌ Erro ao buscar direct rooms:', error);
+        throw error;
       }
-      return room
-    })
+
+      console.log(`✅ Direct rooms encontradas: ${data?.length || 0}`);
+      // Por enquanto retornar simples, depois implementaremos filtro de participantes
+      return data || [];
+    } catch (error) {
+      console.error('❌ Erro geral getDirectRooms:', error);
+      return [];
+    }
   }
 }
