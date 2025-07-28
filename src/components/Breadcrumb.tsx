@@ -15,8 +15,6 @@ const routeLabels: Record<string, string> = {
   '/cidadao': 'Portal do Cidadão',
   '/cidadao/dashboard': 'Portal do Cidadão',
   
-  // Chat
-  '/chat': 'Chat',
   
   // Gabinete
   '/gabinete': 'Gabinete do Prefeito',

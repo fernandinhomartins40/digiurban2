@@ -6,7 +6,6 @@ import { SidebarMenuItem, SidebarMenuGroup } from "./SidebarMenu";
 import { useAuth } from "../contexts/AuthContext";
 import { useSidebarScroll } from "../hooks/useSidebarScroll";
 import { 
-  MessageSquare,
   FileText,
   Star,
   Home,
@@ -39,14 +38,6 @@ export const CidadaoSidebar: FC = () => {
               icon={<Home className="mr-3 h-5 w-5 text-blue-500 dark:text-blue-400" />}
             >
               Dashboard
-            </SidebarMenuItem>
-            
-            <SidebarMenuItem 
-              href="/cidadao/chat"
-              onSetRef={setMenuItemRef}
-              icon={<MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
-            >
-              Chat
             </SidebarMenuItem>
             
             <SidebarMenuItem 

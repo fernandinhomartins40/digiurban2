@@ -268,10 +268,6 @@ export const CacheKeys = {
   notificacoesUsuario: (userId: string) => `notificacoes:user:${userId}`,
   notificacoesNaoLidas: (userId: string) => `notificacoes:user:${userId}:unread:count`,
   
-  // Chat
-  chatRooms: (userId: string) => `chat:rooms:${userId}`,
-  chatMessages: (roomId: string) => `chat:messages:${roomId}`,
-  chatParticipants: (roomId: string) => `chat:participants:${roomId}`
 };
 
 // =====================================================
@@ -284,7 +280,6 @@ export const CacheInvalidation = {
     userCache.invalidatePattern(`user:.*:${userId}`);
     protocolsCache.invalidatePattern(`protocolos:user:${userId}`);
     globalCache.invalidatePattern(`notificacoes:user:${userId}`);
-    globalCache.invalidatePattern(`chat:.*:${userId}`);
   },
 
   // Invalidar dados de protocolo

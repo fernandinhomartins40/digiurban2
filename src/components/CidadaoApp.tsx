@@ -7,7 +7,6 @@ import SolicitarServico from '../pages/SolicitarServico';
 import MeusProtocolos from '../pages/MeusProtocolos';
 import DocumentosPessoais from '../pages/DocumentosPessoais';
 import MinhasAvaliacoes from '../pages/MinhasAvaliacoes';
-import Chat from '../pages/Chat';
 
 // Auth pages do cidadão
 import RegisterCitizen from '../pages/auth/RegisterCitizen';
@@ -48,12 +47,6 @@ function CidadaoApp() {
         </ProtectedRoute>
       } />
 
-      {/* Chat */}
-      <Route path="/chat" element={
-        <ProtectedRoute>
-          <Chat />
-        </ProtectedRoute>
-      } />
 
       {/* Serviços do cidadão */}
       <Route path="/servicos" element={

@@ -15,7 +15,8 @@
       "Bash(npm install:*)",
       "Bash(npm run dev:*)",
       "Bash(node:*)",
-      "Bash(npx supabase:*)"
+      "Bash(npx supabase:*)",
+      "Bash(del:*)"
     ],
     "deny": []
   }

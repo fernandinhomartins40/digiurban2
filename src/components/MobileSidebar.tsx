@@ -202,13 +202,6 @@ export const MobileSidebar: FC = () => {
               Painel do Cidadão
             </SidebarMenuItem>
             
-            <SidebarMenuItem 
-              href="/chat"
-              onSetRef={setMenuItemRef}
-              icon={<MessageSquare className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />}
-            >
-              Chat
-            </SidebarMenuItem>
 
             <SidebarMenuItem 
               href="/catalogo-servicos"
