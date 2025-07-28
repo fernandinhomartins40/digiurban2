@@ -37,20 +37,38 @@ export const useChat = () => {
       let rooms: ChatRoom[] = [];
 
       if (profile.tipo_usuario === 'cidadao') {
+        console.log('🔄 Fetching rooms for CIDADAO...');
         // Para cidadãos: buscar conversas diretas e sala de suporte
-        const [directRooms, supportRoom] = await Promise.all([
-          chatService.getDirectRooms(user.id),
-          chatService.getOrCreateSupportRoom(user.id)
-        ]);
-        rooms = [...directRooms, supportRoom];
+        try {
+          const directRooms = await chatService.getDirectRooms(user.id);
+          console.log('✅ Direct rooms for cidadao:', directRooms.length);
+          
+          const supportRoom = await chatService.getOrCreateSupportRoom(user.id);
+          console.log('✅ Support room for cidadao:', supportRoom.name);
+          
+          rooms = [...directRooms, supportRoom];
+        } catch (error) {
+          console.error('❌ Error fetching cidadao rooms:', error);
+          throw error;
+        }
       } else {
+        console.log('🔄 Fetching rooms for SERVIDOR:', profile.tipo_usuario);
         // Para servidores: buscar todas as salas + conversas diretas
-        const [generalRooms, supportRooms, directRooms] = await Promise.all([
-          chatService.getUserRooms(user.id, profile.tipo_usuario),
-          chatService.getSupportRooms(),
-          chatService.getDirectRooms(user.id)
-        ]);
-        rooms = [...directRooms, ...generalRooms, ...supportRooms];
+        try {
+          const generalRooms = await chatService.getUserRooms(user.id, profile.tipo_usuario);
+          console.log('✅ General rooms:', generalRooms.length);
+          
+          const supportRooms = await chatService.getSupportRooms();
+          console.log('✅ Support rooms:', supportRooms.length);
+          
+          const directRooms = await chatService.getDirectRooms(user.id);
+          console.log('✅ Direct rooms:', directRooms.length);
+          
+          rooms = [...directRooms, ...generalRooms, ...supportRooms];
+        } catch (error) {
+          console.error('❌ Error fetching servidor rooms:', error);
+          throw error;
+        }
       }
       
       console.log('✅ Chat rooms fetched:', rooms.length, 'rooms');
@@ -73,7 +91,8 @@ export const useChat = () => {
         isLoading: false 
       }));
 
-      toast.error("Não foi possível carregar as salas de chat.");
+      // Mostrar erro específico para debug
+      toast.error(`Erro específico: ${errorMessage}`);
       
       throw error;
     }
