@@ -90,39 +90,48 @@ export const chatService = {
   async getUserRooms(userId: string, userType: string): Promise<ChatRoom[]> {
     console.log(`🔍 Buscando salas para usuário ${userId} do tipo ${userType}`);
     
-    if (userType === 'cidadao') {
-      // Cidadãos veem apenas suas salas de suporte
-      const { data, error } = await supabase
-        .from('chat_rooms')
-        .select('*')
-        .eq('is_active', true)
-        .eq('type', 'citizen_support')
-        .eq('created_by', userId)
-        .order('updated_at', { ascending: false });
+    try {
+      if (userType === 'cidadao') {
+        // Cidadãos veem apenas suas salas de suporte
+        const { data, error } = await supabase
+          .from('chat_rooms')
+          .select('*')
+          .eq('is_active', true)
+          .eq('type', 'citizen_support')
+          .eq('created_by', userId);
 
-      if (error) {
-        console.error('❌ Erro ao buscar salas do cidadão:', error);
-        throw error;
-      }
-      
-      console.log(`✅ Encontradas ${data?.length || 0} salas para cidadão`);
-      return data || [];
-    } else {
-      // Servidores veem salas gerais, departamentais e de suporte a cidadãos
-      const { data, error } = await supabase
-        .from('chat_rooms')
-        .select('*')
-        .eq('is_active', true)
-        .in('type', ['general', 'department', 'citizen_support'])
-        .order('updated_at', { ascending: false });
+        if (error) {
+          console.error('❌ Erro ao buscar salas do cidadão:', error);
+          throw error;
+        }
+        
+        console.log(`✅ Encontradas ${data?.length || 0} salas para cidadão`);
+        return data || [];
+      } else {
+        // Tentar consulta simples primeiro
+        console.log('🔍 Tentando consulta básica...');
+        let { data, error } = await supabase
+          .from('chat_rooms')
+          .select('*')
+          .eq('is_active', true);
 
-      if (error) {
-        console.error('❌ Erro ao buscar salas do servidor:', error);
-        throw error;
+        if (error) {
+          console.error('❌ Erro na consulta básica:', error);
+          throw error;
+        }
+
+        // Filtrar no JavaScript se der problema com .in()
+        const filteredData = data?.filter(room => 
+          ['general', 'department', 'citizen_support'].includes(room.type)
+        ) || [];
+
+        console.log(`✅ Encontradas ${filteredData.length} salas para servidor (filtradas)`);
+        return filteredData;
       }
-      
-      console.log(`✅ Encontradas ${data?.length || 0} salas para servidor`);
-      return data || [];
+    } catch (error) {
+      console.error('❌ Erro geral getUserRooms:', error);
+      // Retornar array vazio em caso de erro para não quebrar o app
+      return [];
     }
   },
 
