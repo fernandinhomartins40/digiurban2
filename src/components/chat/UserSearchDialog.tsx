@@ -47,30 +47,71 @@ const UserSearchDialog: React.FC<UserSearchDialogProps> = ({
 
   // Buscar todos os usuários do sistema
   const fetchUsers = async () => {
+    if (!user) {
+      toast.error('Usuário não autenticado');
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
+      console.log('🔄 Fetching users for chat...');
+      console.log('Current user ID:', user.id);
+      
+      // Verificar primeiro se conseguimos acessar a tabela
+      const { data: testData, error: testError } = await supabase
         .from('user_profiles')
-        .select(`
-          id,
-          nome_completo,
-          email,
-          tipo_usuario,
-          secretaria,
-          setor,
-          cargo,
-          foto_perfil_url
-        `)
-        .neq('id', user?.id) // Excluir o próprio usuário
+        .select('id, nome_completo')
+        .limit(1);
+
+      if (testError) {
+        console.error('❌ Cannot access user_profiles table:', testError);
+        if (testError.message.includes('permission denied') || testError.message.includes('RLS')) {
+          throw new Error('Sem permissão para acessar lista de usuários. Verifique as políticas RLS.');
+        }
+        throw testError;
+      }
+
+      // Se o teste passou, fazer a consulta completa
+      let { data, error } = await supabase
+        .from('user_profiles')
+        .select('id, nome_completo, email, tipo_usuario, secretaria, setor, cargo, foto_perfil_url')
+        .neq('id', user.id) // Excluir o próprio usuário
         .order('nome_completo');
 
-      if (error) throw error;
+      // Se der erro em campos específicos, tentar só com campos essenciais
+      if (error && error.message.includes('column')) {
+        console.warn('⚠️ Some columns not found, trying essential fields only...');
+        const fallbackQuery = await supabase
+          .from('user_profiles')
+          .select('id, nome_completo, email, tipo_usuario')
+          .neq('id', user.id)
+          .order('nome_completo');
+        
+        data = fallbackQuery.data;
+        error = fallbackQuery.error;
+      }
 
+      if (error) {
+        console.error('❌ Error fetching users:', error);
+        throw error;
+      }
+
+      console.log('✅ Users fetched successfully:', data?.length || 0);
       setUsers(data || []);
       setFilteredUsers(data || []);
     } catch (error) {
-      console.error('Error fetching users:', error);
-      toast.error('Erro ao carregar usuários');
+      console.error('❌ Error fetching users:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      console.error('Error details:', errorMessage);
+      
+      // Mostrar erro mais específico
+      if (errorMessage.includes('permission denied') || errorMessage.includes('RLS')) {
+        toast.error('Sem permissão para visualizar usuários. Entre em contato com o administrador.');
+      } else if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+        toast.error('Erro de conexão. Verifique sua internet.');
+      } else {
+        toast.error(`Erro ao carregar usuários: ${errorMessage}`);
+      }
     } finally {
       setIsLoading(false);
     }
