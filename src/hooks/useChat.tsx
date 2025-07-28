@@ -37,14 +37,20 @@ export const useChat = () => {
       let rooms: ChatRoom[] = [];
 
       if (profile.tipo_usuario === 'cidadao') {
-        // Para cidadãos: buscar ou criar sala de suporte
-        const supportRoom = await chatService.getOrCreateSupportRoom(user.id);
-        rooms = [supportRoom];
+        // Para cidadãos: buscar conversas diretas e sala de suporte
+        const [directRooms, supportRoom] = await Promise.all([
+          chatService.getDirectRooms(user.id),
+          chatService.getOrCreateSupportRoom(user.id)
+        ]);
+        rooms = [...directRooms, supportRoom];
       } else {
-        // Para servidores: buscar salas gerais e de suporte
-        const generalRooms = await chatService.getUserRooms(user.id, profile.tipo_usuario);
-        const supportRooms = await chatService.getSupportRooms();
-        rooms = [...generalRooms, ...supportRooms];
+        // Para servidores: buscar todas as salas + conversas diretas
+        const [generalRooms, supportRooms, directRooms] = await Promise.all([
+          chatService.getUserRooms(user.id, profile.tipo_usuario),
+          chatService.getSupportRooms(),
+          chatService.getDirectRooms(user.id)
+        ]);
+        rooms = [...directRooms, ...generalRooms, ...supportRooms];
       }
       
       console.log('✅ Chat rooms fetched:', rooms.length, 'rooms');
@@ -230,6 +236,39 @@ export const useChat = () => {
     };
   }, [fetchRooms, user, profile]);
 
+  // Criar conversa direta com usuário
+  const createDirectChat = useCallback(async (otherUserId: string, otherUserName: string) => {
+    if (!user) throw new Error('Usuário não autenticado');
+
+    try {
+      console.log(`🔄 Creating direct chat with user ${otherUserId}...`);
+      
+      const directRoom = await chatService.getOrCreateDirectRoom(user.id, otherUserId);
+      
+      console.log('✅ Direct chat created/found:', directRoom.id);
+      
+      // Atualizar lista de salas
+      await fetchRooms();
+      
+      // Definir como sala ativa
+      setActiveRoom(directRoom);
+      
+      return directRoom;
+    } catch (error) {
+      console.error('❌ Failed to create direct chat:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create direct chat';
+      
+      setState(prev => ({ 
+        ...prev, 
+        error: errorMessage
+      }));
+      
+      toast.error("Erro ao criar conversa");
+      
+      throw error;
+    }
+  }, [user, fetchRooms, setActiveRoom]);
+
   return {
     ...state,
     fetchRooms,
@@ -237,6 +276,7 @@ export const useChat = () => {
     fetchParticipants,
     sendMessage,
     setActiveRoom,
-    markAsRead
+    markAsRead,
+    createDirectChat
   };
 };

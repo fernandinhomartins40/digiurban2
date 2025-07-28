@@ -4,11 +4,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Send, Clock, Circle, Users, Search, Phone, Video } from "lucide-react";
+import { MessageSquare, Send, Clock, Circle, Users, Search, Phone, Video, UserPlus } from "lucide-react";
 import { FC, useState, useEffect, useRef } from "react";
 import { useChat } from "../hooks/useChat";
 import { useAuth } from "../contexts/AuthContext";
 import { ChatRoom, ChatMessage } from "../lib/chat";
+import UserSearchDialog from "../components/chat/UserSearchDialog";
 
 const ChatRoomItem: FC<{ 
   room: ChatRoom; 
@@ -21,6 +22,7 @@ const ChatRoomItem: FC<{
       case 'department': return 'bg-blue-500';
       case 'support': return 'bg-orange-500';
       case 'citizen_support': return 'bg-purple-500';
+      case 'direct': return 'bg-blue-400';
       default: return 'bg-gray-400';
     }
   };
@@ -31,6 +33,7 @@ const ChatRoomItem: FC<{
       case 'department': return 'Departamental';
       case 'support': return 'Suporte';
       case 'citizen_support': return 'Suporte ao Cidadão';
+      case 'direct': return 'Conversa Direta';
       default: return 'Chat';
     }
   };
@@ -147,11 +150,13 @@ const AdminChat: FC = () => {
     isLoading,
     error,
     setActiveRoom,
-    sendMessage
+    sendMessage,
+    createDirectChat
   } = useChat();
 
   const [newMessage, setNewMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showUserSearch, setShowUserSearch] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Verificar se o usuário tem acesso ao chat administrativo
@@ -190,6 +195,14 @@ const AdminChat: FC = () => {
     }
   };
 
+  const handleUserSelect = async (userId: string, userName: string) => {
+    try {
+      await createDirectChat(userId, userName);
+    } catch (error) {
+      console.error('Error creating direct chat:', error);
+    }
+  };
+
   // Não renderizar se for cidadão
   if (profile?.tipo_usuario === 'cidadao') {
     return null;
@@ -212,7 +225,7 @@ const AdminChat: FC = () => {
           {/* Rooms sidebar */}
           <Card className="w-1/4 min-w-[250px] h-full">
             <CardContent className="p-3 h-full">
-              <div className="mb-3 pt-2">
+              <div className="mb-3 pt-2 space-y-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input 
@@ -222,6 +235,15 @@ const AdminChat: FC = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
+                <Button 
+                  className="w-full" 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowUserSearch(true)}
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Nova Conversa
+                </Button>
               </div>
               <ScrollArea className="h-[calc(100%-50px)]">
                 <div className="space-y-2">
@@ -310,6 +332,13 @@ const AdminChat: FC = () => {
             )}
           </Card>
         </div>
+
+        {/* Dialog de busca de usuários */}
+        <UserSearchDialog
+          open={showUserSearch}
+          onOpenChange={setShowUserSearch}
+          onUserSelect={handleUserSelect}
+        />
       </div>
     </Layout>
   );

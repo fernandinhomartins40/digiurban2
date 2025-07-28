@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 export interface ChatRoom {
   id: string
   name: string
-  type: 'general' | 'department' | 'support' | 'citizen_support'
+  type: 'general' | 'department' | 'support' | 'citizen_support' | 'direct'
   description?: string
   is_active: boolean
   department_id?: string
@@ -319,5 +319,104 @@ export const chatService = {
     if (!data) throw new Error('Erro ao criar sala')
 
     return data
+  },
+
+  // Criar ou encontrar sala de conversa direta entre dois usuários
+  async getOrCreateDirectRoom(userId1: string, userId2: string): Promise<ChatRoom> {
+    // Buscar sala existente entre os dois usuários
+    const { data: existingRooms, error: searchError } = await supabase
+      .from('chat_rooms')
+      .select(`
+        *,
+        participants:chat_participants(user_id)
+      `)
+      .eq('type', 'direct')
+      .eq('is_active', true)
+
+    if (searchError) throw searchError
+
+    // Verificar se existe uma sala com exatamente esses dois usuários
+    const directRoom = existingRooms?.find(room => {
+      const participantIds = room.participants.map((p: any) => p.user_id)
+      return participantIds.length === 2 && 
+             participantIds.includes(userId1) && 
+             participantIds.includes(userId2)
+    })
+
+    if (directRoom) {
+      return directRoom
+    }
+
+    // Buscar nomes dos usuários para criar o nome da sala
+    const { data: users, error: usersError } = await supabase
+      .from('user_profiles')
+      .select('id, nome_completo')
+      .in('id', [userId1, userId2])
+
+    if (usersError) throw usersError
+
+    const user1Name = users?.find(u => u.id === userId1)?.nome_completo || 'Usuário'
+    const user2Name = users?.find(u => u.id === userId2)?.nome_completo || 'Usuário'
+
+    // Criar nova sala direta
+    const { data: newRoom, error: createError } = await supabase
+      .from('chat_rooms')
+      .insert([{
+        name: `${user1Name} & ${user2Name}`,
+        type: 'direct',
+        description: 'Conversa direta',
+        is_active: true,
+        created_by: userId1
+      }])
+      .select()
+      .single()
+
+    if (createError) throw createError
+    if (!newRoom) throw new Error('Erro ao criar sala de conversa')
+
+    // Adicionar os dois usuários como participantes
+    await Promise.all([
+      this.addParticipant(newRoom.id, userId1, 'participant'),
+      this.addParticipant(newRoom.id, userId2, 'participant')
+    ])
+
+    return newRoom
+  },
+
+  // Buscar salas diretas do usuário
+  async getDirectRooms(userId: string): Promise<ChatRoom[]> {
+    const { data, error } = await supabase
+      .from('chat_rooms')
+      .select(`
+        *,
+        participants:chat_participants(
+          user_id,
+          user:user_profiles(id, nome_completo, email, tipo_usuario, foto_perfil_url)
+        ),
+        latest_message:chat_messages(message, created_at, user:user_profiles(nome_completo))
+      `)
+      .eq('type', 'direct')
+      .eq('is_active', true)
+      .order('updated_at', { ascending: false })
+
+    if (error) throw error
+
+    // Filtrar apenas salas onde o usuário é participante
+    const userDirectRooms = data?.filter(room => 
+      room.participants.some((p: any) => p.user_id === userId)
+    ) || []
+
+    // Atualizar o nome da sala para mostrar o nome do outro participante
+    return userDirectRooms.map(room => {
+      const otherParticipant = room.participants.find((p: any) => p.user_id !== userId)
+      if (otherParticipant?.user) {
+        return {
+          ...room,
+          name: otherParticipant.user.nome_completo,
+          description: `Conversa com ${otherParticipant.user.nome_completo}`
+        }
+      }
+      return room
+    })
   }
 }
